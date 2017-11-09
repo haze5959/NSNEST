@@ -1,38 +1,43 @@
 <mat-sidenav-container class="app-container">
-  <mat-sidenav #sidenav class="app-sidenav">
-    Jolly good!
-  </mat-sidenav>
 
-  <mat-toolbar color="primary">
+  <!-- GNB -->
+  <mat-toolbar color="primary" class="depth-4">
+    <!-- GNB 왼쪽 버튼 -->
     <button type="button" mat-button (click)="sidenav.open()" class="app-showSidenavBtn">
-        <mat-icon style="font-size:50px; height:50px; width:50px;">account_circle</mat-icon>
+        <mat-icon>account_circle</mat-icon>
     </button>
+    <!-- GNB 가운데 라벨 -->
     <div class="app-Title">
       NSNEST of Ancient
     </div>
+    <!-- GNB 오른쪽 버튼 -->
+    <button mat-button [matMenuTriggerFor]="menu" class="app-showSidenavBtn">
+        <mat-icon>format_align_justify</mat-icon>
+    </button>
   </mat-toolbar>
 
+  <!-- GNB 왼쪽 버튼 클릭 시 나오는 뷰 -->
+  <mat-sidenav #sidenav class="app-sidenav">
+      <app-userInfo></app-userInfo>
+  </mat-sidenav>
+  
+  <!-- GNB 오른쪽 버튼 클릭 시 나오는 뷰 -->
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>뉴스피드</button>
+    <button mat-menu-item>공사 중...</button>
+  </mat-menu>
 
+  <!-- 컨텐츠 -->
   <div class="app-sidenav-content">
-
-    <button mat-fab>Basic</button>
-
-    <mat-button-toggle-group #group="matButtonToggleGroup" (change)="testEvent($event)">
-      <mat-button-toggle value="left">
-        <mat-icon>format_align_left</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value="center">
-        <mat-icon>format_align_center</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value="right">
-        <mat-icon>format_align_right</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value="justify" disabled>
-        <mat-icon>format_align_justify</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-    <div class="example-selected-value">Selected value: {{group.value}}</div>
-
+    <mat-grid-list cols="4" rowHeight="100%">
+      <mat-grid-tile [colspan]=3 [rowspan]=1 [style.background]="'primary'"><mat-card>
+        <app-newspeed></app-newspeed>
+      </mat-card></mat-grid-tile>
+      <mat-grid-tile [colspan]=1 [rowspan]=1><mat-card>
+        <app-sideUserList></app-sideUserList>
+      </mat-card></mat-grid-tile>
+    </mat-grid-list>
+    
   </div>
 
 </mat-sidenav-container>

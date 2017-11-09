@@ -7,14 +7,26 @@ import {
   MatInputModule, 
   MatSidenavModule, 
   MatButtonToggleModule,
-  MatIconModule
+  MatIconModule,
+  MatMenuModule,
+  MatGridListModule,
+  MatCardModule,
+  MatTabsModule,
+  MatDialogModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
+import { AppNewspeed } from './newspeed/app.newspeed';
+import { AppSideUserList } from './sideUserList/app.sideUserList';
+import { AppUserInfo, SetUserInfoDialog } from './userInfo/app.userInfo';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AppNewspeed,
+    AppSideUserList,
+    AppUserInfo,
+    SetUserInfoDialog
   ],
   imports: [
     BrowserModule,
@@ -24,7 +36,12 @@ import { AppComponent } from './app.component';
     MatInputModule,
     MatSidenavModule,
     MatButtonToggleModule,
-    MatIconModule
+    MatIconModule,
+    MatMenuModule,
+    MatGridListModule,
+    MatCardModule,
+    MatTabsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
