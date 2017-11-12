@@ -9,6 +9,51 @@ body{
     margin: 0px;
 }
 
+/* 색 */
+.color_primary{
+    background-color: #3F51B5;   
+}
+.color_50{
+    background-color: #E8EAF6;   
+}
+.color_100{
+    background-color: #C5CAE9;   
+}
+.color_200{
+    background-color: #9FA8DA;   
+}
+.color_300{
+    background-color: #7986CB;   
+}
+.color_400{
+    background-color: #5C6BC0;   
+}
+.color_600{
+    background-color: #3949AB;   
+}
+.color_700{
+    background-color: #303F9F;   
+}
+.color_800{
+    background-color: #283593;   
+}
+.color_900{
+    background-color: #1A237E;   
+}
+.color_A100{
+    background-color: #FF80AB;   
+}
+.color_A200{
+    background-color: #FF4081;   
+}
+.color_A400{
+    background-color: #F50057;   
+}
+.color_A700{
+    background-color: #C51162;   
+}
+
+/* 그림자 */
 .depth-1{
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }

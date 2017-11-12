@@ -17,7 +17,7 @@
   </mat-toolbar>
 
   <!-- GNB 왼쪽 버튼 클릭 시 나오는 뷰 -->
-  <mat-sidenav #sidenav class="app-sidenav">
+  <mat-sidenav #sidenav class="app-sidenav depth-5 color_50">
       <app-userInfo></app-userInfo>
   </mat-sidenav>
   
@@ -30,7 +30,7 @@
   <!-- 컨텐츠 -->
   <div class="app-sidenav-content">
     <mat-grid-list cols="4" rowHeight="100%">
-      <mat-grid-tile [colspan]=3 [rowspan]=1 [style.background]="'primary'"><mat-card>
+      <mat-grid-tile [colspan]=3 [rowspan]=1><mat-card>
         <app-newspeed></app-newspeed>
       </mat-card></mat-grid-tile>
       <mat-grid-tile [colspan]=1 [rowspan]=1><mat-card>

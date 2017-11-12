@@ -23,6 +23,7 @@ mat-grid-tile{
 
 .app-sidenav {
     padding: 20px;
+    width: 50%;
 }
 
 mat-toolbar {
