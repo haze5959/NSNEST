@@ -10,46 +10,46 @@ body{
 }
 
 /* 색 */
-.color_primary{
+.color-primary{
     background-color: #3F51B5;   
 }
-.color_50{
+.color-50{
     background-color: #E8EAF6;   
 }
-.color_100{
+.color-100{
     background-color: #C5CAE9;   
 }
-.color_200{
+.color-200{
     background-color: #9FA8DA;   
 }
-.color_300{
+.color-300{
     background-color: #7986CB;   
 }
-.color_400{
+.color-400{
     background-color: #5C6BC0;   
 }
-.color_600{
+.color-600{
     background-color: #3949AB;   
 }
-.color_700{
+.color-700{
     background-color: #303F9F;   
 }
-.color_800{
+.color-800{
     background-color: #283593;   
 }
-.color_900{
+.color-900{
     background-color: #1A237E;   
 }
-.color_A100{
+.color-A100{
     background-color: #FF80AB;   
 }
-.color_A200{
+.color-A200{
     background-color: #FF4081;   
 }
-.color_A400{
+.color-A400{
     background-color: #F50057;   
 }
-.color_A700{
+.color-A700{
     background-color: #C51162;   
 }
 

@@ -18,7 +18,8 @@ import {
 import { AppComponent } from './app.component';
 import { AppNewspeed } from './newspeed/app.newspeed';
 import { AppSideUserList } from './sideUserList/app.sideUserList';
-import { AppUserInfo, SetUserInfoDialog } from './userInfo/app.userInfo';
+import { AppUserInfo, SetUserInfoDialog, ShowDetailImageDialog } from './userInfo/app.userInfo';
+import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,13 @@ import { AppUserInfo, SetUserInfoDialog } from './userInfo/app.userInfo';
     AppNewspeed,
     AppSideUserList,
     AppUserInfo,
-    SetUserInfoDialog
+    SetUserInfoDialog,
+    ShowDetailImageDialog,
+    ImageViewerComponent
+  ],
+  entryComponents: [
+    SetUserInfoDialog,
+    ShowDetailImageDialog
   ],
   imports: [
     BrowserModule,
