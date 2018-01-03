@@ -1,10 +1,11 @@
 <mat-card class="userInfoCard">
     <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>권오규</mat-card-title>
+        <div mat-card-avatar [style.background-image]="testImage" class="profileImage"></div>
+        <mat-card-title>권오규(잉어력 견장 사진)</mat-card-title>
         <mat-card-subtitle>프로필 명</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="@assets/testImage.jpg" alt="Photo of a user">
+    잉어력 프로그래스(12/100)
+    <!-- <img mat-card-image src="{{profileImage}}" alt="Photo of a user"> -->
     <mat-card-content>
         <p>
         The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
@@ -16,4 +17,14 @@
         <button mat-button>로그아웃</button>
         <button mat-button (click)="openSetUserInfoDialog()">상태정보 변경</button>
     </mat-card-actions>
+</mat-card>
+
+<!-- 사이트 정보 --> 
+<mat-card class="siteInfo">
+    <p class="font-bold font-size20">
+        {{appName}} {{appVersion}} 
+    </p>
+    <p class="font-Italic font-size16">
+        {{appCopyrights}}
+    </p>
 </mat-card>

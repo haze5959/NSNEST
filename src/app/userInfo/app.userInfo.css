@@ -1,3 +1,11 @@
 .userInfoCard{
+    /* height: ; */
+}
 
+.profileImage{
+    background-size: cover;
+}
+
+.siteInfo{
+    margin-top: 10px;
 }
