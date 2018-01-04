@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Inject } from '@angular/core';
 import { Strings } from '@app/Strings';
-
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 
 
@@ -15,8 +15,11 @@ export class AppUserInfo implements OnInit {
   appName = Strings.APP_NAME;
   appVersion = Strings.APP_VERSION;
   appCopyrights = Strings.APP_COPYRIGHTS;
-  // profileImage = Strings.NODATA_IMAGE;
+
+  //프로필 관련 정보
   profileImage = Strings.TEST_IMAGE2;
+  profileText = "프로필 명 입니다.";
+  profileDescription = "프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.";
   testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
   constructor(public dialog: MatDialog, private sanitizer: DomSanitizer) {}
 
@@ -30,9 +33,18 @@ export class AppUserInfo implements OnInit {
     }
   }
 
-  openSetUserInfoDialog() {
+  pressLogout(){
+    //로그아웃 눌렀을 경우
+  }
+
+  openSetUserInfoDialog(){
     const dialogRef = this.dialog.open(SetUserInfoDialog, {
-      height: '400px'
+      height: "90%",
+      width: "80%",
+      data: { 
+        profileText: this.profileText,
+        profileDescription: this.profileDescription
+       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -51,9 +63,7 @@ export class AppUserInfo implements OnInit {
         data: { imageUrl: this.profileImage }
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('result => '+ result);
-      });
+      dialogRef.afterClosed().subscribe(result => {});
     }
   }
 }
@@ -65,7 +75,25 @@ export class AppUserInfo implements OnInit {
   selector: 'dialog-setUserInfoDialog',
   templateUrl: 'dialog.setUserInfoDialog.html',
 })
-export class SetUserInfoDialog {}
+export class SetUserInfoDialog {
+  userInfo: FormGroup;
+  profileText = this.data.profileText;
+  profileDescription = this.data.profileDescription;
+  constructor(
+    public dialogRef: MatDialogRef<ShowDetailImageDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any, fb: FormBuilder) {
+      //초기화 구문
+      this.userInfo = fb.group({
+        'profileText': this.profileText,
+        'profileDescription': this.profileDescription
+      });
+     }
+
+    //유저정보 수정 저장
+    pressSaveBtn(): void {
+      this.dialogRef.close();
+    }
+}
 
 /**
  * 프로필 이미지 다이얼로그--------------------------------------------------
@@ -79,9 +107,5 @@ export class ShowDetailImageDialog {
   constructor(
     public dialogRef: MatDialogRef<ShowDetailImageDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
-
-  // onNoClick(): void {
-  //   this.dialogRef.close();
-  // }
 
 }

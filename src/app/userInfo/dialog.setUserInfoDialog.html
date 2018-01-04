@@ -1,21 +1,8 @@
-<!-- <mat-card class="example-card">
-    <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>권오규</mat-card-title>
-        <mat-card-subtitle>프로필 명</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image src="@assets/testImage.jpg" alt="Photo of a user">
-    <mat-card-content>
-        <p>
-        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-        bred for hunting.
-        </p>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-button>로그아웃</button>
-        <button mat-button (click)="openSetUserInfoDialog()">상태정보 변경</button>
-    </mat-card-actions>
-</mat-card> -->
-
-ㅇㄹㄴㄹㄴㄹㅇㄹㄴㄹㄴㄹㄴㄹ테스트
+<form class="" [formGroup]="userInfo">
+    <mat-form-field>
+        <input matInput formControlName="profileText" placeholder="프로필 명">
+    </mat-form-field>
+    <mat-form-field>
+        <textarea matInput formControlName="profileDescription" placeholder="프로필 설명"></textarea>
+    </mat-form-field>
+</form>

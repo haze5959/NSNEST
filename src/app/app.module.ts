@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatToolbarModule, 
   MatButtonModule, 
@@ -12,7 +13,8 @@ import {
   MatGridListModule,
   MatCardModule,
   MatTabsModule,
-  MatDialogModule
+  MatDialogModule,
+  MatFormFieldModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -36,6 +38,8 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     ShowDetailImageDialog
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatToolbarModule,
