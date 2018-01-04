@@ -15,7 +15,8 @@ export class AppUserInfo implements OnInit {
   appName = Strings.APP_NAME;
   appVersion = Strings.APP_VERSION;
   appCopyrights = Strings.APP_COPYRIGHTS;
-  profileImage = Strings.NODATA_IMAGE;
+  // profileImage = Strings.NODATA_IMAGE;
+  profileImage = Strings.TEST_IMAGE2;
   testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
   constructor(public dialog: MatDialog, private sanitizer: DomSanitizer) {}
 
@@ -41,15 +42,19 @@ export class AppUserInfo implements OnInit {
 
   openProfileImage(){
     console.log("이미지 열기");
-    let dialogRef = this.dialog.open(ShowDetailImageDialog, {
-      height: '80%',
-      width: '80%',
-      data: { imageUrl: this.profileImage }
-    });
+    var image = new Image();
+    image.src = this.profileImage;
+    image.onload = () => {
+      let dialogRef = this.dialog.open(ShowDetailImageDialog, {
+        height: image.height.toString(),
+        width: image.width.toString(),
+        data: { imageUrl: this.profileImage }
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('result => '+ result);
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('result => '+ result);
+      });
+    }
   }
 }
 
