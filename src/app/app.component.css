@@ -4,6 +4,11 @@
     font-size: 30px;
 }
 
+.app-sidenav {
+    padding: 20px;
+    width: 50%;
+}
+
 .app-showSidenavBtn{
     height: 100%;
 }
@@ -14,16 +19,18 @@
 }
 
 .app-sidenav-content {
-    height: inherit;
+    padding-top: 10px;
+    height: 100%;
 }
 
-mat-grid-tile{
-    bottom: 0px;
+.app-div-newspeed {
+    height: 100%;
+    width: 100%;
 }
 
-.app-sidenav {
-    padding: 20px;
-    width: 50%;
+.app-div-sideUserList {
+    height: 100%;
+    width: 100%;
 }
 
 mat-toolbar {

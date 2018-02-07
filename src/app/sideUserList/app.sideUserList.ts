@@ -6,10 +6,25 @@ import { Component, Directive, ElementRef, Input, Output } from '@angular/core';
   styleUrls: ['/app.sideUserList.css']
 })
 export class AppSideUserList {
-  title = 'app';
+  users = [
+    {
+      name: '권오규*',
+      updated: new Date('1/1/16'),
+      selected: false
+    },
+    {
+      name: '권오규**',
+      updated: new Date('1/17/16'),
+      selected: false
+    },
+    {
+      name: '권오규***',
+      updated: new Date('1/28/16'),
+      selected: false
+    }
+  ];
   
-  testEvent(event){
-    console.log(event);
-    alert(event.value);
+  pressOneUser(user){
+    console.log(user.selectedOptions.selected.map(item => item.value));
   }
 }

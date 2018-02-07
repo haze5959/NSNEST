@@ -14,7 +14,8 @@ import {
   MatCardModule,
   MatTabsModule,
   MatDialogModule,
-  MatFormFieldModule
+  MatFormFieldModule,
+  MatListModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -52,7 +53,8 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     MatGridListModule,
     MatCardModule,
     MatTabsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

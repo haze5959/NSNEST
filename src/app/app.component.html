@@ -24,18 +24,29 @@
   <!-- GNB 오른쪽 버튼 클릭 시 나오는 뷰 -->
   <mat-menu #menu="matMenu">
     <button mat-menu-item>뉴스피드</button>
-    <button mat-menu-item>공사 중...</button>
+    <button mat-menu-item>게시판</button>
+    <button mat-menu-item>사진첩</button>
+    <button mat-menu-item>알CALL!!(공사 중...)</button>
+    <button mat-menu-item>실시간 그림판(공사 중...)</button>
   </mat-menu>
 
   <!-- 컨텐츠 -->
-  <div class="app-sidenav-content">
+  <div class="app-sidenav-content color-50">
     <mat-grid-list cols="4" rowHeight="100%">
-      <mat-grid-tile [colspan]=3 [rowspan]=1><mat-card>
-        <app-newspeed></app-newspeed>
-      </mat-card></mat-grid-tile>
-      <mat-grid-tile [colspan]=1 [rowspan]=1><mat-card>
-        <app-sideUserList></app-sideUserList>
-      </mat-card></mat-grid-tile>
+      <mat-grid-tile [colspan]=3 [rowspan]=1>
+        <div class="app-div-newspeed">
+
+          <app-newspeed></app-newspeed>
+
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]=1 [rowspan]=1>
+        <div class="app-div-sideUserList">
+
+          <app-sideUserList></app-sideUserList>
+
+        </div>
+      </mat-grid-tile>
     </mat-grid-list>
     
   </div>

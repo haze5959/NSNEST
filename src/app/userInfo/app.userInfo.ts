@@ -43,7 +43,8 @@ export class AppUserInfo implements OnInit {
       width: "80%",
       data: { 
         profileText: this.profileText,
-        profileDescription: this.profileDescription
+        profileDescription: this.profileDescription,
+        profileImage: this.profileImage
        }
     });
 
@@ -79,6 +80,7 @@ export class SetUserInfoDialog {
   userInfo: FormGroup;
   profileText = this.data.profileText;
   profileDescription = this.data.profileDescription;
+  profileImage = this.data.profileImage;
   constructor(
     public dialogRef: MatDialogRef<ShowDetailImageDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any, fb: FormBuilder) {
@@ -89,8 +91,20 @@ export class SetUserInfoDialog {
       });
      }
 
+    //이미지 변경
+    changeImage(event: EventTarget): void {
+      let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
+      let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+      let files: FileList = target.files;
+      let file: File = files[0];
+      console.log(file);
+
+      //todo: 상태정보 변경에서 이미지 수정 시, 파일 서버에 저장하고 뿌려라
+    }
+
     //유저정보 수정 저장
     pressSaveBtn(): void {
+      //todo: 상태정보 저장 시, 디비에 수정목록 저장해라
       this.dialogRef.close();
     }
 }
