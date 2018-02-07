@@ -25,6 +25,6 @@ export class AppSideUserList {
   ];
   
   pressOneUser(user){
-    console.log(user.selectedOptions.selected.map(item => item.value));
+    console.log(user);
   }
 }
