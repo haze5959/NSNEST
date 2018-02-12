@@ -1,0 +1,16 @@
+.app-newspeed {
+    height: 85%;
+    width: 95%;
+    margin-left: 10px;
+}
+
+.newspeed-backgound {
+    height: 630px;
+    width: 100%;
+    overflow: scroll;
+}
+
+.newspeed-card {
+    margin-bottom: 10px;
+    height: 200px;
+}

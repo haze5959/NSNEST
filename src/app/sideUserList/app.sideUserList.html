@@ -1,14 +1,17 @@
 <mat-card class="app-card-sideUserList">
     <mat-tab-group class="app-tab-group">
+        <!-- 접속 중 인원 리스트 -->
         <mat-tab label="접속 중">
-            
                 <mat-list>
                     <h3 mat-subheader>Folders</h3>
-                    <mat-nav-list *ngFor="let user of users">
-                        <a mat-list-item href="https://google.com">
-                            <mat-icon mat-list-icon>folder</mat-icon>
-                            <h3 mat-Line>{{user.name}}</h3>
-                            <p mat-line> {{user.updated | date}} </p>
+                    <mat-nav-list *ngFor="let user of connectedUsers">
+                        <a mat-list-item (click)="pressOneUser(user)">
+                            <!-- <mat-icon mat-list-icon>folder</mat-icon> -->
+                            <div mat-card-avatar [style.background-image]="user.image" class="profile-image"></div>
+                            <div class="profile-info">
+                                <h4 class="profile-info-name">{{user.name}}({{user.studentNum}})</h4>
+                                <p class="profile-info-intro"> {{user.recentDate | date}} </p>
+                            </div>
                         </a>
                         <mat-divider></mat-divider>
                     </mat-nav-list>
@@ -21,8 +24,24 @@
                         {{user.name}}
                     </mat-list-option>
                 </mat-selection-list> -->
-
         </mat-tab>
-        <mat-tab label="전체">전체 인원(최근 접속 시간도 표시)</mat-tab>
+
+        <!-- 전체 인원 리스트 -->
+        <mat-tab label="전체">
+                <mat-list>
+                    <h3 mat-subheader>Folders</h3>
+                    <mat-nav-list *ngFor="let user of allUsers">
+                        <a mat-list-item (click)="pressOneUser(user)">
+                            <!-- <mat-icon mat-list-icon>folder</mat-icon> -->
+                            <div mat-card-avatar [style.background-image]="user.image" class="profile-image"></div>
+                            <div class="profile-info">
+                                <h4 class="profile-info-name">{{user.name}}({{user.studentNum}})</h4>
+                                <p class="profile-info-intro"> {{user.recentDate | date}} </p>
+                            </div>
+                        </a>
+                        <mat-divider></mat-divider>
+                    </mat-nav-list>
+                </mat-list>
+        </mat-tab>
     </mat-tab-group>
 </mat-card>

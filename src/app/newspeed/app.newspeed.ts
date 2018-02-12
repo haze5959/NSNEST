@@ -1,4 +1,4 @@
-import { Component, Directive, ElementRef, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-newspeed',
@@ -7,4 +7,7 @@ import { Component, Directive, ElementRef, Input, Output } from '@angular/core';
 })
 export class AppNewspeed {
   title = 'newspeed';
+  onScroll () {
+      console.log('scrolled!!')
+  }
 }

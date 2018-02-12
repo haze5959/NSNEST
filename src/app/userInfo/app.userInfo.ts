@@ -4,6 +4,7 @@ import { Inject } from '@angular/core';
 import { Strings } from '@app/Strings';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { user } from '../model/user';
 
 
 @Component({
@@ -17,10 +18,14 @@ export class AppUserInfo implements OnInit {
   appCopyrights = Strings.APP_COPYRIGHTS;
 
   //프로필 관련 정보
-  profileImage = Strings.TEST_IMAGE2;
-  profileText = "프로필 명 입니다.";
-  profileDescription = "프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.";
-  testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
+  myInfo:user = {
+    studentNum: 11,
+    name: '권오규',
+    image: this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE),
+    intro: "프로필명 입니다.",
+    description: "프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다."
+  }
+ 
   constructor(public dialog: MatDialog, private sanitizer: DomSanitizer) {}
 
   ngOnInit(){
@@ -42,9 +47,9 @@ export class AppUserInfo implements OnInit {
       height: "90%",
       width: "80%",
       data: { 
-        profileText: this.profileText,
-        profileDescription: this.profileDescription,
-        profileImage: this.profileImage
+        profileText: this.myInfo.intro,
+        profileDescription: this.myInfo.description,
+        profileImage: this.myInfo.image
        }
     });
 
@@ -56,12 +61,12 @@ export class AppUserInfo implements OnInit {
   openProfileImage(){
     console.log("이미지 열기");
     var image = new Image();
-    image.src = this.profileImage;
+    image.src = Strings.TEST_IMAGE2;
     image.onload = () => {
       let dialogRef = this.dialog.open(ShowDetailImageDialog, {
         height: image.height.toString(),
         width: image.width.toString(),
-        data: { imageUrl: this.profileImage }
+        data: { imageUrl: Strings.TEST_IMAGE2 }
       });
 
       dialogRef.afterClosed().subscribe(result => {});
@@ -80,7 +85,7 @@ export class SetUserInfoDialog {
   userInfo: FormGroup;
   profileText = this.data.profileText;
   profileDescription = this.data.profileDescription;
-  profileImage = this.data.profileImage;
+  profileImage = Strings.TEST_IMAGE2;
   constructor(
     public dialogRef: MatDialogRef<ShowDetailImageDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any, fb: FormBuilder) {
