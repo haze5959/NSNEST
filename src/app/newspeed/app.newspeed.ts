@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppNewspeed {
   title = 'newspeed';
-  onScroll () {
-      console.log('scrolled!!')
+  onScroll ($event) {
+      console.log('scrolled!!' + $event.currentScrollPosition);
   }
 }

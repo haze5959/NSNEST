@@ -1,11 +1,11 @@
 .app-newspeed {
-    height: 85%;
+    height: 90%;
     width: 95%;
     margin-left: 10px;
 }
 
 .newspeed-backgound {
-    height: 630px;
+    height: 100%;
     width: 100%;
     overflow: scroll;
 }
