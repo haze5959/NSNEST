@@ -1,5 +1,5 @@
-<div class="app-newspeed">
-    <div class="newspeed-backgound" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="300" (scrolled)="onScroll($event)" [scrollWindow]="false" [immediateCheck]="true">
+<div #newspeedView class="app-newspeed">
+    <div class="newspeed-backgound" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="300" (scrolled)="onScroll($event)" [scrollWindow]="false" [immediateCheck]="false">
             <mat-card class="newspeed-card">
             </mat-card>
             <mat-card class="newspeed-card">
