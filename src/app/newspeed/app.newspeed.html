@@ -1,18 +1,28 @@
-<div #newspeedView class="app-newspeed">
-    <div class="newspeed-backgound" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="300" (scrolled)="onScroll($event)" [scrollWindow]="false" [immediateCheck]="false">
-            <mat-card class="newspeed-card">
-            </mat-card>
-            <mat-card class="newspeed-card">
-            </mat-card>
-            <mat-card class="newspeed-card">
-            </mat-card>
-            <mat-card class="newspeed-card">
-            </mat-card>
-            <mat-card class="newspeed-card">
-            </mat-card>
-            <mat-card class="newspeed-card">
-            </mat-card>
-            <mat-card class="newspeed-card">
-            </mat-card>
+<div class="app-newspeed">
+    <div class="newspeed-backgound" infinite-scroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="300" (scrolled)="onScroll()" [scrollWindow]="false" [immediateCheck]="false">
+        <mat-list>
+            <mat-nav-list *ngFor="let posts of recentPosts">
+                <mat-card class="posts-card" (click)="pressPosts(posts.postsID)">
+                    <mat-card-header>
+                        <div mat-card-avatar [style.background-image]="posts.publisherImg"></div>
+                        <mat-card-title>{{posts.publisher}}</mat-card-title>
+                        <mat-card-subtitle>{{posts.publisherIntro}}</mat-card-subtitle>
+                        <div class="like-btn">
+                            <mat-icon mat-list-icon style="color: red;">favorite</mat-icon>
+                            {{posts.good}}
+                        </div>
+                        <div mat-button class="dislike-btn">
+                            <mat-icon mat-list-icon>thumb_down</mat-icon>
+                            {{posts.bad}}
+                        </div>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <h4 class="posts-info-title">{{posts.title}}</h4>
+                        <p class="posts-info-content"> {{posts.body}} </p>
+                    </mat-card-content>
+                    <img mat-card-image src="{{posts.images[0]}}" alt="image of posts">
+                </mat-card>
+            </mat-nav-list>
+        </mat-list>
     </div>
 </div>

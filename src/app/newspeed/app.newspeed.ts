@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { posts } from '../model/posts';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Strings } from '@app/Strings';
 
 @Component({
   selector: 'app-newspeed',
@@ -6,8 +9,91 @@ import { Component } from '@angular/core';
   styleUrls: ['/app.newspeed.css']
 })
 export class AppNewspeed {
-  title = 'newspeed';
-  onScroll ($event) {
-      console.log('scrolled!!' + $event.currentScrollPosition);
+  testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
+  recentPosts: posts[] = [
+    {
+      postsID: 1000,
+      studentNum: 11,
+      publisher: '권오규',
+      publisherIntro: '프로필 명 입니다.',
+      publisherImg: this.testImage,
+      images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE],
+      title: '타이틀 입니다.',
+      body: '내용 입니다.',
+      good: 0,
+      bad: 0
+    },
+    {
+      postsID: 1001,
+      studentNum: 11,
+      publisher: '권오규',
+      publisherIntro: '프로필 명 입니다.',
+      publisherImg: this.testImage,
+      images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE],
+      title: '타이틀 입니다.',
+      body: '내용 입니다.ㄴㅇㄹㄴㄹㅇㄴㄹ',
+      good: 0,
+      bad: 0
+    },
+    {
+      postsID: 1002,
+      studentNum: 11,
+      publisher: '권오규',
+      publisherIntro: '프로필 명 입니다.',
+      publisherImg: this.testImage,
+      images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE],
+      title: '타이틀 입니다.',
+      body: '내용 입니다.ㄹ홀홀',
+      good: 0,
+      bad: 0
+    },
+    {
+      postsID: 1003,
+      studentNum: 11,
+      publisher: '권오규',
+      publisherIntro: '프로필 명 입니다.',
+      publisherImg: this.testImage,
+      images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE],
+      title: '타이틀 입니다.',
+      body: '내용 입니다.ㄹ호로로',
+      good: 0,
+      bad: 0
+    }
+  ];
+
+  constructor(private sanitizer: DomSanitizer) {}
+
+  pressPosts(postsID){
+    alert(postsID);
+  }
+
+  /**
+   * 무한 스크롤
+   */
+  onScroll () {
+      this.recentPosts.push({
+        postsID: 1002,
+        studentNum: 11,
+        publisher: '권오규',
+        publisherIntro: '프로필 명 입니다.',
+        publisherImg: this.testImage,
+        images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE],
+        title: '타이틀 입니다.',
+        body: '내용 입니다.ㄹ홀홀',
+        good: 0,
+        bad: 0
+      },
+      {
+        postsID: 1003,
+        studentNum: 11,
+        publisher: '권오규',
+        publisherIntro: '프로필 명 입니다.',
+        publisherImg: this.testImage,
+        images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE],
+        title: '타이틀 입니다.',
+        body: '내용 입니다.ㄹ호로로',
+        good: 0,
+        bad: 0
+      });
   }
 }

@@ -10,7 +10,48 @@
     overflow: scroll;
 }
 
-.newspeed-card {
-    margin-bottom: 10px;
+.posts-card:hover {
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+.posts-card {
+    margin-left: 10px;
+    margin-bottom: 20px;
     height: 400px;
+    width: 95%;
+}
+
+.mat-card-avatar {
+    background-size: cover;
+}
+
+.mat-card-header {
+    height: 15%;
+}
+
+.mat-card-content {
+    max-height: 85%;
+}
+
+.mat-card-image {
+    height: 60%; 
+    width: 100%; 
+    object-fit: contain
+}
+
+.like-btn {
+    margin-left: auto;
+    padding: 0 20px;
+}
+
+.dislike-btn {
+    padding: 0 20px;
+}
+
+.mat-list {
+    padding: 0;
+}
+
+.mat-nav-list {
+    padding: 0;
 }
