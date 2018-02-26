@@ -28,6 +28,7 @@ import {
 import { AppComponent } from './app.component';
 import { AppNewspeed } from './newspeed/app.newspeed';
 import { AppBoard } from './board/app.board';
+import { AppElbum } from './elbum/app.elbum';
 import { AppSideUserList, ShowUserInfoDialog } from './sideUserList/app.sideUserList';
 import { AppUserInfo, SetUserInfoDialog, ShowDetailImageDialog } from './userInfo/app.userInfo';
 import { ImageViewerComponent } from './image-viewer/image-viewer.component';
@@ -37,6 +38,7 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     AppComponent,
     AppNewspeed,
     AppBoard,
+    AppElbum,
     AppSideUserList,
     ShowUserInfoDialog,
     AppUserInfo,
