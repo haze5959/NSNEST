@@ -7,7 +7,9 @@ import { AppBoard } from './board/app.board';
 const routes: Routes = [
   { path: '', redirectTo: '/newspeed', pathMatch: 'full' },
   { path: 'newspeed', component: AppNewspeed },
-  { path: 'board', component: AppBoard }
+  { path: 'board', component: AppBoard },
+  { path: 'elbum', component: AppBoard },
+  { path: 'tastyLoad', component: AppBoard }
   // { path: 'detail/:id', component: HeroDetailComponent },
 ];
 
