@@ -10,7 +10,7 @@
                             <div mat-card-avatar [style.background-image]="user.image" class="profile-image"></div>
                             <div class="profile-info">
                                 <h4 class="profile-info-name">{{user.name}}({{user.studentNum}})</h4>
-                                <p class="profile-info-intro"> {{user.recentDate | date}} </p>
+                                <p class="profile-info-intro"> {{user.recentDate | date:'M월 d일 H시'}} </p>
                             </div>
                         </a>
                         <mat-divider></mat-divider>
@@ -36,7 +36,7 @@
                             <div mat-card-avatar [style.background-image]="user.image" class="profile-image"></div>
                             <div class="profile-info">
                                 <h4 class="profile-info-name">{{user.name}}({{user.studentNum}})</h4>
-                                <p class="profile-info-intro"> {{user.recentDate | date}} </p>
+                                <p class="profile-info-intro"> {{user.recentDate | date:'M월 d일 H시'}} </p>
                             </div>
                         </a>
                         <mat-divider></mat-divider>

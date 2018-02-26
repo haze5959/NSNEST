@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule}  from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import {
@@ -16,11 +18,16 @@ import {
   MatTabsModule,
   MatDialogModule,
   MatFormFieldModule,
-  MatListModule
+  MatListModule,
+  MatProgressSpinnerModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { AppNewspeed } from './newspeed/app.newspeed';
+import { AppBoard } from './board/app.board';
 import { AppSideUserList, ShowUserInfoDialog } from './sideUserList/app.sideUserList';
 import { AppUserInfo, SetUserInfoDialog, ShowDetailImageDialog } from './userInfo/app.userInfo';
 import { ImageViewerComponent } from './image-viewer/image-viewer.component';
@@ -29,6 +36,7 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
   declarations: [
     AppComponent,
     AppNewspeed,
+    AppBoard,
     AppSideUserList,
     ShowUserInfoDialog,
     AppUserInfo,
@@ -42,6 +50,8 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     ShowDetailImageDialog
   ],
   imports: [
+    HttpClientModule,
+    AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
@@ -58,7 +68,11 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     MatCardModule,
     MatTabsModule,
     MatDialogModule,
-    MatListModule
+    MatListModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

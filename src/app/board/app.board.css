@@ -1,0 +1,55 @@
+.app-board {
+    height: 90%;
+    width: 95%;
+    margin-left: 10px;
+}
+
+/* Structure */
+.board-background {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.board-header {
+    min-height: 64px;
+    padding: 8px 24px 0;
+    background-color: #ffffff;  
+}
+  
+.board-table {
+    overflow: auto;
+    /* min-height: 360px; */
+    bottom: 0;
+}
+  
+.board-loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 56px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.board-rate-limit-reached {
+    color: #980000;
+    max-width: 360px;
+    text-align: center;
+}
+  
+  /* Column Widths */
+.mat-column-number,
+.mat-column-writer {
+    max-width: 60px;
+}
+  
+.mat-column-created {
+    max-width: 100px;
+}
