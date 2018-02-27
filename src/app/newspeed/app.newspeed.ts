@@ -13,6 +13,7 @@ export class AppNewspeed {
   recentPosts: posts[] = [
     {
       postsID: 1000,
+      postClassify: 20,
       studentNum: 11,
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
@@ -21,10 +22,12 @@ export class AppNewspeed {
       title: '타이틀 입니다.',
       body: '내용 입니다.내용 입니다.\n내용 입니다.\n내용 입니다.\n내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 0,
-      bad: 0
+      bad: 0,
+      commentId: [1000, 10001, 10002]
     },
     {
       postsID: 1001,
+      postClassify: 10,
       studentNum: 11,
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
@@ -33,10 +36,12 @@ export class AppNewspeed {
       title: '타이틀 입니다.',
       body: '내용 입니다.ㄴㅇㄹㄴㄹㅇㄴㄹ',
       good: 0,
-      bad: 0
+      bad: 0,
+      commentId: []
     },
     {
       postsID: 1002,
+      postClassify: 10,
       studentNum: 11,
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
@@ -45,10 +50,12 @@ export class AppNewspeed {
       title: '타이틀 입니다.',
       body: '내용 입니다.ㄹ홀홀',
       good: 0,
-      bad: 0
+      bad: 0,
+      commentId: []
     },
     {
       postsID: 1003,
+      postClassify: 10,
       studentNum: 11,
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
@@ -57,7 +64,8 @@ export class AppNewspeed {
       title: '타이틀 입니다.',
       body: '내용 입니다.ㄹ호로로',
       good: 0,
-      bad: 0
+      bad: 0,
+      commentId: []
     }
   ];
 
@@ -73,6 +81,7 @@ export class AppNewspeed {
   onScroll () {
       this.recentPosts.push({
         postsID: 1002,
+        postClassify: 10,
         studentNum: 11,
         publisher: '권오규',
         publisherIntro: '프로필 명 입니다.',
@@ -81,10 +90,12 @@ export class AppNewspeed {
         title: '타이틀 입니다.',
         body: '내용 입니다.ㄹ홀홀',
         good: 0,
-        bad: 0
+        bad: 0,
+        commentId: [1000]
       },
       {
         postsID: 1003,
+        postClassify: 20,
         studentNum: 11,
         publisher: '권오규',
         publisherIntro: '프로필 명 입니다.',
@@ -93,7 +104,8 @@ export class AppNewspeed {
         title: '타이틀 입니다.',
         body: '내용 입니다.ㄹ호로로',
         good: 0,
-        bad: 0
+        bad: 0,
+        commentId: []
       });
   }
 }

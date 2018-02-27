@@ -49,8 +49,13 @@
     object-fit: contain
 }
 
-.like-btn {
+.comment-count {
     margin-left: auto;
+    padding: 0 20px;
+}
+
+.like-btn {
+    /* margin-left: auto; */
     padding: 0 20px;
 }
 

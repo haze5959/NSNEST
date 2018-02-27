@@ -7,6 +7,10 @@
                         <div mat-card-avatar [style.background-image]="posts.publisherImg"></div>
                         <mat-card-title>{{posts.publisher}}</mat-card-title>
                         <mat-card-subtitle>{{posts.publisherIntro}}</mat-card-subtitle>
+                        <div class="comment-count">
+                            <mat-icon mat-list-icon>comment</mat-icon>
+                            {{posts.commentId.length}}
+                        </div>
                         <div class="like-btn">
                             <mat-icon mat-list-icon style="color: red;">favorite</mat-icon>
                             {{posts.good}}

@@ -2,6 +2,7 @@ import { SafeStyle } from "@angular/platform-browser/src/security/dom_sanitizati
 
 export class posts {
     postsID: number;
+    postClassify: number;   //10:게시글, 20:앨범
     studentNum: number;
     publisher: string;
     publisherIntro?: string;
@@ -11,4 +12,5 @@ export class posts {
     body: string;
     good: number;
     bad: number;
+    commentId: Array<number>;
 }
