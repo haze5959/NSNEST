@@ -5,6 +5,11 @@
     overflow: scroll;
 }
 
+.elbum-header {
+    min-height: 64px;
+    padding: 8px 24px 0; 
+}
+
 .elbum-card {
     margin: 10px;
 }
@@ -37,9 +42,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 5em
+    font-size: 5em;
 }
 
+.like-btn {
+    float: left;
+    margin-left: 15px;
+}
+.dislike-btn {
+    float: left;
+    margin-left: 15px;
+}
 .comment-count {
-
+    float: left;
+    margin-left: 15px;
 }

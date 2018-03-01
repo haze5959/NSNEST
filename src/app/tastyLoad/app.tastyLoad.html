@@ -1,0 +1,8 @@
+<div class="app-tastyload">
+    <div class="tastyload-header">
+        <mat-form-field style="width: 60%;">
+            <input #filterBtn matInput placeholder="Filter">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="applyFilter(filterBtn.value)">검색</button>
+    </div>
+</div>

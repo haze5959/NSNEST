@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import { posts } from '../model/posts';
 import { Strings } from '@app/Strings';
 import { DomSanitizer } from '@angular/platform-browser';
-import { PageEvent } from '@angular/material';
 
 @Component({
-  selector: 'app-elbum',
-  templateUrl: '/app.elbum.html',
-  styleUrls: ['/app.elbum.css']
+  selector: 'app-tasty-load',
+  templateUrl: '/app.tastyLoad.html',
+  styleUrls: ['/app.tastyLoad.css']
 })
-export class AppElbum {
+export class AppTastyLoad {
   testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
   postImages: posts[] = [
     {

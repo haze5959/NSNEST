@@ -46,7 +46,21 @@
 .mat-card-image {
     max-height: 400px; 
     width: 100%; 
-    object-fit: contain
+    object-fit: contain;
+}
+
+.mat-card-image-cover {
+    height: 400px;
+    position: absolute;
+    top: 84px;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5em;
 }
 
 .comment-count {

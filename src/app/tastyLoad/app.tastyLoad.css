@@ -1,0 +1,11 @@
+.app-tastyload {
+    height: 90%;
+    width: 95%;
+    margin-left: 10px;
+    overflow: scroll;
+}
+
+.tastyload-header {
+    min-height: 64px;
+    padding: 8px 24px 0; 
+}

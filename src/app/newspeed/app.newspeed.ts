@@ -13,7 +13,7 @@ export class AppNewspeed {
   recentPosts: posts[] = [
     {
       postsID: 1000,
-      postClassify: 20,
+      postClassify: 10,
       studentNum: 11,
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
@@ -22,6 +22,20 @@ export class AppNewspeed {
       title: '타이틀 입니다.',
       body: '내용 입니다.내용 입니다.\n내용 입니다.\n내용 입니다.\n내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 0,
+      bad: 0,
+      commentId: [1000, 10001, 10002]
+    },
+    {
+      postsID: 1000,
+      postClassify: 20,
+      studentNum: 11,
+      publisher: '권오규',
+      publisherIntro: '프로필 명 입니다.',
+      publisherImg: this.testImage,
+      images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE, Strings.TEST_IMAGE2],
+      title: '',
+      body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
+      good: 10,
       bad: 0,
       commentId: [1000, 10001, 10002]
     },
@@ -95,7 +109,7 @@ export class AppNewspeed {
       },
       {
         postsID: 1003,
-        postClassify: 20,
+        postClassify: 10,
         studentNum: 11,
         publisher: '권오규',
         publisherIntro: '프로필 명 입니다.',
