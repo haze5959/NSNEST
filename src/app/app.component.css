@@ -9,8 +9,13 @@
     width: 50%;
 }
 
-.app-showSidenavBtn{
+.app-showSidenavBtn {
     height: 100%;
+}
+
+.app-showSidenavBtn-hide {
+    height: 100%;
+    visibility: hidden;
 }
 
 .app-container {

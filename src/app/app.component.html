@@ -6,11 +6,18 @@
     <button type="button" mat-button (click)="sidenav.open()" class="app-showSidenavBtn">
         <mat-icon>account_circle</mat-icon>
     </button>
+    <button type="button" mat-button (click)="sidenav.open()" class="app-showSidenavBtn-hide">
+      <!-- 제목 가운데 정렬을 맞추기위한 더미 버튼 -->
+        <mat-icon>account_circle</mat-icon> 
+    </button>
     <!-- GNB 가운데 라벨 -->
     <div class="app-Title">
       NSNEST of Ancient
     </div>
     <!-- GNB 오른쪽 버튼 -->
+    <button mat-button [matMenuTriggerFor]="writeMenu" class="app-showSidenavBtn">
+        <mat-icon>add_circle_outline</mat-icon>
+    </button>
     <button mat-button [matMenuTriggerFor]="menu" class="app-showSidenavBtn">
         <mat-icon>format_align_justify</mat-icon>
     </button>
@@ -21,7 +28,14 @@
       <app-userInfo></app-userInfo>
   </mat-sidenav>
   
-  <!-- GNB 오른쪽 버튼 클릭 시 나오는 뷰 -->
+  <!-- GNB 오른쪽 버튼 클릭 시 나오는 뷰 (글쓰기 메뉴보기) -->
+  <mat-menu #writeMenu="matMenu">
+    <button mat-menu-item routerLink="/write/10">글 작성</button>
+    <button mat-menu-item routerLink="/write/20">앨범 작성</button>
+    <button mat-menu-item routerLink="/write/30">맛집 올리기</button>
+  </mat-menu>
+
+  <!-- GNB 오른쪽 버튼 클릭 시 나오는 뷰 (메뉴보기) -->
   <mat-menu #menu="matMenu">
     <button mat-menu-item routerLink="/">뉴스피드</button>
     <button mat-menu-item routerLink="/board">게시판</button>

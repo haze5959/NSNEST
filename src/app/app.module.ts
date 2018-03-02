@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule}  from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+import { AgmCoreModule } from '@agm/core';
 import {
   MatToolbarModule, 
   MatButtonModule, 
@@ -30,6 +31,8 @@ import { AppNewspeed } from './newspeed/app.newspeed';
 import { AppBoard } from './board/app.board';
 import { AppElbum } from './elbum/app.elbum';
 import { AppTastyLoad } from './tastyLoad/app.tastyLoad';
+import { AppWrite } from './write/app.write';
+import { AppDetail } from './detail/app.detail';
 import { AppSideUserList, ShowUserInfoDialog } from './sideUserList/app.sideUserList';
 import { AppUserInfo, SetUserInfoDialog, ShowDetailImageDialog } from './userInfo/app.userInfo';
 import { ImageViewerComponent } from './image-viewer/image-viewer.component';
@@ -41,6 +44,8 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     AppBoard,
     AppElbum,
     AppTastyLoad,
+    AppWrite,
+    AppDetail,
     AppSideUserList,
     ShowUserInfoDialog,
     AppUserInfo,
@@ -61,6 +66,9 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     BrowserModule,
     BrowserAnimationsModule,
     InfiniteScrollModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCN5f9NiJJoQVQncQYNQqbGcX9wdCeyvjw'
+    }),
     MatToolbarModule,
     MatButtonModule,
     MatInputModule,

@@ -1,0 +1,22 @@
+<div class="app-write">
+  <form class="" [formGroup]="userInfo">
+      <mat-form-field style="width: 60%;">
+          <input matInput formControlName="profileText" placeholder="프로필 명">
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+          <textarea matInput formControlName="profileDescription" placeholder="프로필 설명"></textarea>
+      </mat-form-field>
+  
+      <!-- 이미지 인풋 -->
+      <button mat-raised-button color="primary" (click)="imgFileInput.click()">이미지 변경</button>
+      <input hidden type="file" #imgFileInput (change)="changeImage($event)" accept=".jpg,.jpeg,.png,.gif,.bmp"/>
+      
+      <!-- 이미지 표시 -->
+      <mat-card class="example-card" style="margin-top: 20px; margin-bottom: 20px; max-width: 400px;">
+          <img mat-card-image src="{{profileImage}}" alt="profile image">
+      </mat-card>
+      
+      <!-- 수정 저장 -->
+      <button mat-raised-button color="primary" (click)="pressSaveBtn()">저장</button>
+  </form>
+</div>

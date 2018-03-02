@@ -1,4 +1,5 @@
 import { SafeStyle } from "@angular/platform-browser/src/security/dom_sanitization_service";
+import { marker } from "./marker";
 
 export class posts {
     postsID: number;
@@ -13,4 +14,5 @@ export class posts {
     good: number;
     bad: number;
     commentId: Array<number>;
+    marker?: marker;
 }
