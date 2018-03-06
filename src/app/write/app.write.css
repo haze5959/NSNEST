@@ -2,5 +2,18 @@
     height: 90%;
     width: 95%;
     margin-left: 10px;
+    padding-bottom: 500px;
     overflow: scroll;
+}
+
+.write-editor {
+}
+
+.write-editor-title {
+    width: 80%;
+}
+
+.write-save-btn {
+    margin-top: 10px;
+    margin-bottom: 40px;
 }

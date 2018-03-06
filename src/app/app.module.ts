@@ -6,6 +6,7 @@ import { BrowserAnimationsModule}  from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { AgmCoreModule } from '@agm/core';
+import { QuillModule } from 'ngx-quill';
 import {
   MatToolbarModule, 
   MatButtonModule, 
@@ -59,6 +60,7 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     ShowDetailImageDialog
   ],
   imports: [
+    QuillModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,

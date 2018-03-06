@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
@@ -11,11 +12,34 @@ export class AppWrite implements OnInit {
   classify:number;
   constructor(private route: ActivatedRoute) { }
 
+  titleFormControl = new FormControl();
+  editorContent = new FormControl();
+
+  editorModule = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],        // toggled buttons
+      ['blockquote', 'code-block'],
+  
+      [{ 'script': 'sub'}],      // superscript/subscript
+  
+      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+  
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'align': [] }],
+  
+      ['image', 'video']                         // link and image, video
+    ]
+  };
+
   ngOnInit(): void {
     this.route.params.forEach((params: Params) => {
       // alert(params['classify']);
       this.classify = params['classify'];
     });
+  }
+
+  pressSaveBtn() {
+    alert(this.editorContent.value);
   }
 
 }
