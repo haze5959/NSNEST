@@ -1,4 +1,5 @@
 <div class="app-write">
+    <input type='file' accept="image/*" (change)="addImageAndUploadServer($event)" multiple>
     <!--=================== 게시글 작성 =====================-->
     <div *ngIf="classify == 10" class="write-editor">
         <mat-form-field class="write-editor-title">
