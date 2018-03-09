@@ -5,11 +5,11 @@
             <input matInput placeholder="게시글 제목" [formControl]="titleFormControl">
         </mat-form-field>
 
-        <quill-editor [modules]="editorModule" [formControl]="editorContent">
+        <quill-editor [modules]="editorModule" [formControl]="editorContent" (onEditorCreated)="onEditorCreated($event)">
         </quill-editor>
 
         <!-- 수정 저장 -->
-        <button class="write-save-btn" mat-raised-button color="primary" (click)="pressSaveBtn()">저장</button>
+        <button class="write-save-btn" mat-raised-button color="primary" (click)="pressSaveBtn()">올리기</button>
     </div>
 
     <!--=================== 앨범 올리기 =====================-->
@@ -31,6 +31,6 @@
         </mat-card>
         
         <!-- 수정 저장 -->
-        <button class="write-save-btn" mat-raised-button color="primary" (click)="pressSaveBtn()">저장</button>
+        <button class="write-save-btn" mat-raised-button color="primary" (click)="pressSaveBtn()">올리기</button>
     </form>
 </div>

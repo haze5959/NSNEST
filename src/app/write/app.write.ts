@@ -38,6 +38,15 @@ export class AppWrite implements OnInit {
     });
   }
 
+  onEditorCreated(quill) {
+    var toolbar = quill.getModule('toolbar');
+    toolbar.addHandler('image', this.imageHandler);
+  }
+
+  imageHandler(value) {
+    console.log(value);
+  }
+
   pressSaveBtn() {
     alert(this.editorContent.value);
   }
