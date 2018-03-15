@@ -1,12 +1,12 @@
-<input hidden #fileInputEl type='file' accept="image/*" (change)="addImageAndUploadServer($event)" multiple>
+<input hidden #fileInput type='file' accept="image/*" (change)="addImageAndUploadServer($event)" multiple>
 <div class="app-write">
     <!--=================== 게시글 작성 =====================-->
     <div *ngIf="classify == 10" class="write-editor">
-        <mat-form-field class="write-editor-title">
+        <mat-form-field class="write-title">
             <input matInput placeholder="게시글 제목" [formControl]="titleFormControl">
         </mat-form-field>
 
-        <quill-editor [modules]="editorModule" [formControl]="editorContent" (onEditorCreated)="onEditorCreated($event)">
+        <quill-editor [modules]="editorModule" [formControl]="editorContent" (onEditorCreated)="onEditorCreated($event)" [style]="{height: '100%'}">
         </quill-editor>
 
         <!-- 수정 저장 -->
@@ -14,22 +14,29 @@
     </div>
 
     <!--=================== 앨범 올리기 =====================-->
-    <form *ngIf="classify == 20" class="" [formGroup]="userInfo">
-        <mat-form-field style="width: 60%;">
-            <input matInput formControlName="profileText" placeholder="프로필 명">
+    <form *ngIf="classify == 20" class="write-elbum">
+        <mat-form-field class="write-title">
+            <input matInput placeholder="게시글 제목" [formControl]="titleFormControl">
         </mat-form-field>
-        <mat-form-field style="width: 100%;">
-            <textarea matInput formControlName="profileDescription" placeholder="프로필 설명"></textarea>
+        <mat-form-field class="write-elbum-desc">
+            <textarea matInput [formControl]="editorContent" placeholder="게시글 설명"></textarea>
         </mat-form-field>
     
         <!-- 이미지 인풋 -->
-        <button mat-raised-button color="primary" (click)="imgFileInput.click()">이미지 변경</button>
-        <input hidden type="file" #imgFileInput (change)="changeImage($event)" accept=".jpg,.jpeg,.png,.gif,.bmp"/>
+        <button mat-raised-button color="primary" (click)="fileInput.click()" style="margin-bottom:20px;">이미지 등록</button>
         
         <!-- 이미지 표시 -->
-        <mat-card class="example-card" style="margin-top: 20px; margin-bottom: 20px; max-width: 400px;">
-            <img mat-card-image src="{{profileImage}}" alt="profile image">
-        </mat-card>
+        <mat-grid-list cols="2" rowHeight="1:2" rowHeight="570px" gutterSize="20px">
+            <mat-grid-tile *ngFor="let image of imageArr; let index = index">
+                <mat-card class="elbum-card" (click)="pressOneImage(image)">
+                    <img mat-card-image src="{{image}}" alt="Photo">
+                    <mat-card-actions>
+                        <button mat-raised-button color="primary" style="margin-bottom:10px;" (click)="pressDeleteImage(index)">삭제</button>
+                        <button mat-raised-button color="primary" style="margin-bottom:10px;" (click)="pressDetailmage(index)">자세히 보기</button>
+                    </mat-card-actions>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
         
         <!-- 수정 저장 -->
         <button class="write-save-btn" mat-raised-button color="primary" (click)="pressSaveBtn()">올리기</button>

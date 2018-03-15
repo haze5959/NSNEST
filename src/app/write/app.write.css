@@ -7,10 +7,23 @@
 }
 
 .write-editor {
+    height: 80%;
 }
 
-.write-editor-title {
+.write-title {
     width: 80%;
+}
+
+.write-elbum {
+}
+
+.write-elbum-desc {
+    width: 100%;
+}
+
+.mat-card-image {
+    height: 500px;
+    /* background-size: fill; */
 }
 
 .write-save-btn {

@@ -35,8 +35,8 @@ import { AppTastyLoad } from './tastyLoad/app.tastyLoad';
 import { AppWrite } from './write/app.write';
 import { AppDetail } from './detail/app.detail';
 import { AppSideUserList, ShowUserInfoDialog } from './sideUserList/app.sideUserList';
-import { AppUserInfo, SetUserInfoDialog, ShowDetailImageDialog } from './userInfo/app.userInfo';
-import { ImageViewerComponent } from './image-viewer/image-viewer.component';
+import { AppUserInfo, SetUserInfoDialog } from './userInfo/app.userInfo';
+import { ShowDetailImageDialog } from './image-viewer/image-viewer.component';
 
 @NgModule({
   declarations: [
@@ -51,8 +51,7 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
     ShowUserInfoDialog,
     AppUserInfo,
     SetUserInfoDialog,
-    ShowDetailImageDialog,
-    ImageViewerComponent
+    ShowDetailImageDialog
   ],
   entryComponents: [
     ShowUserInfoDialog,

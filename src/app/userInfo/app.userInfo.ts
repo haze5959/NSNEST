@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
 import { Strings } from '@app/Strings';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { user } from '../model/user';
-
+import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-userInfo',
@@ -112,19 +112,4 @@ export class SetUserInfoDialog {
       //todo: 상태정보 저장 시, 디비에 수정목록 저장해라
       this.dialogRef.close();
     }
-}
-
-/**
- * 프로필 이미지 다이얼로그--------------------------------------------------
- */
-@Component({
-  selector: 'dialog-showDetailImageDialog',
-  templateUrl: 'dialog.showDetailImageDialog.html',
-})
-export class ShowDetailImageDialog {
-  imageUrl = this.data.imageUrl;
-  constructor(
-    public dialogRef: MatDialogRef<ShowDetailImageDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
-
 }
