@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
+import { marker } from "../model/marker";
 
 @Component({
   selector: 'app-write',
@@ -17,10 +18,11 @@ export class AppWrite implements OnInit {
   constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog) { }
 
   titleFormControl = new FormControl();
-  // descFormControl = new FormControl();
   editorContent = new FormControl();
   quillInstance;
   imageArr = new Array();
+  selectType = "restaurant";
+  marker?: marker;
 
   editorModule = {
     toolbar: [
@@ -40,13 +42,39 @@ export class AppWrite implements OnInit {
 
   ngOnInit(): void {
     this.route.params.forEach((params: Params) => {
-      // alert(params['classify']);
       this.classify = params['classify'];
+      this.marker = null;
+      this.selectType = "restaurant";
+      this.imageArr = new Array();
+      this.editorContent.reset();
     });
   }
 
+  //글 등록!
   pressSaveBtn() {
     alert(this.editorContent.value);
+
+    switch(this.classify){
+      case 'post':{ //게시글
+        console.log('게시글 업로드 완료');
+
+        break;
+      }  
+      case 'elbum':{ //앨범
+        console.log('앨범 업로드 완료');
+
+        break;
+      }
+      case 'map':{ //맛집
+        console.log('맛집 업로드 완료');
+
+        break;
+      }
+      default:{
+        console.error('알 수 없는 이미지 업로드');
+        break;
+      }
+    }  
   }
 
   pressDeleteImage(index:number){
@@ -83,16 +111,22 @@ export class AppWrite implements OnInit {
     console.log($event.target.files[0]);
     for ( var i=0; i<$event.target.files.length; i++){
       //todo: 서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기
-      console.log(this.classify);
+  
       switch(this.classify){
-        case '10':{ //게시글
+        case 'post':{ //게시글
           console.log('게시글 이미지 업로드 완료');
           var range = this.quillInstance.getSelection(!this.quillInstance.hasFocus()); 
           this.quillInstance.insertEmbed(range, 'image', "/../assets/testImage2.jpg");
           break;
-        }  
-        case '20':{ //앨범
+        }
+        case 'elbum':{ //앨범
           console.log('앨범 이미지 업로드 완료');
+          this.imageArr.push("/../assets/testImage2.jpg");
+          console.log(this.imageArr.length);
+          break;
+        }
+        case 'map':{ //맛집
+          console.log('맛집 이미지 업로드 완료');
           this.imageArr.push("/../assets/testImage2.jpg");
           console.log(this.imageArr.length);
           break;
@@ -102,6 +136,14 @@ export class AppWrite implements OnInit {
           break;
         }
       }  
+    }
+  }
+
+  mapClicked($event){
+    this.marker = {
+      lat: $event.coords.lat,
+		  lng: $event.coords.lng,
+		  label: "위치"
     }
   }
 }

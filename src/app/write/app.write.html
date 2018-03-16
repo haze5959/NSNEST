@@ -1,7 +1,7 @@
 <input hidden #fileInput type='file' accept="image/*" (change)="addImageAndUploadServer($event)" multiple>
 <div class="app-write">
     <!--=================== 게시글 작성 =====================-->
-    <div *ngIf="classify == 10" class="write-editor">
+    <div *ngIf="classify == 'post'" class="write-editor">
         <mat-form-field class="write-title">
             <input matInput placeholder="게시글 제목" [formControl]="titleFormControl">
         </mat-form-field>
@@ -14,7 +14,7 @@
     </div>
 
     <!--=================== 앨범 올리기 =====================-->
-    <form *ngIf="classify == 20" class="write-elbum">
+    <form *ngIf="classify == 'elbum'" class="write-elbum">
         <mat-form-field class="write-title">
             <input matInput placeholder="게시글 제목" [formControl]="titleFormControl">
         </mat-form-field>
@@ -41,4 +41,35 @@
         <!-- 수정 저장 -->
         <button class="write-save-btn" mat-raised-button color="primary" (click)="pressSaveBtn()">올리기</button>
     </form>
+
+    <!--=================== 지도 작성 =====================-->
+    <div *ngIf="classify == 'map'" class="write-map">
+        <mat-form-field class="write-title">
+            <input matInput placeholder="지점명" [formControl]="titleFormControl">
+        </mat-form-field>
+        <section class="map-section">
+            <mat-radio-group [(ngModel)]="selectType">
+              <mat-radio-button class="map-margin" value="cafe">카페</mat-radio-button>
+              <mat-radio-button class="map-margin" value="restaurant">맛집</mat-radio-button>
+              <mat-radio-button class="map-margin" value="drinkBar">술집</mat-radio-button>
+              <mat-radio-button class="map-margin" value="friendRoom">친구집</mat-radio-button>
+              <mat-radio-button class="map-margin" value="entertainment">편의시설</mat-radio-button>
+              <mat-radio-button class="map-margin" value="etc">기타</mat-radio-button>
+            </mat-radio-group>
+        </section>
+        <mat-form-field class="write-elbum-desc">
+            <textarea matInput [formControl]="editorContent" placeholder="메뉴나 대략적인 가격, 분위기 등을 적어주세요."></textarea>
+        </mat-form-field>
+
+        <agm-map class="agm-map" [latitude]="37.520000" [longitude]="127.000000" [zoom]="12" [disableDefaultUI]="false" [zoomControl]="true" (mapClick)="mapClicked($event)">
+            <agm-marker *ngIf="marker"
+                [latitude]="marker.lat"
+                [longitude]="marker.lng"
+                [label]="marker.label">
+            </agm-marker>
+        </agm-map>
+
+        <!-- 수정 저장 -->
+        <button class="write-save-btn" mat-raised-button color="primary" (click)="pressSaveBtn()">올리기</button>
+    </div>
 </div>

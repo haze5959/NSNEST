@@ -24,7 +24,9 @@ import {
   MatProgressSpinnerModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSortModule
+  MatSortModule,
+  MatCheckboxModule,
+  MatRadioModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -85,7 +87,9 @@ import { ShowDetailImageDialog } from './image-viewer/image-viewer.component';
     MatProgressSpinnerModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatCheckboxModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

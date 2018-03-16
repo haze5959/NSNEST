@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'tastyLoad', component: AppTastyLoad },
 
   { path: 'write/:classify', component: AppWrite },
-  { path: 'detail/:postsID', component: AppDetail },
+  { path: 'detail/:postId', component: AppDetail },
   { path: '**', component: AppNewspeed }
 ];
 

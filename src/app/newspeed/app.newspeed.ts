@@ -26,7 +26,7 @@ export class AppNewspeed {
       commentId: [1000, 10001, 10002]
     },
     {
-      postsID: 1000,
+      postsID: 1001,
       postClassify: 20,
       studentNum: 11,
       publisher: '권오규',
@@ -40,18 +40,19 @@ export class AppNewspeed {
       commentId: [1000, 10001, 10002]
     },
     {
-      postsID: 1001,
-      postClassify: 10,
+      postsID: 1002,
+      postClassify: 30,
       studentNum: 11,
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
       publisherImg: this.testImage,
-      images: [Strings.TEST_IMAGE2],
-      title: '타이틀 입니다.',
-      body: '내용 입니다.ㄴㅇㄹㄴㄹㅇㄴㄹ',
-      good: 0,
-      bad: 0,
-      commentId: []
+      images: [Strings.TEST_IMAGE2, Strings.TEST_IMAGE2],
+      title: '맛집이름',
+      body: '엄청 맛있습니다.',
+      good: 20,
+      bad: 50,
+      commentId: [10002],
+      tag: "restaurant"
     },
     {
       postsID: 1002,

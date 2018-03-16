@@ -1,3 +1,22 @@
-<div class="app-detail">
-  상세화면
+<div class="app-write">
+    <!--=================== 게시글 =====================-->
+    <div *ngIf="classify == 'post'" class="write-editor">
+
+    </div>
+
+    <!--=================== 앨범 =====================-->
+    <div *ngIf="classify == 'elbum'" class="write-elbum">
+
+    </div>
+
+    <!--=================== 지도 =====================-->
+    <div *ngIf="classify == 'map'" class="write-map">
+      <agm-map class="agm-map" [latitude]="marker.lat" [longitude]="marker.lng" [zoom]="15" [disableDefaultUI]="false" [zoomControl]="true">
+        <agm-marker
+            [latitude]="marker.lat"
+            [longitude]="marker.lng"
+            [label]="marker.label">
+        </agm-marker>
+      </agm-map>
+    </div>
 </div>
