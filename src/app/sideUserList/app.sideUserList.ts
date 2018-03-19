@@ -1,6 +1,5 @@
-import { Component, Directive, ElementRef, Input, Output } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { Inject } from '@angular/core';
+import { Component, Directive, ElementRef, Input, Output, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Strings } from '@app/Strings';
 import { DomSanitizer } from '@angular/platform-browser';
 import { user } from '../model/user';

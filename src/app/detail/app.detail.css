@@ -4,3 +4,41 @@
     margin-left: 10px;
     overflow: scroll;
 }
+
+.detail-post-card {
+    margin-left: 2px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+}
+
+.detail-goodBad {
+    margin: 10px auto;
+    text-align: center;
+}
+
+.detail-goodBad-btn {
+    margin: 0px 10px;
+}
+
+.profile-image {
+    background-size: cover;
+}
+
+.comment-content {
+    padding-left: 10px;
+    margin: 10px 0px;
+    border-left: thin solid #CFD8DC;
+}
+
+.detail-comment{
+    height: auto !important;
+}
+
+.comment-content-input {
+    height: auto !important;
+    width: 100% !important;
+}
+
+.detail-regist-comment {
+    text-align:center;
+}

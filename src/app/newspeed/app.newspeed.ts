@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { posts } from '../model/posts';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Strings } from '@app/Strings';
@@ -84,10 +85,11 @@ export class AppNewspeed {
     }
   ];
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer, private router: Router) {}
 
   pressPosts(postsID){
     alert(postsID);
+    this.router.navigate(['detail/' + postsID]);
   }
 
   /**
