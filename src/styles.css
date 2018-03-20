@@ -112,3 +112,7 @@ body{
     /* 코맨트 전용 */
     max-width: 110px !important;    
 }
+
+.ql-emoticon {
+    background-image: black;
+}

@@ -13,9 +13,9 @@ export class posts {
     images?: string[];
     title: string;
     body: string;
-    good: number;
-    bad: number;
+    good: number;   //string[] 으로 타입 변경하고 안에 유저 아이디 넣기
+    bad: number;    //string[] 으로 타입 변경하고 안에 유저 아이디 넣기
     commentId: Array<number>;
     marker?: marker;
-    tag?: string;
+    tag?: Array<string>;
 }

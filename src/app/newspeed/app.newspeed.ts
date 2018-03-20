@@ -44,16 +44,22 @@ export class AppNewspeed {
       postsID: 1002,
       postClassify: 30,
       studentNum: 11,
+      publisherId: 1001,
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
       publisherImg: this.testImage,
       images: [Strings.TEST_IMAGE2, Strings.TEST_IMAGE2],
-      title: '맛집이름',
+      title: '존맛집',
       body: '엄청 맛있습니다.',
       good: 20,
       bad: 50,
       commentId: [10002],
-      tag: "restaurant"
+      tag: ["restaurant", "★★★★"],
+      marker: {
+        lat: 37.497959,
+        lng: 126.929769,
+        label: '오규집'
+       }
     },
     {
       postsID: 1002,

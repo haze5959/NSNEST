@@ -26,7 +26,9 @@ import {
   MatPaginatorModule,
   MatSortModule,
   MatCheckboxModule,
-  MatRadioModule
+  MatRadioModule,
+  MatSnackBarModule,
+  MatChipsModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -89,7 +91,9 @@ import { ShowDetailImageDialog } from './image-viewer/image-viewer.component';
     MatPaginatorModule,
     MatSortModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSnackBarModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
