@@ -68,6 +68,7 @@ export class HttpService {
   //============================================================
   /**
    * 로그인하기
+   * 서버에서 해당 유저의 정보가 없는 경우, 첫 로그인이라고 판별하고 유저를 디비에 등록시킨다.
    */
   postLogin(userId:String, userPw:String): JSON {
     const requestUrl = `${environment.apiUrl}login`;
@@ -81,7 +82,7 @@ export class HttpService {
   /**
    * 게시글 등록하기
    */
-  postPosts(post:posts): JSON {
+  postPost(post:posts): JSON {
     const requestUrl = `${environment.apiUrl}posts`;
 
     return this.http.post(requestUrl, post);
@@ -90,10 +91,31 @@ export class HttpService {
   /**
    * 코멘트 등록하기
    */
-  postComments(comment: comment): JSON {
+  postComment(comment: comment): JSON {
     const requestUrl = `${environment.apiUrl}comment`;
 
     return this.http.post(requestUrl, comment);
+  }
+
+  //============================================================
+  //DELETE
+  //============================================================
+  /**
+   * 게시글 삭제
+   */
+  deletePost(postId:String): JSON {
+    const requestUrl = `${environment.apiUrl}post?postId=${postId}`;
+
+    return this.http.delete(requestUrl);
+  }
+
+  /**
+   * 코멘트 삭제
+   */
+  postComments(commentId:String): JSON {
+    const requestUrl = `${environment.apiUrl}comments?commentId=${commentId}`;
+
+    return this.http.delete(requestUrl);
   }
 }
 

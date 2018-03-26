@@ -68,10 +68,15 @@
     </mat-card>
   </div>
 
-  <!--=================== 좋아요 싫어요 =====================-->
-  <div class="detail-goodBad">
+  <!--=================== 좋아요 싫어요 글삭제 =====================-->
+  <div class="detail-goodBad" *ngIf="!isMine">
     <button mat-raised-button color="primary" class="detail-goodBad-btn">좋아요({{post.good}})</button>
     <button mat-raised-button color="accent" class="detail-goodBad-btn">싫어요({{post.bad}})</button>
+  </div>
+  <div class="detail-goodBad" *ngIf="isMine">
+    <button mat-raised-button color="primary" class="detail-goodBad-btn">좋아요({{post.good}})</button>
+    <button mat-raised-button color="accent" class="detail-goodBad-btn">싫어요({{post.bad}})</button>
+    <button mat-raised-button color="accent" class="detail-goodBad-btn">게시글 삭제하기)</button>
   </div>
   <!--=================== 코맨트 =====================-->
   <mat-list>

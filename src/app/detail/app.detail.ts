@@ -23,6 +23,7 @@ export class AppDetail implements OnInit {
   testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
 
   myInfo:user = {
+    userId: 11,
     name: '권오규',
     intro: '프로핑명 입니다.',
     description: '유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.',
@@ -33,6 +34,7 @@ export class AppDetail implements OnInit {
   }
 
   classify:string;
+  isMine:boolean;
   postId:string;
   post:posts;
   safeHtml:SafeHtml;
@@ -41,6 +43,7 @@ export class AppDetail implements OnInit {
   constructor(private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
+    this.isMine = false;
     this.route.params.forEach((params: Params) => {
       this.postId = params['postId'];
       //해당 게시글 DB에서 빼온다
@@ -96,6 +99,11 @@ export class AppDetail implements OnInit {
           label: '오규집'
          }
       };
+
+      if(this.myInfo.userId == this.post.publisherId){
+        //자기 자신의 글
+        this.isMine = true;
+      }
 
       switch(this.post['postClassify']){
         case 10:  //게시글
