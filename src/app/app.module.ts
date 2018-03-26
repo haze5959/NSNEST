@@ -41,6 +41,7 @@ import { AppDetail } from './detail/app.detail';
 import { AppSideUserList, ShowUserInfoDialog } from './sideUserList/app.sideUserList';
 import { AppUserInfo, SetUserInfoDialog } from './userInfo/app.userInfo';
 import { ShowDetailImageDialog } from './image-viewer/image-viewer.component';
+import { HttpService } from './service/http.service';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,7 @@ import { ShowDetailImageDialog } from './image-viewer/image-viewer.component';
     MatSnackBarModule,
     MatChipsModule
   ],
-  providers: [],
+  providers: [HttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

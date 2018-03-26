@@ -19,9 +19,8 @@ export class AppNewspeed {
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
       publisherImg: this.testImage,
-      images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE, Strings.TEST_IMAGE2],
       title: '타이틀 입니다.',
-      body: '내용 입니다.내용 입니다.\n내용 입니다.\n내용 입니다.\n내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
+      body: '<p>sfsfsdff 테스트</p><p><br></p><p>테스트으으</p><p><br></p><p><br></p><p><img src="/../assets/testImage2.jpg"></p><p><br></p><p>그리고 영상</p><p><br></p><iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/rvZtGFiHimA?showinfo=0"></iframe><p><br></p><p>끝</p>',
       good: 0,
       bad: 0,
       commentId: [1000, 10001, 10002]

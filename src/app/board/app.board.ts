@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { HttpService } from '../service/http.service';
 
-import {Observable} from 'rxjs/Observable';
 import {merge} from 'rxjs/observable/merge';
 import {of as observableOf} from 'rxjs/observable/of';
 import {catchError} from 'rxjs/operators/catchError';
@@ -20,7 +19,6 @@ import {switchMap} from 'rxjs/operators/switchMap';
 })
 export class AppBoard implements OnInit{
   displayedColumns = ['created', 'writer', 'number', 'title'];
-  exampleDatabase: ExampleHttpDao | null;
   dataSource = new MatTableDataSource();
 
   resultsLength = 0;
@@ -30,11 +28,9 @@ export class AppBoard implements OnInit{
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private http: HttpClient) {}
+  constructor(private httpService: HttpService) {}
 
   ngOnInit() {
-    this.exampleDatabase = new ExampleHttpDao(this.http);
-
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
@@ -43,7 +39,7 @@ export class AppBoard implements OnInit{
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.exampleDatabase!.getRepoIssues(
+          return this.httpService!.getRepoIssues(
             this.sort.active, this.sort.direction, this.paginator.pageIndex);
         }),
         map(data => {
@@ -76,32 +72,5 @@ export class AppBoard implements OnInit{
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     console.log(filterValue);
     this.dataSource.filter = filterValue;
-  }
-}
-
-/**
- * =========================예제 쓸어온거============================
- */
-export interface GithubApi {
-  items: GithubIssue[];
-  total_count: number;
-}
-
-export interface GithubIssue {
-  created_at: string;
-  number: string;
-  hot: string;
-  title: string;
-}
-
-/** An example database that the data source uses to retrieve data for the table. */
-export class ExampleHttpDao {
-  constructor(private http: HttpClient) {}
-  getRepoIssues(sort: string, order: string, page: number): Observable<GithubApi> {
-    const href = 'https://api.github.com/search/issues';
-    const requestUrl =
-        `${href}?q=repo:angular/material2&sort=${sort}&order=${order}&page=${page + 1}`;
-
-    return this.http.get<GithubApi>(requestUrl);
   }
 }
