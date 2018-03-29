@@ -33,7 +33,7 @@ export class HttpService {
     return this.http.get<user[]>(requestUrl);
   }
 
-  getUser(userId: string): Observable<user> {
+  getUser(userId: number): Observable<user> {
     const requestUrl = `${environment.apiUrl}user?userId=${userId}`;
 
     return this.http.get<user>(requestUrl);
@@ -57,7 +57,7 @@ export class HttpService {
   /**
    * 코멘트 가져오기
    */
-  getComments(commentIdArr: string[]): Observable<comment[]> {
+  getComments(commentIdArr: number[]): Observable<comment[]> {
     const requestUrl = `${environment.apiUrl}comments?commentIdArr=${commentIdArr}`;
 
     return this.http.get<comment[]>(requestUrl);
@@ -70,7 +70,7 @@ export class HttpService {
    * 로그인하기
    * 서버에서 해당 유저의 정보가 없는 경우, 첫 로그인이라고 판별하고 유저를 디비에 등록시킨다.
    */
-  postLogin(userId:String, userPw:String): JSON {
+  postLogin(userId:String, userPw:String): any {
     const requestUrl = `${environment.apiUrl}login`;
 
     return this.http.post(requestUrl, {
@@ -82,19 +82,42 @@ export class HttpService {
   /**
    * 게시글 등록하기
    */
-  postPost(post:posts): JSON {
+  postPost(postJson:any): any {
     const requestUrl = `${environment.apiUrl}posts`;
 
-    return this.http.post(requestUrl, post);
+    return this.http.post(requestUrl, postJson);
   }
 
   /**
    * 코멘트 등록하기
    */
-  postComment(comment: comment): JSON {
+  postComment(commentJson:any): any {
     const requestUrl = `${environment.apiUrl}comment`;
 
-    return this.http.post(requestUrl, comment);
+    return this.http.post(requestUrl, commentJson);
+  }
+
+  /**
+   * 이미지 등록하기
+   */
+  uploadImage(image: ImageBitmap): any {
+    const requestUrl = `${environment.apiUrl}comment`;
+
+    return this.http.post(requestUrl, {
+      "image": image
+    });
+  }
+
+  //============================================================
+  //POST
+  //============================================================
+  /**
+   * 게시글 수정하기
+   */
+  putPost(postJson:any): any {
+    const requestUrl = `${environment.apiUrl}posts`;
+
+    return this.http.put(requestUrl, postJson);
   }
 
   //============================================================
@@ -103,7 +126,7 @@ export class HttpService {
   /**
    * 게시글 삭제
    */
-  deletePost(postId:String): JSON {
+  deletePost(postId:String): any {
     const requestUrl = `${environment.apiUrl}post?postId=${postId}`;
 
     return this.http.delete(requestUrl);
@@ -112,10 +135,51 @@ export class HttpService {
   /**
    * 코멘트 삭제
    */
-  postComments(commentId:String): JSON {
+  deleteComment(commentId:String): any {
     const requestUrl = `${environment.apiUrl}comments?commentId=${commentId}`;
 
     return this.http.delete(requestUrl);
+  }
+
+  //============================================================
+  //에러 데이터
+  //============================================================
+  errorPost:posts = {
+    postsID: 999999,
+    postClassify: 99,
+    studentNum: 99,
+    publisherId: 9999,
+    publisher: '에러',
+    publisherIntro: '게시글을 불러오지 못하였습니다.',
+    publisherImg: null,
+    images: null,
+    title: '게시글을 불러오지 못하였습니다.',
+    body: '',
+    good: 0,
+    bad: 0,
+    commentId: null
+  }
+
+  errorComment:comment = {
+    commentId: 999999,
+    commentDate: new Date('9/99/99'),
+    studentNum: 99,
+    userId: 9999,
+    userName: "에러",
+    userImg: null,
+    emoticon: null,
+    comment: "코멘트를 불러오지 못하였습니다.",
+    good: 0
+  }
+
+  errorUser:user = {
+    name: '에러',
+    intro: '유저정보를 불러오지 못하였습니다.',
+    description: '유저정보를 불러오지 못하였습니다.',
+    studentNum:99,
+    recentDate: new Date('9/9/99'),
+    image: null,
+    subImage01: null
   }
 }
 
