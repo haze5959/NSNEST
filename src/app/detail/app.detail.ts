@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, AUTOCOMPLETE_OPTION_HEIGHT } from '@angular/material';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { posts } from '../model/posts';
@@ -21,6 +21,7 @@ import * as FileSaver from 'file-saver';
   styleUrls: ['./app.detail.css']
 })
 export class AppDetail implements OnInit {
+  isLoading = true;
   testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
 
   myInfo:user = {
@@ -50,15 +51,20 @@ export class AppDetail implements OnInit {
     });
 
     //해당 게시글 DB에서 빼온다
-    this.httpService.getPost(this.postId).subscribe(
+    this.httpService.getPost(this.postId)
+    .finally(() => this.isLoading = false)
+    .subscribe(
       data => {
         console.log(JSON.stringify(data));
         this.post = data;
-        this.initDetail();  //뷰 초기화
       },
       error => {
-        console.log(error);
+        console.log("[error] - getPost");
         this.post = this.httpService.errorPost;
+      },
+      () => {
+        this.isLoading = false;
+        this.initDetail();  //뷰 초기화
       }
     );
       // {

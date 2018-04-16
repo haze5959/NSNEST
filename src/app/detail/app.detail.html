@@ -1,4 +1,9 @@
-<div class="app-detail">
+<div *ngIf="isLoading" class="app-detail">
+  <div  class="fulfilling-square-spinner">
+    <div class="spinner-inner"></div>
+  </div>
+</div>
+<div *ngIf="!isLoading" class="app-detail">
   <!--=================== 게시글 =====================-->
   <div *ngIf="classify == 'post'" class="detail-post">
     <mat-card class="detail-post-card">
