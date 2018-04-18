@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator } from '@angular/material';
 import { HttpService } from '../service/http.service';
 
 import {merge} from 'rxjs/observable/merge';
@@ -18,53 +18,30 @@ import {switchMap} from 'rxjs/operators/switchMap';
   styleUrls: ['/app.board.css']
 })
 export class AppBoard implements OnInit{
-  displayedColumns = ['created', 'writer', 'number', 'title'];
-  dataSource = new MatTableDataSource();
-
-  resultsLength = 0;
-  isLoadingResults = true;
-  isRateLimitReached = false;
+  
+  isLoading = true;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private httpService: HttpService) {}
 
   ngOnInit() {
-    // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
-          return this.httpService!.getRepoIssues(
-            this.sort.active, this.sort.direction, this.paginator.pageIndex);
-        }),
-        map(data => {
-          // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
-          this.isRateLimitReached = false;
-          this.resultsLength = data.total_count;
-          console.log(data);
-          for(var i = 0; i < 10; i++){
-            data.items.pop();
-          }
-          return data.items;
-        }),
-        catchError(() => {
-          this.isLoadingResults = false;
-          // Catch if the GitHub API has reached its rate limit. Return empty data.
-          // this.isRateLimitReached = true;
-          return observableOf([{
-            created_at:new Date('1/1/16'),
-            number: '777',
-            state: '777',
-            title: 'ddd'
-          }]);
-        })
-      ).subscribe(data => this.dataSource.data = data);
+    //해당 게시글 DB에서 빼온다
+    this.httpService.getPosts("sort", "order", 1)
+    .subscribe(
+      data => {
+        console.log(JSON.stringify(data));
+        this.post = data;
+        this.isLoading = false;
+        this.initDetail();  //뷰 초기화
+      },
+      error => {
+        console.error("[error] - getPost:" + this.postId);
+        this.post = this.httpService.errorPost;
+        this.isLoading = false;
+        this.initDetail();  //뷰 초기화
+      }
+    );
   }
 
   applyFilter(filterValue: string) {

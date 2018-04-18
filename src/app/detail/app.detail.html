@@ -5,7 +5,7 @@
 </div>
 <div *ngIf="!isLoading" class="app-detail">
   <!--=================== 게시글 =====================-->
-  <div *ngIf="classify == 'post'" class="detail-post">
+  <div *ngIf="classify == 'post' || classify == 'error'" class="detail-post">
     <mat-card class="detail-post-card">
       <mat-card-header>
         <div mat-card-avatar [style.background-image]="post.publisherImg" class="profile-image" (click)="pressOneUser(post.publisherId)"></div>

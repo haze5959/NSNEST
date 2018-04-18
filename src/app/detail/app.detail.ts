@@ -52,17 +52,16 @@ export class AppDetail implements OnInit {
 
     //해당 게시글 DB에서 빼온다
     this.httpService.getPost(this.postId)
-    .finally(() => this.isLoading = false)
     .subscribe(
       data => {
         console.log(JSON.stringify(data));
         this.post = data;
+        this.isLoading = false;
+        this.initDetail();  //뷰 초기화
       },
       error => {
-        console.log("[error] - getPost");
+        console.error("[error] - getPost:" + this.postId);
         this.post = this.httpService.errorPost;
-      },
-      () => {
         this.isLoading = false;
         this.initDetail();  //뷰 초기화
       }
@@ -138,9 +137,11 @@ export class AppDetail implements OnInit {
         this.classify = "map";
         this.marker = this.post['marker'];
         break;
+      default:
+        this.classify = "error";
     }
 
-    if(this.post['commentId'].length > 0){
+    if(this.post['commentId'] && this.post['commentId'].length > 0){
       //코맨트 redis에서 가져온다음 뿌린다
       this.httpService.getComments(this.post['commentId']).subscribe(
         data => {
