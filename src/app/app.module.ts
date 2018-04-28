@@ -26,7 +26,9 @@ import {
   MatPaginatorModule,
   MatSortModule,
   MatCheckboxModule,
-  MatRadioModule
+  MatRadioModule,
+  MatSnackBarModule,
+  MatChipsModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -40,6 +42,7 @@ import { AppSideUserList, ShowUserInfoDialog } from './sideUserList/app.sideUser
 import { AppUserInfo, SetUserInfoDialog } from './userInfo/app.userInfo';
 import { ShowDetailImageDialog } from './image-viewer/image-viewer.component';
 import { AuthService } from './service/authService';
+import { HttpService } from './service/http.service';
 
 @NgModule({
   declarations: [
@@ -90,10 +93,13 @@ import { AuthService } from './service/authService';
     MatPaginatorModule,
     MatSortModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSnackBarModule,
+    MatChipsModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    HttpService
   ],
   bootstrap: [AppComponent]
 })
