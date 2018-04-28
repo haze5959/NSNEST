@@ -21,6 +21,10 @@
     width: 95%;
 }
 
+.posts-card-chip {
+    float: right;
+}
+
 .mat-card-avatar {
     background-size: cover;
 }
@@ -44,9 +48,8 @@
 }
 
 .mat-card-image {
-    max-height: 400px; 
-    width: 100%; 
-    object-fit: contain;
+    max-height: 400px;
+    object-fit: cover;
 }
 
 .mat-card-image-cover {
@@ -63,8 +66,12 @@
     font-size: 5em;
 }
 
-.comment-count {
+.posts-card-classify-logo{
     margin-left: auto;
+    padding: 0 25px;
+}
+
+.comment-count {
     padding: 0 20px;
 }
 

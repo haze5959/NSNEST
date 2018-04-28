@@ -28,7 +28,7 @@
         <!-- 이미지 표시 -->
         <mat-grid-list cols="2" rowHeight="1:2" rowHeight="570px" gutterSize="20px">
             <mat-grid-tile *ngFor="let image of imageArr; let index = index">
-                <mat-card class="elbum-card" (click)="pressOneImage(image)">
+                <mat-card class="elbum-card">
                     <img mat-card-image src="{{image}}" alt="Photo">
                     <mat-card-actions>
                         <button mat-raised-button color="primary" style="margin-bottom:10px;" (click)="pressDeleteImage(index)">삭제</button>

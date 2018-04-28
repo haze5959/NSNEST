@@ -16,7 +16,11 @@ export class AppWrite implements OnInit {
   @ViewChild('fileInput') fileInputEl:ElementRef;
 
   classify:string;
+<<<<<<< HEAD
   constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private authService: AuthService) { }
+=======
+  constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog) {}
+>>>>>>> 318a0c8c8538736a56afa4cc60747160ea8b8815
 
   titleFormControl = new FormControl();
   editorContent = new FormControl();
@@ -106,6 +110,21 @@ export class AppWrite implements OnInit {
     toolbar.addHandler('image', () => {
       this.fileInputEl.nativeElement.click();
     });
+
+    let elements = this.ElementRef.nativeElement.querySelectorAll('.ql-toolbar');
+    var span = document.createElement('span');
+    span.className = "ql-formats";
+    var emoBtn = document.createElement('button');
+    emoBtn.type = "button";
+    emoBtn.className = "ql-emoticon";
+    emoBtn.style.backgroundColor = "black";
+    emoBtn.addEventListener
+    span.appendChild(emoBtn);
+    elements[0].appendChild(span);
+
+    emoBtn.addEventListener('click', function() {
+      console.log('여기에 이모티콘 선택창!');
+    });
   }
 
   addImageAndUploadServer($event) {
@@ -138,6 +157,10 @@ export class AppWrite implements OnInit {
         }
       }  
     }
+  }
+
+  addEmoticon(){
+    console.log("이모티콘 클릭");
   }
 
   mapClicked($event){

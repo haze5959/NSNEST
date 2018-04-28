@@ -3,7 +3,7 @@
 
     <div class="board-background">
         <div class="board-loading-shade"
-                *ngIf="isLoadingResults || isRateLimitReached">
+                *ngIf="isLoading">
             <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
             <div class="board-rate-limit-reached" *ngIf="isRateLimitReached">
             GitHub's API rate limit has been reached. It will be reset in one minute.
@@ -17,43 +17,7 @@
             <button mat-raised-button color="primary" (click)="applyFilter(filterBtn.value)">검색</button>
         </div>
         
-        <mat-table #table [dataSource]="dataSource" class="board-table"
-                    matSort matSortActive="created" matSortDisableClear matSortDirection="asc">
         
-            <!--- Note that these columns can be defined in any order.
-                The actual rendered columns are set as a property on the row definition" -->
-        
-            <!-- Number Column -->
-            <ng-container matColumnDef="number">
-            <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{ row.number }}</mat-cell>
-            </ng-container>
-        
-            <!-- Title Column -->
-            <ng-container matColumnDef="title">
-            <mat-header-cell *matHeaderCellDef>제목</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
-            </ng-container>
-        
-            <!-- State Column -->
-            <ng-container matColumnDef="writer">
-            <mat-header-cell *matHeaderCellDef>작성자</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{ row.state }}</mat-cell>
-            </ng-container>
-        
-            <!-- Created Column -->
-            <ng-container matColumnDef="created">
-            <mat-header-cell *matHeaderCellDef
-                                mat-sort-header
-                                disableClear="true">
-                생성일
-            </mat-header-cell>
-            <mat-cell *matCellDef="let row">{{ row.created_at | date:'MM/dd. HH시' }}</mat-cell>
-            </ng-container>
-        
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        </mat-table>
         
         <mat-paginator [length]="resultsLength" [pageSize]="10" [showFirstLastButtons]="true" [hidePageSize]="true">
         </mat-paginator>
