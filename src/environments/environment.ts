@@ -4,5 +4,11 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+
+  //Cognito 관련
+  region: 'ap-northeast-2',
+  IdentityPoolId: '',
+  UserPoolId: 'ap-northeast-1_d8o3MPLxxx',
+  ClientId: '6svcu5kpgu7oklm5rdqufqxxxxx',
 };

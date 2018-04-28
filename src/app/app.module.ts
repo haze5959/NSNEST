@@ -39,6 +39,7 @@ import { AppDetail } from './detail/app.detail';
 import { AppSideUserList, ShowUserInfoDialog } from './sideUserList/app.sideUserList';
 import { AppUserInfo, SetUserInfoDialog } from './userInfo/app.userInfo';
 import { ShowDetailImageDialog } from './image-viewer/image-viewer.component';
+import { AuthService } from './service/authService';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,9 @@ import { ShowDetailImageDialog } from './image-viewer/image-viewer.component';
     MatCheckboxModule,
     MatRadioModule
   ],
-  providers: [],
+  providers: [
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

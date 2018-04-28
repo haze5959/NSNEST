@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { marker } from "../model/marker";
+import { AuthService } from '../service/authService';
 
 @Component({
   selector: 'app-write',
@@ -15,7 +16,7 @@ export class AppWrite implements OnInit {
   @ViewChild('fileInput') fileInputEl:ElementRef;
 
   classify:string;
-  constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog) { }
+  constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private authService: AuthService) { }
 
   titleFormControl = new FormControl();
   editorContent = new FormControl();

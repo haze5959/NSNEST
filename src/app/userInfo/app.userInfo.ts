@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
 import { Strings } from '@app/Strings';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { user } from '../model/user';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
+
+import { AuthService } from '../service/authService';
 
 @Component({
   selector: 'app-userInfo',
@@ -16,6 +18,10 @@ export class AppUserInfo implements OnInit {
   appName = Strings.APP_NAME;
   appVersion = Strings.APP_VERSION;
   appCopyrights = Strings.APP_COPYRIGHTS;
+  isLogin = false;
+
+  userId = new FormControl('', [Validators.required]);
+  userPw = new FormControl('', [Validators.required]);
 
   //프로필 관련 정보
   myInfo:user = {
@@ -26,20 +32,28 @@ export class AppUserInfo implements OnInit {
     description: "프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다."
   }
  
-  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer) {}
+  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, private authService: AuthService) {}
 
   ngOnInit(){
     //쿠키로 로그인 유지 날짜까지 계속 보관할거야
     //todo
-    if(true){ //로그인이 유지되어 있다면
+    if(this.isLogin){ //로그인이 유지되어 있다면
       //유저 정보
     }else{  //로그인 안되어있음
-      //로그인 창
+      //쿠키정보로 서버에 세션 유지되어있나 확인 후 자동로그인 or 로그아웃 상태
     }
   }
 
   pressLogout(){
     //로그아웃 눌렀을 경우
+  }
+
+  pressLogin(){
+    alert(this.authService.TESTValue);
+  }
+
+  pressRegistration(){
+    this.authService.TESTValue = "바뀜!";
   }
 
   openSetUserInfoDialog(){
