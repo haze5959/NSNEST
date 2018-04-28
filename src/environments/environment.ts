@@ -12,5 +12,6 @@ export const environment = {
   UserPoolId: 'ap-northeast-1_d8o3MPLxxx',
   ClientId: '6svcu5kpgu7oklm5rdqufqxxxxx',
 
+  //서버주소
   apiUrl: 'http://example.com/api/'
 };
