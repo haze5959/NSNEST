@@ -9,4 +9,5 @@ export class user {
     description?: string;
     recentDate?: Date;
     subImage01?: string;
+    point?: number;
 }

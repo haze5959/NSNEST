@@ -34,22 +34,27 @@ export class HttpService {
   }
 
   getUser(userId: number): Observable<user> {
-    const requestUrl = `${environment.apiUrl}user?userId=${userId}`;
+    const requestUrl = `${environment.apiUrl}users?userId=${userId}`;
 
     return this.http.get<user>(requestUrl);
   }
 
   /**
    * 게시글 가져오기
+   * sort = id / good / bad
    */
-  getPosts(sort: string, order: string, page: number): Observable<posts[]> {
-    const requestUrl = `${environment.apiUrl}posts?sort=${sort}&order=${order}&page=${page}`;
+  getPosts(classify: number, sort: string, order: string, page: number, contents?: string): Observable<posts[]> {
+    let requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}`;
+
+    if(contents){
+      requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&contents=${contents}`;
+    }
 
     return this.http.get<posts[]>(requestUrl);
   }
 
   getPost(postId: string): Observable<posts> {
-    const requestUrl = `${environment.apiUrl}post?postId=${postId}`;
+    const requestUrl = `${environment.apiUrl}posts?postId=${postId}`;
 
     return this.http.get<posts>(requestUrl);
   }
