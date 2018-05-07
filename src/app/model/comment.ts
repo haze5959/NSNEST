@@ -3,6 +3,7 @@ import { marker } from "./marker";
 
 export class comment {
     commentId: number;
+    postId: number;
     commentDate: Date;
     studentNum: number;
     userId?: number;   //옵셔널 아님

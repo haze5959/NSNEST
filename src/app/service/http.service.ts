@@ -62,8 +62,8 @@ export class HttpService {
   /**
    * 코멘트 가져오기
    */
-  getComments(commentIdArr: number[]): Observable<comment[]> {
-    const requestUrl = `${environment.apiUrl}comments?commentIdArr=${commentIdArr}`;
+  getComments(postId: number): Observable<comment[]> {
+    const requestUrl = `${environment.apiUrl}comments?postId=${postId}`;
 
     return this.http.get<comment[]>(requestUrl);
   }
@@ -114,7 +114,7 @@ export class HttpService {
   }
 
   //============================================================
-  //POST
+  //PUT
   //============================================================
   /**
    * 게시글 수정하기
@@ -161,12 +161,12 @@ export class HttpService {
     title: '게시글을 불러오지 못하였습니다.',
     body: '',
     good: 0,
-    bad: 0,
-    commentId: null
+    bad: 0
   }
 
   errorComment:comment = {
     commentId: 999999,
+    postId:9999,
     commentDate: new Date('9/99/99'),
     studentNum: 99,
     userId: 9999,

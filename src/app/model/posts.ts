@@ -15,7 +15,6 @@ export class posts {
     body: string;
     good: number;   //string[] 으로 타입 변경하고 안에 유저 아이디 넣기
     bad: number;    //string[] 으로 타입 변경하고 안에 유저 아이디 넣기
-    commentId: Array<number>;
     marker?: marker;
     tag?: Array<string>;
 }
