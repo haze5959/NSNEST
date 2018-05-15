@@ -68,7 +68,6 @@ export class AppTastyLoad {
       body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 10,
       bad: 0,
-      commentId: [1000, 10001, 10002],
       marker: this.markers[0]
     },
     {
@@ -83,7 +82,6 @@ export class AppTastyLoad {
       body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 0,
       bad: 20,
-      commentId: [1000, 10001],
       marker: this.markers[1]
     },
     {
@@ -98,7 +96,6 @@ export class AppTastyLoad {
       body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 0,
       bad: 0,
-      commentId: [1000, 10001, 10002],
       marker: this.markers[2]
     },
     {
@@ -113,7 +110,6 @@ export class AppTastyLoad {
       body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 0,
       bad: 0,
-      commentId: [],
       marker: this.markers[0]
     },
     {
@@ -128,7 +124,6 @@ export class AppTastyLoad {
       body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 0,
       bad: 0,
-      commentId: [1000, 10001, 10002],
       marker: this.markers[2]
     }
   ];

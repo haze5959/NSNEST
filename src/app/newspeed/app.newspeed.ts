@@ -23,7 +23,7 @@ export class AppNewspeed {
       body: '<p>sfsfsdff 테스트</p><p><br></p><p>테스트으으</p><p><br></p><p><br></p><p><img src="/../assets/testImage2.jpg"></p><p><br></p><p>그리고 영상</p><p><br></p><iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/rvZtGFiHimA?showinfo=0"></iframe><p><br></p><p>끝</p>',
       good: 0,
       bad: 0,
-      commentId: [1000, 10001, 10002]
+      commentCount: 32
     },
     {
       postsID: 1001,
@@ -36,8 +36,7 @@ export class AppNewspeed {
       title: '',
       body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 10,
-      bad: 0,
-      commentId: [1000, 10001, 10002]
+      bad: 0
     },
     {
       postsID: 1002,
@@ -52,7 +51,6 @@ export class AppNewspeed {
       body: '엄청 맛있습니다.',
       good: 20,
       bad: 50,
-      commentId: [10002],
       tag: ["restaurant", "★★★★"],
       marker: {
         lat: 37.497959,
@@ -71,8 +69,7 @@ export class AppNewspeed {
       title: '타이틀 입니다.',
       body: '내용 입니다.ㄹ홀홀',
       good: 0,
-      bad: 0,
-      commentId: []
+      bad: 0
     },
     {
       postsID: 1003,
@@ -85,8 +82,7 @@ export class AppNewspeed {
       title: '타이틀 입니다.',
       body: '내용 입니다.ㄹ호로로',
       good: 0,
-      bad: 0,
-      commentId: []
+      bad: 0
     }
   ];
 
@@ -112,8 +108,7 @@ export class AppNewspeed {
         title: '타이틀 입니다.',
         body: '내용 입니다.ㄹ홀홀',
         good: 0,
-        bad: 0,
-        commentId: [1000]
+        bad: 0
       },
       {
         postsID: 1003,
@@ -126,8 +121,7 @@ export class AppNewspeed {
         title: '타이틀 입니다.',
         body: '내용 입니다.ㄹ호로로',
         good: 0,
-        bad: 0,
-        commentId: []
+        bad: 0
       });
   }
 }

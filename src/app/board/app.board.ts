@@ -27,19 +27,19 @@ export class AppBoard implements OnInit{
 
   ngOnInit() {
     //해당 게시글 DB에서 빼온다
-    this.httpService.getPosts("sort", "order", 1)
+    this.httpService.getPosts(10, "id", "desc", 1)
     .subscribe(
       data => {
         console.log(JSON.stringify(data));
-        this.post = data;
+        // this.post = data;
         this.isLoading = false;
-        this.initDetail();  //뷰 초기화
+        // this.initDetail();  //뷰 초기화
       },
       error => {
-        console.error("[error] - getPost:" + this.postId);
-        this.post = this.httpService.errorPost;
+        // console.error("[error] - getPost:" + this.postId);
+        // this.post = this.httpService.errorPost;
         this.isLoading = false;
-        this.initDetail();  //뷰 초기화
+        // this.initDetail();  //뷰 초기화
       }
     );
   }
@@ -48,6 +48,6 @@ export class AppBoard implements OnInit{
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     console.log(filterValue);
-    this.dataSource.filter = filterValue;
+    // this.dataSource.filter = filterValue;
   }
 }

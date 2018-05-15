@@ -13,5 +13,8 @@ export const environment = {
   ClientId: '6svcu5kpgu7oklm5rdqufqxxxxx',
 
   //서버주소
-  apiUrl: 'http://example.com/api/'
+  apiUrl: 'http://nsnest.iptime.org:3000/api/',
+
+  //가입페이지
+  registPage: 'https://s3.ap-northeast-2.amazonaws.com/nsnest/index.html'
 };

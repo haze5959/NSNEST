@@ -142,7 +142,6 @@ export class AppDetail implements OnInit {
     }
 
     if(this.post['commentId'] && this.post['commentId'].length > 0){
-      //코맨트 redis에서 가져온다음 뿌린다
       this.httpService.getComments(this.post['commentId']).subscribe(
         data => {
           console.log(JSON.stringify(data));
@@ -269,7 +268,7 @@ export class AppDetail implements OnInit {
       this.httpService.postComment(paramJson).subscribe(
         data => {
           console.log(JSON.stringify(data));
-          this.post.commentId.push(data);
+          this.comments.push(data);
         },
         error => {
           console.log(error);

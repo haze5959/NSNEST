@@ -17,4 +17,5 @@ export class posts {
     bad: number;    //string[] 으로 타입 변경하고 안에 유저 아이디 넣기
     marker?: marker;
     tag?: Array<string>;
+    commentCount?: number;
 }

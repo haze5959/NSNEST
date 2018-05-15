@@ -6,6 +6,7 @@ import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { DomSanitizer } from '@angular/platform-browser';
 import { user } from '../model/user';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
+import { environment } from '../../environments/environment';
 
 import { AuthService } from '../service/authService';
 
@@ -49,11 +50,13 @@ export class AppUserInfo implements OnInit {
   }
 
   pressLogin(){
-    alert(this.authService.TESTValue);
+    alert(this.userId.value);
+    this.authService
   }
 
   pressRegistration(){
-    this.authService.TESTValue = "바뀜!";
+    alert("회원가입 페이지로 이동합니다.");
+    document.location.href = environment.registPage;
   }
 
   openSetUserInfoDialog(){

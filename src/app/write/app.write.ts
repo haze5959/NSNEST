@@ -16,11 +16,10 @@ export class AppWrite implements OnInit {
   @ViewChild('fileInput') fileInputEl:ElementRef;
 
   classify:string;
-<<<<<<< HEAD
-  constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private authService: AuthService) { }
-=======
-  constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog) {}
->>>>>>> 318a0c8c8538736a56afa4cc60747160ea8b8815
+
+  constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private authService: AuthService) { 
+    
+  }
 
   titleFormControl = new FormControl();
   editorContent = new FormControl();
