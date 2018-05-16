@@ -59,6 +59,12 @@ export class HttpService {
     return this.http.get<posts>(requestUrl);
   }
 
+  getPostSize(classify: number): Observable<number> {
+    const requestUrl = `${environment.apiUrl}posts/pageSize?classify=${classify}`;
+
+    return this.http.get<number>(requestUrl);
+  }
+
   /**
    * 코멘트 가져오기
    */
