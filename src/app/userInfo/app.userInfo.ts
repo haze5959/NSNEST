@@ -6,6 +6,8 @@ import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { DomSanitizer } from '@angular/platform-browser';
 import { user } from '../model/user';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
+import { UserLoginService } from "../service/awsService/user-login.service";
+import { ChallengeParameters, CognitoCallback, LoggedInCallback } from "../service/awsService/cognito.service";
 import { environment } from '../../environments/environment';
 
 import { AuthService } from '../service/authService';
@@ -15,7 +17,7 @@ import { AuthService } from '../service/authService';
   templateUrl: '/app.userInfo.html',
   styleUrls: ['/app.userInfo.css']
 })
-export class AppUserInfo implements OnInit {
+export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   appName = Strings.APP_NAME;
   appVersion = Strings.APP_VERSION;
   appCopyrights = Strings.APP_COPYRIGHTS;
@@ -33,16 +35,10 @@ export class AppUserInfo implements OnInit {
     description: "프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다."
   }
  
-  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, private authService: AuthService) {}
+  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, public userService: UserLoginService) {}
 
   ngOnInit(){
-    //쿠키로 로그인 유지 날짜까지 계속 보관할거야
-    //todo
-    if(this.isLogin){ //로그인이 유지되어 있다면
-      //유저 정보
-    }else{  //로그인 안되어있음
-      //쿠키정보로 서버에 세션 유지되어있나 확인 후 자동로그인 or 로그아웃 상태
-    }
+    this.userService.isAuthenticated(this); //로그인 중인지 검사
   }
 
   pressLogout(){
@@ -51,7 +47,7 @@ export class AppUserInfo implements OnInit {
 
   pressLogin(){
     alert(this.userId.value);
-    this.authService
+    this.userService.authenticate(this.userId.value, this.userPw.value, this);
   }
 
   pressRegistration(){
@@ -87,6 +83,31 @@ export class AppUserInfo implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {});
+    }
+  }
+
+  /**
+   * AWS Delegate
+   */
+  isLoggedIn(message: string, isLoggedIn: boolean) {
+    if(isLoggedIn){ //로그인이 유지되어 있다면
+      //유저 정보
+    }else{  //로그인 안되어있음
+      //쿠키정보로 서버에 세션 유지되어있나 확인 후 자동로그인 or 로그아웃 상태
+    }
+  }
+
+  cognitoCallback(message: string, result: any) {
+    if (message != null) { //error
+        console.log("result: " + message);
+        if (message === 'User is not confirmed.') {
+            //아이디나 비밀번호 틀림
+            
+        } else if (message === 'User needs to set password.') {
+            //비밀번호 새로 설정. 지날 경우 없음
+        }
+    } else { //로그인 성공
+      
     }
   }
 }

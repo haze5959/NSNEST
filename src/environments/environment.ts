@@ -12,6 +12,10 @@ export const environment = {
   UserPoolId: 'ap-northeast-1_d8o3MPLxxx',
   ClientId: '6svcu5kpgu7oklm5rdqufqxxxxx',
 
+  cognito_idp_endpoint: '',
+  cognito_identity_endpoint: '',
+  sts_endpoint: '',
+
   //서버주소
   apiUrl: 'http://nsnest.iptime.org:3000/api/',
 
