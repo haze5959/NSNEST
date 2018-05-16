@@ -17,9 +17,28 @@
             <button mat-raised-button color="primary" (click)="applyFilter(filterBtn.value)">검색</button>
         </div>
         
+        <!-- 컬럼 -->
+        <div class="board-colum">
+            <h4 class="board-table-id">번호</h4>
+            <h4 class="board-table-author">글쓴이</h4>
+            <h4 class="board-table-title">제목</h4>
+            <h4 class="board-table-good">좋아요</h4>
+            <h4 class="board-table-bad">싫어요</h4>
+        </div>
+        <mat-divider></mat-divider>
+        <!-- 데이터 -->
+        <mat-nav-list *ngFor="let boardPost of boardPosts" class="board-table">
+            <a mat-list-item (click)="pressPost(boardPost)">
+                <p class="board-table-id">{{boardPost.postsID}}</p>
+                <h4 class="board-table-author">{{boardPost.publisher}}</h4>
+                <p class="board-table-title">{{boardPost.title}}({{boardPost.commentCount}})</p>
+                <h4 class="board-table-good">{{boardPost.good}}</h4>
+                <h4 class="board-table-bad">{{boardPost.bad}}</h4>
+            </a>
+            <mat-divider></mat-divider>
+        </mat-nav-list>
         
-        
-        <mat-paginator [length]="resultsLength" [pageSize]="10" [showFirstLastButtons]="true" [hidePageSize]="true">
+        <mat-paginator [length]="boardPosts.length" [pageSize]="pageSize" [showFirstLastButtons]="true" [hidePageSize]="true" (page)="pageEvent($event)">
         </mat-paginator>
     </div>
 </div>

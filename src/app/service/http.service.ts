@@ -160,8 +160,9 @@ export class HttpService {
     images: null,
     title: '게시글을 불러오지 못하였습니다.',
     body: '',
-    good: 0,
-    bad: 0
+    good: 9,
+    bad: 99,
+    commentCount: 99
   }
 
   errorComment:comment = {

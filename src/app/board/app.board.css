@@ -2,6 +2,7 @@
     height: 90%;
     width: 95%;
     margin-left: 10px;
+    overflow: scroll;
 }
 
 /* Structure */
@@ -18,11 +19,44 @@
     padding: 8px 24px 0;
     background-color: #ffffff;  
 }
-  
+
+.board-colum {
+    min-height: 50px;
+    background-color: #F5F5F5;  
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 16px;
+    position: relative;
+}
+
 .board-table {
-    overflow: auto;
+    background-color: #ffffff;  
     /* min-height: 360px; */
-    bottom: 0;
+    padding: 0;
+}
+
+.board-table-id {
+    width: 10%;
+}
+
+.board-table-author {
+    width: 15%;
+}
+
+.board-table-title {
+    width: 61%;
+}
+
+.board-table-good {
+    width: 7%;
+    text-align: center;
+}
+
+.board-table-bad {
+    width: 7%;
+    text-align: center;
 }
   
 .board-loading-shade {
