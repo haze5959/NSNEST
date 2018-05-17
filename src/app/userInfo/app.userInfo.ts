@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Inject } from '@angular/core';
 import { Strings } from '@app/Strings';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,7 +10,7 @@ import { UserLoginService } from "../service/awsService/user-login.service";
 import { ChallengeParameters, CognitoCallback, LoggedInCallback } from "../service/awsService/cognito.service";
 import { environment } from '../../environments/environment';
 
-import { AuthService } from '../service/authService';
+import { AppService } from '../service/appService';
 
 @Component({
   selector: 'app-userInfo',
@@ -35,18 +35,24 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
     description: "프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다."
   }
  
-  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, public userService: UserLoginService) {}
+  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, public userService: UserLoginService, public snackBar: MatSnackBar, public appService: AppService) {}
 
   ngOnInit(){
+    this.appService.isAppLoading = true;
     this.userService.isAuthenticated(this); //로그인 중인지 검사
   }
 
   pressLogout(){
     //로그아웃 눌렀을 경우
+    this.userService.logout();
+    this.isLogin = false;
+    this.snackBar.open("로그아웃 되었습니다.", "확인", {
+      duration: 2000,
+    });
   }
 
   pressLogin(){
-    alert(this.userId.value);
+    this.appService.isAppLoading = true;
     this.userService.authenticate(this.userId.value, this.userPw.value, this);
   }
 
@@ -90,24 +96,38 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
    * AWS Delegate
    */
   isLoggedIn(message: string, isLoggedIn: boolean) {
+    this.appService.isAppLoading = false;
     if(isLoggedIn){ //로그인이 유지되어 있다면
+      this.isLogin = true;
       //유저 정보
     }else{  //로그인 안되어있음
-      //쿠키정보로 서버에 세션 유지되어있나 확인 후 자동로그인 or 로그아웃 상태
+      this.isLogin = false;
     }
   }
 
   cognitoCallback(message: string, result: any) {
+    this.appService.isAppLoading = false;
     if (message != null) { //error
         console.log("result: " + message);
         if (message === 'User is not confirmed.') {
-            //아이디나 비밀번호 틀림
-            
+            this.snackBar.open("승인나지 않은 계정입니다.", "확인", {
+              duration: 2000,
+            });
         } else if (message === 'User needs to set password.') {
             //비밀번호 새로 설정. 지날 경우 없음
+            this.snackBar.open("권오규한테 문의하시오.", "확인", {
+              duration: 2000,
+            });
+        } else {  //아이디나 비밀번호 틀림
+          this.snackBar.open("아이디나 비밀번호가 틀립니다.", "확인", {
+            duration: 2000,
+          });
         }
     } else { //로그인 성공
-      
+      this.isLogin = true;
+      this.snackBar.open("로그인 성공", "확인", {
+        duration: 2000,
+      });
     }
   }
 }

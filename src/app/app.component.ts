@@ -1,16 +1,17 @@
-import { Component, Directive, ElementRef, Input, Output } from '@angular/core';
+import { Component, OnInit, Directive, ElementRef, Input, Output } from '@angular/core';
+import { AppService } from "./service/appService";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'app';
-  
-  testEvent(event){
-    console.log(event);
-    alert(event.value);
+export class AppComponent implements OnInit{
+
+  constructor(public appService: AppService) {}
+
+  ngOnInit(){
+
   }
 }
 

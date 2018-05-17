@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { marker } from "../model/marker";
-import { AuthService } from '../service/authService';
+import { AppService } from '../service/appService';
 
 @Component({
   selector: 'app-write',
@@ -17,7 +17,7 @@ export class AppWrite implements OnInit {
 
   classify:string;
 
-  constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private authService: AuthService) { 
+  constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private appService: AppService) { 
     
   }
 

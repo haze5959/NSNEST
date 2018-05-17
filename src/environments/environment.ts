@@ -9,8 +9,8 @@ export const environment = {
   //Cognito 관련
   region: 'ap-northeast-2',
   IdentityPoolId: '',
-  UserPoolId: 'ap-northeast-1_d8o3MPLxxx',
-  ClientId: '6svcu5kpgu7oklm5rdqufqxxxxx',
+  UserPoolId: 'ap-northeast-2_PzeoW49Lp',
+  ClientId: '7k319206hpp5uleb2gorm1tncj',
 
   cognito_idp_endpoint: '',
   cognito_identity_endpoint: '',

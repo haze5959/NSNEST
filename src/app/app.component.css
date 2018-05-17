@@ -23,6 +23,14 @@
     width: 100%;
 }
 
+.app-loading-screen {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 99;
+}
+
 .app-sidenav-content {
     padding-top: 10px;
     height: 100%;

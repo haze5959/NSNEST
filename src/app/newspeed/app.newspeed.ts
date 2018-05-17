@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { posts } from '../model/posts';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Strings } from '@app/Strings';
+
+import { AppService } from "../service/appService";
 
 @Component({
   selector: 'app-newspeed',
   templateUrl: '/app.newspeed.html',
   styleUrls: ['/app.newspeed.css']
 })
-export class AppNewspeed {
+export class AppNewspeed implements OnInit {
   testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
   recentPosts: posts[] = [
     {
@@ -86,7 +88,11 @@ export class AppNewspeed {
     }
   ];
 
-  constructor(private sanitizer: DomSanitizer, private router: Router) {}
+  constructor(private sanitizer: DomSanitizer, private router: Router, public appService: AppService) {}
+
+  ngOnInit(){
+    // this.appService.isAppLoading = false;
+  }
 
   pressPosts(postsID){
     alert(postsID);

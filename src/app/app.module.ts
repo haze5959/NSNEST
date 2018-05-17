@@ -41,8 +41,11 @@ import { AppDetail } from './detail/app.detail';
 import { AppSideUserList, ShowUserInfoDialog } from './sideUserList/app.sideUserList';
 import { AppUserInfo, SetUserInfoDialog } from './userInfo/app.userInfo';
 import { ShowDetailImageDialog } from './image-viewer/image-viewer.component';
-import { AuthService } from './service/authService';
+import { AppService } from './service/appService';
 import { HttpService } from './service/http.service';
+import { AwsUtil } from './service/awsService/aws.service';
+import { CognitoUtil } from './service/awsService/cognito.service';
+import { UserLoginService } from './service/awsService/user-login.service';
 
 @NgModule({
   declarations: [
@@ -95,11 +98,15 @@ import { HttpService } from './service/http.service';
     MatCheckboxModule,
     MatRadioModule,
     MatSnackBarModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSnackBarModule
   ],
   providers: [
-    AuthService,
-    HttpService
+    AppService,
+    HttpService,
+    AwsUtil,
+    CognitoUtil,
+    UserLoginService
   ],
   bootstrap: [AppComponent]
 })

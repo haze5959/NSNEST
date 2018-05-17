@@ -53,9 +53,7 @@ export class UserLoginService {
             Pool: this.cognitoUtil.getUserPool()
         };
 
-        console.log("UserLoginService: Params set...Authenticating the user");
         let cognitoUser = new CognitoUser(userData);
-        console.log("UserLoginService: config is " + AWS.config);
         cognitoUser.authenticateUser(authenticationDetails, {
             newPasswordRequired: (userAttributes, requiredAttributes) => callback.cognitoCallback(`User needs to set password.`, null),
             onSuccess: result => this.onLoginSuccess(callback, result),
