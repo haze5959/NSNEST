@@ -8,17 +8,25 @@ import 'rxjs/add/operator/shareReplay';
 
 import { environment } from '../../environments/environment';
 
-// import { user } from '../model/user';
+import { user } from '../model/user';
 // import { token } from '../model/token';
 import { posts } from '../model/posts';
 
 @Injectable()
 export class AppService {
-  // appUrl = environment.apiUrl;
+  myInfo:user
   isAppLoading = false;  //로딩 프로그레스를 보일지말지를 관장하는 환경변수
 
   constructor() {
-    // console.log('[appUrl] ', this.appUrl);
+    this.myInfo = {
+      name: '테스터',
+      intro: '테스터 인트로',
+      description: '테스터 설명',
+      studentNum:9999,
+      recentDate: new Date('9/9/99'),
+      image: null,
+      subImage01: null
+    }
   }
 
   isTokenExpired(token: string) {

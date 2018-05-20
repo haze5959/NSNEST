@@ -46,7 +46,7 @@ export class HttpService {
         }
     });
 
-    if(this.appService.isTokenExpired(accessToken)){
+    if(accessToken == "" || this.appService.isTokenExpired(accessToken)){
       alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -74,7 +74,7 @@ export class HttpService {
         }
     });
 
-    if(this.appService.isTokenExpired(accessToken)){
+    if(accessToken == "" || this.appService.isTokenExpired(accessToken)){
       alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -123,7 +123,7 @@ export class HttpService {
   /**
    * 게시글 등록하기
    */
-  postPost(postJson:any): any {
+  postPost(postJson:posts): any {
     var accessToken = "";
     this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -132,7 +132,7 @@ export class HttpService {
         }
     });
 
-    if(this.appService.isTokenExpired(accessToken)){
+    if(accessToken == "" || this.appService.isTokenExpired(accessToken)){
       alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -186,7 +186,7 @@ export class HttpService {
         }
     });
 
-    if(this.appService.isTokenExpired(accessToken)){
+    if(accessToken == "" || this.appService.isTokenExpired(accessToken)){
       alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -222,7 +222,7 @@ export class HttpService {
         }
     });
 
-    if(this.appService.isTokenExpired(accessToken)){
+    if(accessToken == "" || this.appService.isTokenExpired(accessToken)){
       alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({

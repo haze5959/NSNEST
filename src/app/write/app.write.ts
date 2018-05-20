@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { marker } from "../model/marker";
 import { AppService } from '../service/appService';
+import { HttpService } from '../service/http.service';
+import { posts } from '../model/posts';
 
 @Component({
   selector: 'app-write',
@@ -18,7 +20,7 @@ export class AppWrite implements OnInit {
   isLoading = true;
   classify:string;
 
-  constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private appService: AppService) { 
+  constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private appService: AppService, public snackBar: MatSnackBar, private httpService: HttpService) { 
     
   }
 
@@ -60,31 +62,76 @@ export class AppWrite implements OnInit {
   //글 등록!
   pressSaveBtn() {
     if(this.editorContent.valid && this.titleFormControl.valid){
+      var post:posts = {  //게시글 뼈대 제작
+        postClassify: 0,
+        studentNum: this.appService.myInfo.studentNum,
+        publisherId: this.appService.myInfo.userId,
+        publisher: this.appService.myInfo.name,
+        publisherIntro: this.appService.myInfo.intro,
+        publisherImg: this.appService.myInfo.image,
+        images: null,
+        title: '',
+        body: '',
+        marker: null,
+        tag: null
+      };
+
       this.isLoading = true;
-      alert(this.editorContent.value);
+      
       switch(this.classify){
         case 'post':{ //게시글
-          console.log('게시글 업로드 완료');
-
+          post.title = this.titleFormControl.value; //제목입력
+          post.body = this.editorContent.value; //본문입력
+          this.httpService.postPost(post)
+          .subscribe(
+            data => {
+              this.isLoading = false;
+              console.log(JSON.stringify(data));
+              if(data.result){  //성공
+                this.snackBar.open("게시글 업로드 완료", "확인", {
+                  duration: 2000,
+                });
+              } else {  //실패
+                this.snackBar.open("게시글 업로드 실패 - " + data.message, "확인", {
+                  duration: 5000,
+                });
+              }
+            },
+            error => {
+              this.isLoading = false;
+              console.error("[error] - " + error.error.text);
+              alert("[error] - " + error.error.text);
+            }
+          );
+          
           break;
         }  
         case 'elbum':{ //앨범
           console.log('앨범 업로드 완료');
-
+          this.snackBar.open("앨범 업로드 완료", "확인", {
+            duration: 2000,
+          });
           break;
         }
         case 'map':{ //맛집
           console.log('맛집 업로드 완료');
-
+          this.snackBar.open("맛집 업로드 완료", "확인", {
+            duration: 2000,
+          });
           break;
         }
         default:{
-          console.error('알 수 없는 이미지 업로드');
+          console.error('알 수 없음');
+          this.snackBar.open("알 수 없음", "확인", {
+            duration: 2000,
+          });
           break;
         }
       }  
     } else {  //벨리데이션 실패
-      alert(this.editorContent.value);
+      this.snackBar.open("제목과 본문을 작성하시오.", "확인", {
+        duration: 2000,
+      });
     }
   }
 
