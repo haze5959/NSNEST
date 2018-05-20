@@ -27,51 +27,51 @@ export class HttpService {
    * 유저정보 가져오기
    * sort = rank:잉여랭크 / stNum:학번
    */
-  getUsers(sort: string, count: number): Observable<user[]> {
+  getUsers(sort: string, count: number): Observable<Array<any>> {
     const requestUrl = `${environment.apiUrl}users?sort=${sort}&count=${count}`;
 
-    return this.http.get<user[]>(requestUrl);
+    return this.http.get<Array<any>>(requestUrl);
   }
 
-  getUser(userId: number): Observable<user> {
+  getUser(userId: number): Observable<Array<any>> {
     const requestUrl = `${environment.apiUrl}users?userId=${userId}`;
 
-    return this.http.get<user>(requestUrl);
+    return this.http.get<Array<any>>(requestUrl);
   }
 
   /**
    * 게시글 가져오기
    * sort = id / good / bad
    */
-  getPosts(classify: number, sort: string, order: string, page: number, contents?: string): Observable<posts[]> {
+  getPosts(classify: number, sort: string, order: string, page: number, contents?: string): Observable<Array<any>> {
     let requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}`;
 
     if(contents){
       requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&contents=${contents}`;
     }
-
-    return this.http.get<posts[]>(requestUrl);
+    
+    return this.http.get<Array<any>>(requestUrl);
   }
 
-  getPost(postId: string): Observable<posts> {
+  getPost(postId: string): Observable<Array<any>> {
     const requestUrl = `${environment.apiUrl}posts?postId=${postId}`;
 
-    return this.http.get<posts>(requestUrl);
+    return this.http.get<Array<any>>(requestUrl);
   }
 
-  getPostSize(classify: number): Observable<number> {
+  getPostSize(classify: number): Observable<Array<any>> {
     const requestUrl = `${environment.apiUrl}posts/pageSize?classify=${classify}`;
 
-    return this.http.get<number>(requestUrl);
+    return this.http.get<Array<any>>(requestUrl);
   }
 
   /**
    * 코멘트 가져오기
    */
-  getComments(postId: number): Observable<comment[]> {
+  getComments(postId: number): Observable<Array<any>> {
     const requestUrl = `${environment.apiUrl}comments?postId=${postId}`;
 
-    return this.http.get<comment[]>(requestUrl);
+    return this.http.get<Array<any>>(requestUrl);
   }
 
   //============================================================
@@ -168,6 +168,9 @@ export class HttpService {
     body: '',
     good: 9,
     bad: 99,
+    postDate: null,
+    marker: null,
+    tag: null,
     commentCount: 99
   }
 

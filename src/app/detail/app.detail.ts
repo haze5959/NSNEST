@@ -55,7 +55,8 @@ export class AppDetail implements OnInit {
     .subscribe(
       data => {
         console.log(JSON.stringify(data));
-        this.post = data;
+        //파싱해라
+        // this.post = data;
         this.isLoading = false;
         this.initDetail();  //뷰 초기화
       },
@@ -186,8 +187,9 @@ export class AppDetail implements OnInit {
     this.httpService.getUser(userId).subscribe(
       data => {
         console.log(JSON.stringify(data));
-        let user:user = data;
-        this.openUserDialog(user);
+        //파싱해라
+        // let user:user = data;
+        // this.openUserDialog(user);
       },
       error => {
         console.log(error);

@@ -52,8 +52,10 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   }
 
   pressLogin(){
-    this.appService.isAppLoading = true;
-    this.userService.authenticate(this.userId.value, this.userPw.value, this);
+    if(this.userId.valid && this.userPw.valid){
+      this.appService.isAppLoading = true;
+      this.userService.authenticate(this.userId.value, this.userPw.value, this);
+    }
   }
 
   pressRegistration(){

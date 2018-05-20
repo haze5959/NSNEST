@@ -1,9 +1,9 @@
-<mat-sidenav-container class="app-container">
-  <div *ngIf="appService" class="app-loading-screen">
-    <div  class="fulfilling-square-spinner">
-      <div class="spinner-inner"></div>
-    </div>
+<div *ngIf="appService && appService.isAppLoading" class="app-loading-screen">
+  <div  class="fulfilling-square-spinner">
+    <div class="spinner-inner"></div>
   </div>
+</div>
+<mat-sidenav-container class="app-container">
   <!-- GNB -->
   <mat-toolbar color="primary" class="depth-4">
     <!-- GNB 왼쪽 버튼 -->
