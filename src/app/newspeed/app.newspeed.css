@@ -4,6 +4,15 @@
     margin-left: 10px;
 }
 
+.newspeed-loading-screen {
+    height: 90%;
+    width: 95%;
+    margin-left: 10px;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 99;
+}
+
 .newspeed-backgound {
     height: 100%;
     width: 100%;

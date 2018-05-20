@@ -1,7 +1,35 @@
 <div class="app-newspeed">
+    <div *ngIf="isLoading" class="newspeed-loading-screen">
+        <div  class="fulfilling-square-spinner">
+            <div class="spinner-inner"></div>
+        </div>
+    </div>
     <div class="newspeed-backgound" infinite-scroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="300" (scrolled)="onScroll()" [scrollWindow]="false" [immediateCheck]="false">
         <mat-list>
             <mat-nav-list *ngFor="let posts of recentPosts">
+                <!--========================================에러 발생========================================-->
+                <mat-card *ngIf="posts.postClassify == 99" class="posts-card" (click)="pressPosts(posts.postsID)">
+                    <mat-card-header>
+                        <div class="posts-card-classify-logo">
+                            <mat-icon mat-list-icon>subtitles</mat-icon>
+                        </div>
+                        <div class="comment-count">
+                            <mat-icon mat-list-icon>comment</mat-icon>
+                            {{posts.commentCount}}
+                        </div>
+                        <div class="like-btn">
+                            <mat-icon mat-list-icon style="color: red;">favorite</mat-icon>
+                            {{posts.good}}
+                        </div>
+                        <div class="dislike-btn">
+                            <mat-icon mat-list-icon>thumb_down</mat-icon>
+                            {{posts.bad}}
+                        </div>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <h1>{{posts.title}}</h1>
+                    </mat-card-content>
+                </mat-card>
 
                 <!--========================================게시판 글========================================-->
                 <mat-card *ngIf="posts.postClassify == 10" class="posts-card" (click)="pressPosts(posts.postsID)">

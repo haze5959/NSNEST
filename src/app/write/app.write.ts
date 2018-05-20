@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
@@ -15,14 +15,15 @@ export class AppWrite implements OnInit {
 
   @ViewChild('fileInput') fileInputEl:ElementRef;
 
+  isLoading = true;
   classify:string;
 
   constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private appService: AppService) { 
     
   }
 
-  titleFormControl = new FormControl();
-  editorContent = new FormControl();
+  titleFormControl = new FormControl('', [Validators.required]);
+  editorContent = new FormControl('', [Validators.required]);
   quillInstance;
   imageArr = new Array();
   selectType = "restaurant";
@@ -52,33 +53,39 @@ export class AppWrite implements OnInit {
       this.imageArr = new Array();
       this.editorContent.reset();
     });
+
+    this.isLoading = false;
   }
 
   //글 등록!
   pressSaveBtn() {
-    alert(this.editorContent.value);
+    if(this.editorContent.valid && this.titleFormControl.valid){
+      this.isLoading = true;
+      alert(this.editorContent.value);
+      switch(this.classify){
+        case 'post':{ //게시글
+          console.log('게시글 업로드 완료');
 
-    switch(this.classify){
-      case 'post':{ //게시글
-        console.log('게시글 업로드 완료');
+          break;
+        }  
+        case 'elbum':{ //앨범
+          console.log('앨범 업로드 완료');
 
-        break;
+          break;
+        }
+        case 'map':{ //맛집
+          console.log('맛집 업로드 완료');
+
+          break;
+        }
+        default:{
+          console.error('알 수 없는 이미지 업로드');
+          break;
+        }
       }  
-      case 'elbum':{ //앨범
-        console.log('앨범 업로드 완료');
-
-        break;
-      }
-      case 'map':{ //맛집
-        console.log('맛집 업로드 완료');
-
-        break;
-      }
-      default:{
-        console.error('알 수 없는 이미지 업로드');
-        break;
-      }
-    }  
+    } else {  //벨리데이션 실패
+      alert(this.editorContent.value);
+    }
   }
 
   pressDeleteImage(index:number){
@@ -129,7 +136,9 @@ export class AppWrite implements OnInit {
   addImageAndUploadServer($event) {
     console.log($event.target.files[0]);
     for ( var i=0; i<$event.target.files.length; i++){
+      this.isLoading = true;
       //todo: 서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기
+      this.isLoading = false;
   
       switch(this.classify){
         case 'post':{ //게시글

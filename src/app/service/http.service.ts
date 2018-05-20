@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { CognitoUtil } from './awsService/cognito.service';
+import { AppService } from "../service/appService";
 
 import { environment } from '../../environments/environment';
 import { comment } from '../model/comment';
@@ -11,15 +12,7 @@ import { user } from '../model/user';
 @Injectable()
 export class HttpService {
 
-  constructor(private http: HttpClient, private cognitoUtil: CognitoUtil){}
-
-  getRepoIssues(sort: string, order: string, page: number): Observable<GithubApi> {
-    const href = 'https://api.github.com/search/issues';
-    const requestUrl =
-        `${href}?q=repo:angular/material2&sort=${sort}&order=${order}&page=${page + 1}`;
-
-    return this.http.get<GithubApi>(requestUrl);
-  }
+  constructor(private http: HttpClient, private cognitoUtil: CognitoUtil, private appService: AppService){}
 
   //============================================================
   //GET
@@ -53,6 +46,17 @@ export class HttpService {
         }
     });
 
+    if(this.appService.isTokenExpired(accessToken)){
+      alert("토큰 리프레시");
+      this.cognitoUtil.refresh();
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+      });
+    }
+
     let requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&accessToken=${accessToken}`;
     if(contents){
       requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&contents=${contents}&accessToken=${accessToken}`;
@@ -69,6 +73,17 @@ export class HttpService {
           accessToken = result;
         }
     });
+
+    if(this.appService.isTokenExpired(accessToken)){
+      alert("토큰 리프레시");
+      this.cognitoUtil.refresh();
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+      });
+    }
 
     const requestUrl = `${environment.apiUrl}posts?postId=${postId}&accessToken=${accessToken}`;
     return this.http.get<Array<any>>(requestUrl);
@@ -117,6 +132,17 @@ export class HttpService {
         }
     });
 
+    if(this.appService.isTokenExpired(accessToken)){
+      alert("토큰 리프레시");
+      this.cognitoUtil.refresh();
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+      });
+    }
+
     const requestUrl = `${environment.apiUrl}posts`;
     let param = {
       accessToken: accessToken,
@@ -160,6 +186,17 @@ export class HttpService {
         }
     });
 
+    if(this.appService.isTokenExpired(accessToken)){
+      alert("토큰 리프레시");
+      this.cognitoUtil.refresh();
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+      });
+    }
+
     const requestUrl = `${environment.apiUrl}posts`;
 
     let param = {
@@ -184,6 +221,17 @@ export class HttpService {
           accessToken = result;
         }
     });
+
+    if(this.appService.isTokenExpired(accessToken)){
+      alert("토큰 리프레시");
+      this.cognitoUtil.refresh();
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+      });
+    }
     
     const requestUrl = `${environment.apiUrl}post?postId=${postId}&accessToken=${accessToken}`;
 

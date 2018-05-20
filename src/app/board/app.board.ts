@@ -39,8 +39,7 @@ export class AppBoard implements OnInit{
       },
       error => {
         console.error("[error] - " + error.error.text);
-        this.boardPosts.push(this.httpService.errorPost);
-        this.boardPosts.push(this.httpService.errorPost);
+        alert("[error] - " + error.error.text);
         this.boardPosts.push(this.httpService.errorPost);
         this.isLoading = false;
       }
@@ -64,8 +63,7 @@ export class AppBoard implements OnInit{
       },
       error => {
         console.error("[error] - " + error.error.text);
-        this.boardPosts.push(this.httpService.errorPost);
-        this.boardPosts.push(this.httpService.errorPost);
+        alert("[error] - " + error.error.text);
         this.boardPosts.push(this.httpService.errorPost);
         this.isLoading = false;
       }
@@ -87,8 +85,7 @@ export class AppBoard implements OnInit{
       },
       error => {
         console.error("[error] - " + error.error.text);
-        this.boardPosts.push(this.httpService.errorPost);
-        this.boardPosts.push(this.httpService.errorPost);
+        alert("[error] - " + error.error.text);
         this.boardPosts.push(this.httpService.errorPost);
         this.isLoading = false;
         // this.initDetail();  //뷰 초기화

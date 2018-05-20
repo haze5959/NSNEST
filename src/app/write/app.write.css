@@ -6,6 +6,14 @@
     overflow: scroll;
 }
 
+.write-loading-screen {
+    height: 90%;
+    width: 95%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 99;
+}
+
 .write-editor {
     height: 80%;
 }

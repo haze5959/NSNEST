@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 
 // import { user } from '../model/user';
 // import { token } from '../model/token';
-import { posts, posts } from '../model/posts';
+import { posts } from '../model/posts';
 
 @Injectable()
 export class AppService {

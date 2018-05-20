@@ -1,9 +1,15 @@
 <input hidden #fileInput type='file' accept="image/*" (change)="addImageAndUploadServer($event)" multiple>
 <div class="app-write">
+    <div *ngIf="isLoading" class="write-loading-screen">
+        <div  class="fulfilling-square-spinner">
+            <div class="spinner-inner"></div>
+        </div>
+    </div>
     <!--=================== 게시글 작성 =====================-->
     <div *ngIf="classify == 'post'" class="write-editor">
         <mat-form-field class="write-title">
             <input matInput placeholder="게시글 제목" [formControl]="titleFormControl">
+            <mat-error *ngIf="titleFormControl.invalid">제목 입력해라</mat-error>
         </mat-form-field>
 
         <quill-editor [modules]="editorModule" [formControl]="editorContent" (onEditorCreated)="onEditorCreated($event)" [style]="{height: '100%'}">
