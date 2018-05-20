@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
+import { CognitoUtil } from './awsService/cognito.service';
 
 import { environment } from '../../environments/environment';
 import { comment } from '../model/comment';
@@ -10,7 +11,7 @@ import { user } from '../model/user';
 @Injectable()
 export class HttpService {
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private cognitoUtil: CognitoUtil){}
 
   getRepoIssues(sort: string, order: string, page: number): Observable<GithubApi> {
     const href = 'https://api.github.com/search/issues';
@@ -44,18 +45,32 @@ export class HttpService {
    * sort = id / good / bad
    */
   getPosts(classify: number, sort: string, order: string, page: number, contents?: string): Observable<Array<any>> {
-    let requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}`;
+    var accessToken = "";
+    this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+    });
 
+    let requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&accessToken=${accessToken}`;
     if(contents){
-      requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&contents=${contents}`;
+      requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&contents=${contents}&accessToken=${accessToken}`;
     }
     
     return this.http.get<Array<any>>(requestUrl);
   }
 
   getPost(postId: string): Observable<Array<any>> {
-    const requestUrl = `${environment.apiUrl}posts?postId=${postId}`;
+    var accessToken = "";
+    this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+    });
 
+    const requestUrl = `${environment.apiUrl}posts?postId=${postId}&accessToken=${accessToken}`;
     return this.http.get<Array<any>>(requestUrl);
   }
 
@@ -94,9 +109,20 @@ export class HttpService {
    * 게시글 등록하기
    */
   postPost(postJson:any): any {
-    const requestUrl = `${environment.apiUrl}posts`;
+    var accessToken = "";
+    this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+    });
 
-    return this.http.post(requestUrl, postJson);
+    const requestUrl = `${environment.apiUrl}posts`;
+    let param = {
+      accessToken: accessToken,
+      payload: postJson
+    }
+    return this.http.post(requestUrl, param);
   }
 
   /**
@@ -126,9 +152,22 @@ export class HttpService {
    * 게시글 수정하기
    */
   putPost(postJson:any): any {
+    var accessToken = "";
+    this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+    });
+
     const requestUrl = `${environment.apiUrl}posts`;
 
-    return this.http.put(requestUrl, postJson);
+    let param = {
+      accessToken: accessToken,
+      payload: postJson
+    }
+    
+    return this.http.put(requestUrl, param);
   }
 
   //============================================================
@@ -138,7 +177,15 @@ export class HttpService {
    * 게시글 삭제
    */
   deletePost(postId:String): any {
-    const requestUrl = `${environment.apiUrl}post?postId=${postId}`;
+    var accessToken = "";
+    this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+    });
+    
+    const requestUrl = `${environment.apiUrl}post?postId=${postId}&accessToken=${accessToken}`;
 
     return this.http.delete(requestUrl);
   }
