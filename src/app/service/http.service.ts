@@ -46,7 +46,7 @@ export class HttpService {
         }
     });
 
-    if(accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
       alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -74,7 +74,7 @@ export class HttpService {
         }
     });
 
-    if(accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
       alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -132,7 +132,7 @@ export class HttpService {
         }
     });
 
-    if(accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
       alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -186,7 +186,7 @@ export class HttpService {
         }
     });
 
-    if(accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
       alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -222,7 +222,7 @@ export class HttpService {
         }
     });
 
-    if(accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
       alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({

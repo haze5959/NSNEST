@@ -6,7 +6,7 @@ import { Strings } from '@app/Strings';
 
 import { AppService } from "../service/appService";
 import { HttpService } from '../service/http.service';
-
+import { CognitoUtil } from '../service/awsService/cognito.service';
 
 @Component({
   selector: 'app-newspeed',
@@ -15,30 +15,36 @@ import { HttpService } from '../service/http.service';
 })
 export class AppNewspeed implements OnInit {
   testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
-
   isLoading = true;
   pageIndex: number = 1;
   recentPosts: posts[] = [];
 
-  constructor(private sanitizer: DomSanitizer, private router: Router, private httpService: HttpService, private appService: AppService) {}
+  constructor(private sanitizer: DomSanitizer, private router: Router, private httpService: HttpService, private appService: AppService, private cognitoUtil: CognitoUtil) {}
 
   ngOnInit(){
-    this.isLoading = true;
-    this.httpService.getPosts(0, "id", "desc", this.pageIndex) //해당 게시글 DB에서 빼온다
-    .subscribe(
-      data => {
-        // console.log(JSON.stringify(data));
-        this.recentPosts = this.recentPosts.concat(this.appService.postFactory(data));
-        console.log(JSON.stringify(this.recentPosts));
-        this.isLoading = false;
-      },
-      error => {
-        console.error("[error] - " + error.error.text);
-        alert("[error] - " + error.error.text);
-        this.recentPosts.push(this.httpService.errorPost);
-        this.isLoading = false;
-      }
-    );
+    // if(this.cognitoUtil.getCurrentUser()){
+    if(this.appService.isAppLogin){
+      this.isLoading = true;
+      this.httpService.getPosts(0, "id", "desc", this.pageIndex) //해당 게시글 DB에서 빼온다
+      .subscribe(
+        data => {
+          // console.log(JSON.stringify(data));
+          this.recentPosts = this.recentPosts.concat(this.appService.postFactory(data));
+          console.log(JSON.stringify(this.recentPosts));
+          this.isLoading = false;
+        },
+        error => {
+          console.error("[error] - " + error.error.text);
+          alert("[error] - " + error.error.text);
+          this.recentPosts.push(this.httpService.errorPost);
+          this.isLoading = false;
+        }
+      );
+    } else {
+      this.isLoading = false;
+      this.appService.isAppLogin = false;
+      console.log("로그인 된 유저 없습니다.");
+    }
   }
 
   pressPosts(postsID){

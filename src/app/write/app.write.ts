@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { marker } from "../model/marker";
 import { AppService } from '../service/appService';
@@ -20,7 +20,7 @@ export class AppWrite implements OnInit {
   isLoading = true;
   classify:string;
 
-  constructor(private route: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private appService: AppService, public snackBar: MatSnackBar, private httpService: HttpService) { 
+  constructor(private router: Router,private activeRoute: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private appService: AppService, public snackBar: MatSnackBar, private httpService: HttpService) { 
     
   }
 
@@ -48,15 +48,20 @@ export class AppWrite implements OnInit {
   };
 
   ngOnInit(): void {
-    this.route.params.forEach((params: Params) => {
-      this.classify = params['classify'];
-      this.marker = null;
-      this.selectType = "restaurant";
-      this.imageArr = new Array();
-      this.editorContent.reset();
-    });
-
-    this.isLoading = false;
+    if(!this.appService.isAppLogin){
+      alert("로그인이 되지 않았습니다.");
+      this.router.navigate(['/']);
+    } else {
+      this.activeRoute.params.forEach((params: Params) => {
+        this.classify = params['classify'];
+        this.marker = null;
+        this.selectType = "restaurant";
+        this.imageArr = new Array();
+        this.editorContent.reset();
+      });
+  
+      this.isLoading = false;
+    }
   }
 
   //글 등록!
@@ -80,6 +85,7 @@ export class AppWrite implements OnInit {
       
       switch(this.classify){
         case 'post':{ //게시글
+          post.postClassify = 10;
           post.title = this.titleFormControl.value; //제목입력
           post.body = this.editorContent.value; //본문입력
           this.httpService.postPost(post)
@@ -107,6 +113,7 @@ export class AppWrite implements OnInit {
           break;
         }  
         case 'elbum':{ //앨범
+          post.postClassify = 20;
           console.log('앨범 업로드 완료');
           this.snackBar.open("앨범 업로드 완료", "확인", {
             duration: 2000,
@@ -114,6 +121,7 @@ export class AppWrite implements OnInit {
           break;
         }
         case 'map':{ //맛집
+          post.postClassify = 30;
           console.log('맛집 업로드 완료');
           this.snackBar.open("맛집 업로드 완료", "확인", {
             duration: 2000,

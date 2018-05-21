@@ -21,7 +21,6 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   appName = Strings.APP_NAME;
   appVersion = Strings.APP_VERSION;
   appCopyrights = Strings.APP_COPYRIGHTS;
-  isLogin = false;
 
   userId = new FormControl('', [Validators.required]);
   userPw = new FormControl('', [Validators.required]);
@@ -45,7 +44,8 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   pressLogout(){
     //로그아웃 눌렀을 경우
     this.userService.logout();
-    this.isLogin = false;
+    this.userPw.setValue("");
+    this.appService.isAppLogin = false;
     this.snackBar.open("로그아웃 되었습니다.", "확인", {
       duration: 2000,
     });
@@ -100,10 +100,10 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   isLoggedIn(message: string, isLoggedIn: boolean) {
     this.appService.isAppLoading = false;
     if(isLoggedIn){ //로그인이 유지되어 있다면
-      this.isLogin = true;
+      this.appService.isAppLogin = true;
       //유저 정보
     }else{  //로그인 안되어있음
-      this.isLogin = false;
+      this.appService.isAppLogin = false;
     }
   }
 
@@ -126,7 +126,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
           });
         }
     } else { //로그인 성공
-      this.isLogin = true;
+      this.appService.isAppLogin = true;
       this.snackBar.open("로그인 성공", "확인", {
         duration: 2000,
       });

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { JwtHelper } from 'angular2-jwt';
+import { CognitoUtil } from './awsService/cognito.service';
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
@@ -16,9 +17,17 @@ import { posts } from '../model/posts';
 export class AppService {
   myInfo:user
   isAppLoading = false;  //로딩 프로그레스를 보일지말지를 관장하는 환경변수
+  isAppLogin = false;  //로그인이 됐는지 안됐는지 관장
 
-  constructor() {
+  constructor(private cognitoUtil: CognitoUtil) {
+    if(this.cognitoUtil.getCurrentUser()){
+      this.isAppLogin = true;
+    } else {
+      this.isAppLogin = false;
+    }
+
     this.myInfo = {
+      userId: 999,
       name: '테스터',
       intro: '테스터 인트로',
       description: '테스터 설명',

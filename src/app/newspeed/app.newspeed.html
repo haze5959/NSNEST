@@ -1,4 +1,7 @@
-<div class="app-newspeed">
+<div *ngIf="!appService.isAppLogin" class="app-newspeed">
+    로그인 필요
+</div>
+<div *ngIf="appService.isAppLogin" class="app-newspeed">
     <div *ngIf="isLoading" class="newspeed-loading-screen">
         <div  class="fulfilling-square-spinner">
             <div class="spinner-inner"></div>

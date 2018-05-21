@@ -1,5 +1,5 @@
 <!-- 로그인 중 -->
-<mat-card *ngIf="isLogin" class="userInfoCard">
+<mat-card *ngIf="appService.isAppLogin" class="userInfoCard">
     <mat-card-header>
         <div mat-card-avatar [style.background-image]="myInfo.image" class="profileImage" (click)="openProfileImage()"></div>
         <mat-card-title>{{myInfo.name}}</mat-card-title>
@@ -19,7 +19,7 @@
 </mat-card>
 
 <!-- 로그인 안됨 -->
-<mat-card *ngIf="!isLogin" class="userInfoCard">
+<mat-card *ngIf="!appService.isAppLogin" class="userInfoCard">
     <div>
         <mat-form-field>
             <input matInput placeholder="아이디" [formControl]="userId">

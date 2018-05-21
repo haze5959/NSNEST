@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, AUTOCOMPLETE_OPTION_HEIGHT } from '@angular/material';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { posts } from '../model/posts';
 import { marker } from '../model/marker';
@@ -42,82 +42,36 @@ export class AppDetail implements OnInit {
   safeHtml:SafeHtml;
   marker:marker;
   comments:comment[];
-  constructor(private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar) { }
+  constructor(private router: Router, private appService: AppService, private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.isMine = false;
-    this.route.params.forEach((params: Params) => {
+    if(!this.appService.isAppLogin){
+      alert("로그인이 되지 않았습니다.");
+      this.router.navigate(['/']);
+    } else {
+      this.isMine = false;
+      this.route.params.forEach((params: Params) => {
       this.postId = params['postId'];
     });
 
-    //해당 게시글 DB에서 빼온다
-    this.httpService.getPost(this.postId)
-    .subscribe(
-      data => {
-        console.log(JSON.stringify(data));
-        //파싱해라
-        // this.post = data;
-        this.isLoading = false;
-        this.initDetail();  //뷰 초기화
-      },
-      error => {
-        console.error("[error] - getPost:" + this.postId);
-        this.post = this.httpService.errorPost;
-        this.isLoading = false;
-        this.initDetail();  //뷰 초기화
-      }
-    );
-      // {
-      //   postsID: 1000,
-      //   postClassify: 10,
-      //   studentNum: 11,
-      //   publisherId: 1001,
-      //   publisher: '권오규',
-      //   publisherIntro: '프로필 명 입니다.',
-      //   publisherImg: this.testImage,
-      //   images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE, Strings.TEST_IMAGE2],
-      //   title: '포스트 타이틀 입니다.',
-      //   body: '<p>sfsfsdff 테스트</p><p><br></p><p>테스트으으</p><p><br></p><p><br></p><p><img src="/../assets/testImage2.jpg"></p><p><br></p><p>그리고 영상</p><p><br></p><iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/rvZtGFiHimA?showinfo=0"></iframe><p><br></p><p>끝</p>',
-      //   good: 12,
-      //   bad: 3,
-      //   commentId: [1000, 10001, 10002]
-      // };
-      // {
-      //   postsID: 1001,
-      //   postClassify: 20,
-      //   studentNum: 11,
-      //   publisherId: 1001,
-      //   publisher: '권오규',
-      //   publisherIntro: '프로필 명 입니다.',
-      //   publisherImg: this.testImage,
-      //   images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE, Strings.TEST_IMAGE2],
-      //   title: '',
-      //   body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-      //   good: 10,
-      //   bad: 0,
-      //   commentId: [1000, 10001, 10002]
-      // };
-      // {
-      //   postsID: 1002,
-      //   postClassify: 30,
-      //   studentNum: 11,
-      //   publisherId: 1001,
-      //   publisher: '권오규',
-      //   publisherIntro: '프로필 명 입니다.',
-      //   publisherImg: this.testImage,
-      //   images: [Strings.TEST_IMAGE2, Strings.TEST_IMAGE2],
-      //   title: '존맛집',
-      //   body: '엄청 맛있습니다.',
-      //   good: 20,
-      //   bad: 50,
-      //   commentId: [10002],
-      //   tag: ["restaurant", "★★★★"],
-      //   marker: {
-      //     lat: 37.497959,
-      //     lng: 126.929769,
-      //     label: '오규집'
-      //    }
-      // };
+      //해당 게시글 DB에서 빼온다
+      this.httpService.getPost(this.postId)
+      .subscribe(
+        data => {
+          console.log(JSON.stringify(data));
+          //파싱해라
+          this.post = this.appService.postFactory(data[0]);
+          this.isLoading = false;
+          this.initDetail();  //뷰 초기화
+        },
+        error => {
+          console.error("[error] - getPost:" + this.postId);
+          this.post = this.httpService.errorPost;
+          this.isLoading = false;
+          this.initDetail();  //뷰 초기화
+        }
+      );
+    }
   }
 
   initDetail(){

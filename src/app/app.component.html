@@ -1,4 +1,4 @@
-<div *ngIf="appService && appService.isAppLoading" class="app-loading-screen">
+<div *ngIf="!appService || appService.isAppLoading" class="app-loading-screen">
   <div  class="fulfilling-square-spinner">
     <div class="spinner-inner"></div>
   </div>
@@ -19,10 +19,10 @@
       NSNEST of Ancient
     </div>
     <!-- GNB 오른쪽 버튼 -->
-    <button mat-button [matMenuTriggerFor]="writeMenu" class="app-showSidenavBtn">
+    <button mat-button [matMenuTriggerFor]="writeMenu" class="app-showSidenavBtn" [disabled]="!appService || !appService.isAppLogin">
         <mat-icon>add_circle_outline</mat-icon>
     </button>
-    <button mat-button [matMenuTriggerFor]="menu" class="app-showSidenavBtn">
+    <button mat-button [matMenuTriggerFor]="menu" class="app-showSidenavBtn" [disabled]="!appService || !appService.isAppLogin">
         <mat-icon>format_align_justify</mat-icon>
     </button>
   </mat-toolbar>
