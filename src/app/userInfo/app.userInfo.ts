@@ -24,16 +24,6 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
 
   userId = new FormControl('', [Validators.required]);
   userPw = new FormControl('', [Validators.required]);
-
-  //프로필 관련 정보
-  myInfo:user = {
-    userId: 1000,
-    studentNum: 11,
-    name: '권오규',
-    image: this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE),
-    intro: "프로필명 입니다.",
-    description: "프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다.프로필 설명 입니다."
-  }
  
   constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, public userService: UserLoginService, public snackBar: MatSnackBar, public appService: AppService) {}
 
@@ -69,9 +59,9 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
       height: "90%",
       width: "80%",
       data: { 
-        profileText: this.myInfo.intro,
-        profileDescription: this.myInfo.description,
-        profileImage: this.myInfo.image
+        profileText: this.appService.myInfo.intro,
+        profileDescription: this.appService.myInfo.description,
+        profileImage: this.appService.myInfo.image
        }
     });
 

@@ -52,13 +52,19 @@
 }
 
 .comment-content {
-    padding-left: 10px;
+    padding-left: 5px;
     margin: 10px 0px;
     border-left: thin solid #CFD8DC;
 }
 
 .detail-comment{
+    padding: 20px 0;
     height: auto !important;
+    border-bottom: 1px solid #CFD8DC;
+}
+
+.detail-comment-input{
+    height: 100px !important;
 }
 
 .comment-content-input {
@@ -66,8 +72,14 @@
     width: 100% !important;
 }
 
+.comment-remove-btn {
+    margin-left: auto;
+}
+
 .detail-regist-comment {
     text-align:center;
+    margin-top: 50px;
+    margin-bottom: 100px;
 }
 
 .agm-map {

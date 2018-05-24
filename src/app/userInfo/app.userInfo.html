@@ -1,15 +1,15 @@
 <!-- 로그인 중 -->
 <mat-card *ngIf="appService.isAppLogin" class="userInfoCard">
     <mat-card-header>
-        <div mat-card-avatar [style.background-image]="myInfo.image" class="profileImage" (click)="openProfileImage()"></div>
-        <mat-card-title>{{myInfo.name}}</mat-card-title>
-        <mat-card-subtitle>{{myInfo.intro}}</mat-card-subtitle>
+        <div mat-card-avatar [style.background-image]="appService.myInfo.image" class="profileImage" (click)="openProfileImage()"></div>
+        <mat-card-title>{{appService.myInfo.name}}</mat-card-title>
+        <mat-card-subtitle>{{appService.myInfo.intro}}</mat-card-subtitle>
     </mat-card-header>
     잉어력 프로그래스(12/100)
     <!-- <img mat-card-image src="{{profileImage}}" alt="Photo of a user"> -->
     <mat-card-content>
         <p>
-        {{myInfo.description}}
+        {{appService.myInfo.description}}
         </p>
     </mat-card-content>
     <mat-card-actions>

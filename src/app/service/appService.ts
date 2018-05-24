@@ -12,6 +12,7 @@ import { environment } from '../../environments/environment';
 import { user } from '../model/user';
 // import { token } from '../model/token';
 import { posts } from '../model/posts';
+import { comment } from '../model/comment';
 
 @Injectable()
 export class AppService {
@@ -66,6 +67,28 @@ export class AppService {
           commentCount: element[15]
         };
         result.push(posts);
+    });
+
+    return result
+  }
+
+  commentFactory(commentArr: Array<any>){
+    var result:comment[] = [];
+
+    commentArr.forEach(element => {
+        let comment:comment = {
+          commentId: element[0],
+          commentDate: element[1],
+          studentNum: element[2],
+          userId: element[3],
+          userName: element[4],
+          userImg: element[5],
+          emoticon: element[6],
+          good: element[7],
+          comment: element[8],
+          postId: element[9]
+        };
+        result.push(comment);
     });
 
     return result

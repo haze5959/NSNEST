@@ -46,6 +46,7 @@ import { HttpService } from './service/http.service';
 import { AwsUtil } from './service/awsService/aws.service';
 import { CognitoUtil } from './service/awsService/cognito.service';
 import { UserLoginService } from './service/awsService/user-login.service';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { UserLoginService } from './service/awsService/user-login.service';
     HttpService,
     AwsUtil,
     CognitoUtil,
-    UserLoginService
+    UserLoginService,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

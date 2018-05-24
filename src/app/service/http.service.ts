@@ -118,7 +118,7 @@ export class HttpService {
    * 코멘트 가져오기
    */
   getComments(postId: number): Observable<Array<any>> {
-    const requestUrl = `${environment.apiUrl}comments?postId=${postId}`;
+    const requestUrl = `${environment.apiUrl}comment?postId=${postId}`;
 
     return this.http.get<Array<any>>(requestUrl).timeout(timeout)
     .catch((err:Response) => {
@@ -184,7 +184,7 @@ export class HttpService {
    */
   postComment(commentJson:comment): any {
     const requestUrl = `${environment.apiUrl}comment`;
-    let param = {
+    const param = {
       payload: commentJson
     }
 
@@ -214,7 +214,7 @@ export class HttpService {
   /**
    * 게시글 수정하기
    */
-  putPost(postJson:any): any {
+  putPostGoodBad(postId:number, isGood:boolean): any {
     var accessToken = "";
     this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -238,7 +238,10 @@ export class HttpService {
 
     let param = {
       accessToken: accessToken,
-      payload: postJson
+      payload: {
+        postId: postId,
+        isGood: isGood
+      }
     }
     
     return this.http.put(requestUrl, param).timeout(timeout)
@@ -253,7 +256,7 @@ export class HttpService {
   /**
    * 게시글 삭제
    */
-  deletePost(postId:String): any {
+  deletePost(postId:number): any {
     var accessToken = "";
     this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -273,7 +276,7 @@ export class HttpService {
       });
     }
     
-    const requestUrl = `${environment.apiUrl}post?postId=${postId}&accessToken=${accessToken}`;
+    const requestUrl = `${environment.apiUrl}posts?postId=${postId}&accessToken=${accessToken}`;
 
     return this.http.delete(requestUrl).timeout(timeout)
     .catch((err:Response) => {
@@ -284,8 +287,8 @@ export class HttpService {
   /**
    * 코멘트 삭제
    */
-  deleteComment(commentId:String): any {
-    const requestUrl = `${environment.apiUrl}comments?commentId=${commentId}`;
+  deleteComment(commentId:number): any {
+    const requestUrl = `${environment.apiUrl}comment?commentId=${commentId}`;
 
     return this.http.delete(requestUrl).timeout(timeout)
     .catch((err:Response) => {
@@ -329,7 +332,11 @@ export class HttpService {
   }
 
   errorUser:user = {
+<<<<<<< HEAD
     userId: 9999,
+=======
+    userId: 999999,
+>>>>>>> e980b9423220e68bee2b9bf947f4df03f83cbc6b
     name: '에러',
     intro: '유저정보를 불러오지 못하였습니다.',
     description: '유저정보를 불러오지 못하였습니다.',

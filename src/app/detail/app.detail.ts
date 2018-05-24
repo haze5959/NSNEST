@@ -11,6 +11,7 @@ import { ShowUserInfoDialog } from '../sideUserList/app.sideUserList';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { HttpService } from '../service/http.service';
 import { AppService } from '../service/appService';
+import { CookieService } from 'angular2-cookie/core';
 
 import * as JSZip from '../../../node_modules/jszip/dist/jszip';
 import * as JSZipUtils from '../../../node_modules/jszip-utils/dist/jszip-utils';
@@ -27,13 +28,14 @@ export class AppDetail implements OnInit {
   testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
 
   classify:string;
-  isMine:boolean;
+  isMine:boolean = false;
   postId:number;
   post:posts;
   safeHtml:SafeHtml;
   marker:marker;
-  comments:comment[];
-  constructor(private router: Router, private appService: AppService, private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar) { }
+  comments:comment[] = [];
+  commentInput:string;
+  constructor(private router: Router, private appService: AppService, private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar, private cookieService:CookieService) { }
 
   ngOnInit() {
     if(!this.appService.isAppLogin){
@@ -61,9 +63,9 @@ export class AppDetail implements OnInit {
         },
         error => {
           console.error("[error] - getPost:" + this.postId);
-          this.post = this.httpService.errorPost;
+          // this.post = this.httpService.errorPost;
           this.isLoading = false;
-          this.initDetail();  //뷰 초기화
+          this.router.navigate(['/']);
         }
       );
     }
@@ -91,11 +93,15 @@ export class AppDetail implements OnInit {
         this.classify = "error";
     }
 
-    if(this.post['commentCount'] && this.post['commentCount'] > 0){
-      this.httpService.getComments(this.post['postsID']).subscribe(
+    this.commentRefresh();
+  }
+
+  commentRefresh(){
+    if(this.post['commentCount'] > 0){
+      this.httpService.getComments(this.postId).subscribe(
         data => {
           console.log(JSON.stringify(data));
-          this.comments = data;
+          this.comments = this.appService.commentFactory(data);
         },
         error => {
           console.log(error);
@@ -103,31 +109,6 @@ export class AppDetail implements OnInit {
         }
       );
     }
-    
-    // this.comments = [
-    //   {
-    //     commentId: 1103,
-    //     commentDate: new Date('3/19/18'),
-    //     studentNum: 11,
-    //     userId: 120,
-    //     userName: "권오규",
-    //     userImg: this.testImage,
-    //     emoticon: null,
-    //     comment: "코맨트 달았습니다.ddㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ",
-    //     good: 99
-    //   }, 
-    //   {
-    //     commentId: 1104,
-    //     commentDate: new Date('3/19/18'),
-    //     studentNum: 15,
-    //     userId: 123,
-    //     userName: "조상우",
-    //     userImg: this.testImage,
-    //     emoticon: null,
-    //     comment: "코맨트 달았습니다.2 ㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\n",
-    //     good: 1
-    //   }
-    // ];
   }
   
   pressOneUser(userId:number){
@@ -210,58 +191,183 @@ export class AppDetail implements OnInit {
       this.openSnackBar("코멘트를 입력해주세요.");
     }else{
       //코멘트 등록 후 업데이트
-      let paramJson:comment = {
-        // commentId: 1111,
-        postId: 1234,
-        // commentDate: ,
-        // studentNum: 11,
-        userId: this.appService.myInfo.userId,   
-        // userName: 'string',
-        // userImg: '',
-        emoticon: 'emoti001',
+      let paramJson = {
+        postId: this.postId,
+        // studentNum: 99,
+        userId: this.appService.myInfo.userId,
+        // userName: "에러",
+        // userImg: null,
+        emoticon: '',
         comment: comment
+        // good: 0
       }
 
-      new Promise((resolve, reject) => {
-        this.httpService.postComment(paramJson).subscribe(
-          data => {
-            console.log(JSON.stringify(data));
-            if(data.result){  //성공
-              resolve();
-            } else {  //실패
-              reject(data.message);
-            }
-          },
-          error => {
-            console.log(error);
-            reject("서버가 불안정합니다.");
+      this.httpService.postComment(paramJson).subscribe(
+        data => {
+          console.log(JSON.stringify(data));
+          if(data.result){
+            this.commentInput = ""; 
+            this.commentRefresh();
+          } else {  //실패
+            this.openSnackBar("서버가 불안정 합니다.");
+            this.router.navigate(['/']);
           }
-        );
-      }).then(() => { //댓글 새로 가져오기
-        this.httpService.getComments(this.post['postsID']).subscribe(
-          data => {
-            console.log(JSON.stringify(data));
-            if(data.length > 0){  //성공
-              this.comments = data[0];
-              resolve();
-            } else {  //실패
-              throw("서버가 불안정합니다.");
-            }
-          },
-          error => {
-            console.log(error);
-            this.comments = [this.httpService.errorComment];
-          }
-        );
-      }).catch(err => {
-        alert(err);
-      });
+        },
+        error => {
+          console.log(error);
+          alert(error);
+        }
+      );
     }
+  }
+
+  pressGood(postId:number){ //좋아요
+    var isAlreadyUse = true;
+    //쿠키 가져오기==================================================
+    var userGoodBadInfo:string = this.cookieService.get('nsnest_good_bad_info');
+    if(!userGoodBadInfo){
+      isAlreadyUse = false;
+    } else {
+      let usedPostIdArr:string[] = userGoodBadInfo.split(',');
+      var isContainPostId:boolean = false;
+      for (const usedPostId of usedPostIdArr) {
+        if (usedPostId == postId.toString()) {
+          isContainPostId = true;
+        }
+      }
+
+      if(!isContainPostId){
+        isAlreadyUse = false;
+      }
+    }
+    //=========================================================
+
+    if(isAlreadyUse){ //이미 사용하셨습니다.
+      this.openSnackBar("이미 투표하셨습니다.");
+    } else {
+      this.httpService.putPostGoodBad(postId, true).subscribe(
+        data => {
+          console.log(JSON.stringify(data));
+          if(data.result){
+            this.openSnackBar("좋아요 성공");
+
+            //쿠키 적용하기==================================================
+            if(!userGoodBadInfo){
+              userGoodBadInfo = postId.toString();
+            } else {
+              userGoodBadInfo = userGoodBadInfo.concat(',' + postId.toString())
+            }
+            this.cookieService.put('nsnest_good_bad_info', userGoodBadInfo, { expires: new Date('2030-07-19') });
+            //=========================================================
+
+            this.post.good = this.post.good + 1;
+          } else {
+            this.openSnackBar("좋아요 실패");
+          }
+        },
+        error => {
+          console.log(error);
+          this.openSnackBar("좋아요 실패 - " + error);
+        }
+      ); 
+    }
+  }
+
+  pressBad(postId:number){  //싫어요
+    var isAlreadyUse = true;
+    //쿠키 가져오기==================================================
+    var userGoodBadInfo:string = this.cookieService.get('nsnest_good_bad_info');
+    if(!userGoodBadInfo){
+      isAlreadyUse = false;
+    } else {
+      let usedPostIdArr:string[] = userGoodBadInfo.split(',');
+      var isContainPostId:boolean = false;
+      for (const usedPostId of usedPostIdArr) {
+        if (usedPostId == postId.toString()) {
+          isContainPostId = true;
+        }
+      }
+
+      if(!isContainPostId){
+        isAlreadyUse = false;
+      }
+    }
+    //=========================================================
+
+    if(isAlreadyUse){ //이미 사용하셨습니다.
+      this.openSnackBar("이미 투표하셨습니다.");
+    } else {
+      this.httpService.putPostGoodBad(postId, false).subscribe(
+        data => {
+          console.log(JSON.stringify(data));
+          if(data.result){
+            this.openSnackBar("싫어요 성공");
+
+            //쿠키 적용하기==================================================
+            if(!userGoodBadInfo){
+              userGoodBadInfo = postId.toString();
+            } else {
+              userGoodBadInfo = userGoodBadInfo.concat(',' + postId.toString())
+            }
+            this.cookieService.put('nsnest_good_bad_info', userGoodBadInfo, { expires: new Date('2030-07-19') });
+            //=========================================================
+
+            this.post.bad = this.post.bad + 1;
+          } else {
+            this.openSnackBar("싫어요 실패");
+          }
+        },
+        error => {
+          console.log(error);
+          this.openSnackBar("싫어요 실패 - " + error);
+        }
+      );
+    }
+  }
+
+  pressDeletePost(postId:number){ //게시글 삭제
+    this.httpService.deletePost(postId).subscribe(
+      data => {
+        console.log(JSON.stringify(data));
+        if(data.result){
+          this.openSnackBar("게시글 삭제 성공");
+          this.router.navigate(['/']);
+        } else {
+          this.openSnackBar("게시글 삭제 실패");
+        }
+      },
+      error => {
+        console.log(error);
+        this.openSnackBar("게시글 삭제 실패 - " + error);
+      }
+    );
+  }
+
+  pressDeleteComment(commentId:number){
+    this.httpService.deleteComment(commentId).subscribe(
+      data => {
+        console.log(JSON.stringify(data));
+        if(data.result){
+          this.openSnackBar("코멘트 삭제 성공");
+          this.commentRefresh();
+        } else {
+          this.openSnackBar("코멘트 삭제 실패");
+        }
+      },
+      error => {
+        console.log(error);
+        this.openSnackBar("코멘트 삭제 실패 - " + error);
+      }
+    );
   }
 
   openSnackBar(message: string) {
     this.snackBar.open(message, null, {
       duration: 2000,
     });
+  }
+
+  replaceLineBreak(s:string) {
+    return s && s.replace(/\n/gi,'<br />');
   }
 }
