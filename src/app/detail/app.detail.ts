@@ -10,6 +10,8 @@ import { Strings } from '@app/Strings';
 import { ShowUserInfoDialog } from '../sideUserList/app.sideUserList';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { HttpService } from '../service/http.service';
+import { AppService } from '../service/appService';
+import { CookieService } from 'angular2-cookie/core';
 
 import * as JSZip from '../../../node_modules/jszip/dist/jszip';
 import * as JSZipUtils from '../../../node_modules/jszip-utils/dist/jszip-utils';
@@ -24,25 +26,15 @@ export class AppDetail implements OnInit {
   isLoading = true;
   testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
 
-  myInfo:user = {
-    userId: 11,
-    name: '권오규',
-    intro: '프로핑명 입니다.',
-    description: '유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.',
-    studentNum:11,
-    recentDate: new Date('1/1/16'),
-    image: this.testImage,
-    subImage01: Strings.TEST_IMAGE2
-  }
-
   classify:string;
-  isMine:boolean;
-  postId:string;
+  isMine:boolean = false;
+  postId:number;
   post:posts;
   safeHtml:SafeHtml;
   marker:marker;
-  comments:comment[];
-  constructor(private router: Router, private appService: AppService, private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar) { }
+  comments:comment[] = [];
+  commentInput:string;
+  constructor(private router: Router, private appService: AppService, private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar, private cookieService:CookieService) { }
 
   ngOnInit() {
     if(!this.appService.isAppLogin){
@@ -60,22 +52,22 @@ export class AppDetail implements OnInit {
         data => {
           console.log(JSON.stringify(data));
           //파싱해라
-          this.post = this.appService.postFactory(data[0]);
+          this.post = this.appService.postFactory(data)[0];
           this.isLoading = false;
           this.initDetail();  //뷰 초기화
         },
         error => {
           console.error("[error] - getPost:" + this.postId);
-          this.post = this.httpService.errorPost;
+          // this.post = this.httpService.errorPost;
           this.isLoading = false;
-          this.initDetail();  //뷰 초기화
+          this.router.navigate(['/']);
         }
       );
     }
   }
 
   initDetail(){
-    if(this.myInfo.userId == this.post.publisherId){
+    if(this.appService.myInfo.userId == this.post.publisherId){
       //자기 자신의 글
       this.isMine = true;
     }
@@ -96,43 +88,22 @@ export class AppDetail implements OnInit {
         this.classify = "error";
     }
 
-    if(this.post['commentId'] && this.post['commentId'].length > 0){
-      this.httpService.getComments(this.post['commentId']).subscribe(
+    this.commentRefresh();
+  }
+
+  commentRefresh(){
+    if(this.post['commentCount'] > 0){
+      this.httpService.getComments(this.postId).subscribe(
         data => {
           console.log(JSON.stringify(data));
-          this.comments = data;
+          this.comments = this.appService.commentFactory(data);
         },
         error => {
           console.log(error);
-          this.comments = [this.httpService.errorComment];
+          // this.comments = [this.httpService.errorComment];
         }
       );
     }
-    
-    // this.comments = [
-    //   {
-    //     commentId: 1103,
-    //     commentDate: new Date('3/19/18'),
-    //     studentNum: 11,
-    //     userId: 120,
-    //     userName: "권오규",
-    //     userImg: this.testImage,
-    //     emoticon: null,
-    //     comment: "코맨트 달았습니다.ddㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ",
-    //     good: 99
-    //   }, 
-    //   {
-    //     commentId: 1104,
-    //     commentDate: new Date('3/19/18'),
-    //     studentNum: 15,
-    //     userId: 123,
-    //     userName: "조상우",
-    //     userImg: this.testImage,
-    //     emoticon: null,
-    //     comment: "코맨트 달았습니다.2 ㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\nㄴㄴㄴㄴㄴㄴㄴㄴ\n",
-    //     good: 1
-    //   }
-    // ];
   }
   
   pressOneUser(userId:number){
@@ -212,19 +183,26 @@ export class AppDetail implements OnInit {
     }else{
       //코멘트 등록 후 업데이트
       let paramJson = {
-        studentNum: 99,
-        userId: 9999,
-        userName: "에러",
-        userImg: null,
-        emoticon: null,
-        comment: "코멘트를 불러오지 못하였습니다.",
-        good: 0
+        postId: this.postId,
+        // studentNum: 99,
+        userId: this.appService.myInfo.userId,
+        // userName: "에러",
+        // userImg: null,
+        emoticon: '',
+        comment: comment
+        // good: 0
       }
 
       this.httpService.postComment(paramJson).subscribe(
         data => {
           console.log(JSON.stringify(data));
-          this.comments.push(data);
+          if(data.result){
+            this.commentInput = ""; 
+            this.commentRefresh();
+          } else {  //실패
+            this.openSnackBar("서버가 불안정 합니다.");
+            this.router.navigate(['/']);
+          }
         },
         error => {
           console.log(error);
@@ -234,9 +212,153 @@ export class AppDetail implements OnInit {
     }
   }
 
+  pressGood(postId:number){ //좋아요
+    var isAlreadyUse = true;
+    //쿠키 가져오기==================================================
+    var userGoodBadInfo:string = this.cookieService.get('nsnest_good_bad_info');
+    if(!userGoodBadInfo){
+      isAlreadyUse = false;
+    } else {
+      let usedPostIdArr:string[] = userGoodBadInfo.split(',');
+      var isContainPostId:boolean = false;
+      for (const usedPostId of usedPostIdArr) {
+        if (usedPostId == postId.toString()) {
+          isContainPostId = true;
+        }
+      }
+
+      if(!isContainPostId){
+        isAlreadyUse = false;
+      }
+    }
+    //=========================================================
+
+    if(isAlreadyUse){ //이미 사용하셨습니다.
+      this.openSnackBar("이미 투표하셨습니다.");
+    } else {
+      this.httpService.putPostGoodBad(postId, true).subscribe(
+        data => {
+          console.log(JSON.stringify(data));
+          if(data.result){
+            this.openSnackBar("좋아요 성공");
+
+            //쿠키 적용하기==================================================
+            if(!userGoodBadInfo){
+              userGoodBadInfo = postId.toString();
+            } else {
+              userGoodBadInfo = userGoodBadInfo.concat(',' + postId.toString())
+            }
+            this.cookieService.put('nsnest_good_bad_info', userGoodBadInfo, { expires: new Date('2030-07-19') });
+            //=========================================================
+
+            this.post.good = this.post.good + 1;
+          } else {
+            this.openSnackBar("좋아요 실패");
+          }
+        },
+        error => {
+          console.log(error);
+          this.openSnackBar("좋아요 실패 - " + error);
+        }
+      ); 
+    }
+  }
+
+  pressBad(postId:number){  //싫어요
+    var isAlreadyUse = true;
+    //쿠키 가져오기==================================================
+    var userGoodBadInfo:string = this.cookieService.get('nsnest_good_bad_info');
+    if(!userGoodBadInfo){
+      isAlreadyUse = false;
+    } else {
+      let usedPostIdArr:string[] = userGoodBadInfo.split(',');
+      var isContainPostId:boolean = false;
+      for (const usedPostId of usedPostIdArr) {
+        if (usedPostId == postId.toString()) {
+          isContainPostId = true;
+        }
+      }
+
+      if(!isContainPostId){
+        isAlreadyUse = false;
+      }
+    }
+    //=========================================================
+
+    if(isAlreadyUse){ //이미 사용하셨습니다.
+      this.openSnackBar("이미 투표하셨습니다.");
+    } else {
+      this.httpService.putPostGoodBad(postId, false).subscribe(
+        data => {
+          console.log(JSON.stringify(data));
+          if(data.result){
+            this.openSnackBar("싫어요 성공");
+
+            //쿠키 적용하기==================================================
+            if(!userGoodBadInfo){
+              userGoodBadInfo = postId.toString();
+            } else {
+              userGoodBadInfo = userGoodBadInfo.concat(',' + postId.toString())
+            }
+            this.cookieService.put('nsnest_good_bad_info', userGoodBadInfo, { expires: new Date('2030-07-19') });
+            //=========================================================
+
+            this.post.bad = this.post.bad + 1;
+          } else {
+            this.openSnackBar("싫어요 실패");
+          }
+        },
+        error => {
+          console.log(error);
+          this.openSnackBar("싫어요 실패 - " + error);
+        }
+      );
+    }
+  }
+
+  pressDeletePost(postId:number){ //게시글 삭제
+    this.httpService.deletePost(postId).subscribe(
+      data => {
+        console.log(JSON.stringify(data));
+        if(data.result){
+          this.openSnackBar("게시글 삭제 성공");
+          this.router.navigate(['/']);
+        } else {
+          this.openSnackBar("게시글 삭제 실패");
+        }
+      },
+      error => {
+        console.log(error);
+        this.openSnackBar("게시글 삭제 실패 - " + error);
+      }
+    );
+  }
+
+  pressDeleteComment(commentId:number){
+    this.httpService.deleteComment(commentId).subscribe(
+      data => {
+        console.log(JSON.stringify(data));
+        if(data.result){
+          this.openSnackBar("코멘트 삭제 성공");
+          this.commentRefresh();
+        } else {
+          this.openSnackBar("코멘트 삭제 실패");
+        }
+      },
+      error => {
+        console.log(error);
+        this.openSnackBar("코멘트 삭제 실패 - " + error);
+      }
+    );
+  }
+
   openSnackBar(message: string) {
     this.snackBar.open(message, null, {
       duration: 2000,
     });
+  }
+
+  replaceLineBreak(s:string) {
+    return s && s.replace(/\n/gi,'<br />');
   }
 }

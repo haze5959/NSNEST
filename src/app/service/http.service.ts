@@ -65,7 +65,7 @@ export class HttpService {
     return this.http.get<Array<any>>(requestUrl);
   }
 
-  getPost(postId: string): Observable<Array<any>> {
+  getPost(postId: number): Observable<Array<any>> {
     var accessToken = "";
     this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -99,7 +99,7 @@ export class HttpService {
    * 코멘트 가져오기
    */
   getComments(postId: number): Observable<Array<any>> {
-    const requestUrl = `${environment.apiUrl}comments?postId=${postId}`;
+    const requestUrl = `${environment.apiUrl}comment?postId=${postId}`;
 
     return this.http.get<Array<any>>(requestUrl);
   }
@@ -156,8 +156,8 @@ export class HttpService {
    */
   postComment(commentJson:any): any {
     const requestUrl = `${environment.apiUrl}comment`;
-
-    return this.http.post(requestUrl, commentJson);
+    const payload = {payload: commentJson}
+    return this.http.post(requestUrl, payload);
   }
 
   /**
@@ -177,7 +177,7 @@ export class HttpService {
   /**
    * 게시글 수정하기
    */
-  putPost(postJson:any): any {
+  putPostGoodBad(postId:number, isGood:boolean): any {
     var accessToken = "";
     this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -201,7 +201,10 @@ export class HttpService {
 
     let param = {
       accessToken: accessToken,
-      payload: postJson
+      payload: {
+        postId: postId,
+        isGood: isGood
+      }
     }
     
     return this.http.put(requestUrl, param);
@@ -213,7 +216,7 @@ export class HttpService {
   /**
    * 게시글 삭제
    */
-  deletePost(postId:String): any {
+  deletePost(postId:number): any {
     var accessToken = "";
     this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -233,7 +236,7 @@ export class HttpService {
       });
     }
     
-    const requestUrl = `${environment.apiUrl}post?postId=${postId}&accessToken=${accessToken}`;
+    const requestUrl = `${environment.apiUrl}posts?postId=${postId}&accessToken=${accessToken}`;
 
     return this.http.delete(requestUrl);
   }
@@ -241,8 +244,8 @@ export class HttpService {
   /**
    * 코멘트 삭제
    */
-  deleteComment(commentId:String): any {
-    const requestUrl = `${environment.apiUrl}comments?commentId=${commentId}`;
+  deleteComment(commentId:number): any {
+    const requestUrl = `${environment.apiUrl}comment?commentId=${commentId}`;
 
     return this.http.delete(requestUrl);
   }
@@ -283,6 +286,7 @@ export class HttpService {
   }
 
   errorUser:user = {
+    userId: 999999,
     name: '에러',
     intro: '유저정보를 불러오지 못하였습니다.',
     description: '유저정보를 불러오지 못하였습니다.',

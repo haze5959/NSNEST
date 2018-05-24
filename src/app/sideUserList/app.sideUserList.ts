@@ -14,6 +14,7 @@ export class AppSideUserList {
   
   connectedUsers: user[] = [
     {
+      userId: 9999,
       name: '권오규',
       intro: '프로핑명 입니다.',
       description: '유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.',
@@ -23,12 +24,14 @@ export class AppSideUserList {
       subImage01: Strings.TEST_IMAGE2
     },
     {
+      userId: 9999,
       name: '이한빈',
       studentNum:12,
       recentDate: new Date('1/17/16'),
       image: this.testImage
     },
     {
+      userId: 9999,
       name: '유현우',
       studentNum:13,
       recentDate: new Date('1/28/16'),
@@ -38,24 +41,28 @@ export class AppSideUserList {
 
   allUsers: user[] = [
     {
+      userId: 9999,
       name: '서명균',
       studentNum:11,
       recentDate: new Date('1/1/16'),
       image: this.testImage
     },
     {
+      userId: 9999,
       name: '박상은',
       studentNum:12,
       recentDate: new Date('1/17/16'),
       image: this.testImage
     },
     {
+      userId: 9999,
       name: '서영광',
       studentNum:13,
       recentDate: new Date('1/28/16'),
       image: this.testImage
     },
     {
+      userId: 9999,
       name: '이중민',
       studentNum:14,
       recentDate: new Date('1/28/16'),
