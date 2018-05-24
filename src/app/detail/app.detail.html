@@ -96,8 +96,8 @@
   <!--=================== 코맨트 달기 =====================-->
   <mat-list>
     <mat-list-item class="detail-comment">
-      <div mat-list-icon [style.background-image]="myInfo.image" class="profile-image"></div>
-      <h4 mat-line>{{myInfo.name}}</h4>
+      <div mat-list-icon [style.background-image]="appService.myInfo.image" class="profile-image"></div>
+      <h4 mat-line>{{appService.myInfo.name}}</h4>
       <!-- <p mat-line>{{comment.commentDate | date:'M월 d일 H시'}}</p> -->
       <mat-form-field class="comment-content-input">
         <textarea #comment matInput placeholder="댓글달기"></textarea>

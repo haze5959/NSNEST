@@ -27,6 +27,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
 
   //프로필 관련 정보
   myInfo:user = {
+    userId: 1000,
     studentNum: 11,
     name: '권오규',
     image: this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE),

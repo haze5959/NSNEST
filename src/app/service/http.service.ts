@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Observable';
+import { Observable } from "rxjs/Rx";
 import { CognitoUtil } from './awsService/cognito.service';
 import { AppService } from "../service/appService";
 
@@ -8,6 +9,9 @@ import { environment } from '../../environments/environment';
 import { comment } from '../model/comment';
 import { posts } from '../model/posts';
 import { user } from '../model/user';
+
+const timeout = 30000; //30초
+const timeoutText = {text: "타임아웃 되었습니다."};
 
 @Injectable()
 export class HttpService {
@@ -24,13 +28,19 @@ export class HttpService {
   getUsers(sort: string, count: number): Observable<Array<any>> {
     const requestUrl = `${environment.apiUrl}users?sort=${sort}&count=${count}`;
 
-    return this.http.get<Array<any>>(requestUrl);
+    return this.http.get<Array<any>>(requestUrl).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
   }
 
   getUser(userId: number): Observable<Array<any>> {
     const requestUrl = `${environment.apiUrl}users?userId=${userId}`;
 
-    return this.http.get<Array<any>>(requestUrl);
+    return this.http.get<Array<any>>(requestUrl).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
   }
 
   /**
@@ -62,10 +72,13 @@ export class HttpService {
       requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&contents=${contents}&accessToken=${accessToken}`;
     }
     
-    return this.http.get<Array<any>>(requestUrl);
+    return this.http.get<Array<any>>(requestUrl).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
   }
 
-  getPost(postId: string): Observable<Array<any>> {
+  getPost(postId: number): Observable<Array<any>> {
     var accessToken = "";
     this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -86,13 +99,19 @@ export class HttpService {
     }
 
     const requestUrl = `${environment.apiUrl}posts?postId=${postId}&accessToken=${accessToken}`;
-    return this.http.get<Array<any>>(requestUrl);
+    return this.http.get<Array<any>>(requestUrl).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
   }
 
   getPostSize(classify: number): Observable<Array<any>> {
     const requestUrl = `${environment.apiUrl}posts/pageSize?classify=${classify}`;
 
-    return this.http.get<Array<any>>(requestUrl);
+    return this.http.get<Array<any>>(requestUrl).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
   }
 
   /**
@@ -101,7 +120,10 @@ export class HttpService {
   getComments(postId: number): Observable<Array<any>> {
     const requestUrl = `${environment.apiUrl}comments?postId=${postId}`;
 
-    return this.http.get<Array<any>>(requestUrl);
+    return this.http.get<Array<any>>(requestUrl).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
   }
 
   //============================================================
@@ -117,6 +139,9 @@ export class HttpService {
     return this.http.post(requestUrl, {
       "userId": userId,
       "userPw": userPw
+    }).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
     });
   }
 
@@ -148,16 +173,25 @@ export class HttpService {
       accessToken: accessToken,
       payload: postJson
     }
-    return this.http.post(requestUrl, param);
+    return this.http.post(requestUrl, param).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
   }
 
   /**
    * 코멘트 등록하기
    */
-  postComment(commentJson:any): any {
+  postComment(commentJson:comment): any {
     const requestUrl = `${environment.apiUrl}comment`;
+    let param = {
+      payload: commentJson
+    }
 
-    return this.http.post(requestUrl, commentJson);
+    return this.http.post(requestUrl, param).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
   }
 
   /**
@@ -168,6 +202,9 @@ export class HttpService {
 
     return this.http.post(requestUrl, {
       "image": image
+    }).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
     });
   }
 
@@ -204,7 +241,10 @@ export class HttpService {
       payload: postJson
     }
     
-    return this.http.put(requestUrl, param);
+    return this.http.put(requestUrl, param).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
   }
 
   //============================================================
@@ -235,7 +275,10 @@ export class HttpService {
     
     const requestUrl = `${environment.apiUrl}post?postId=${postId}&accessToken=${accessToken}`;
 
-    return this.http.delete(requestUrl);
+    return this.http.delete(requestUrl).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
   }
 
   /**
@@ -244,7 +287,10 @@ export class HttpService {
   deleteComment(commentId:String): any {
     const requestUrl = `${environment.apiUrl}comments?commentId=${commentId}`;
 
-    return this.http.delete(requestUrl);
+    return this.http.delete(requestUrl).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
   }
 
   //============================================================
@@ -283,6 +329,7 @@ export class HttpService {
   }
 
   errorUser:user = {
+    userId: 9999,
     name: '에러',
     intro: '유저정보를 불러오지 못하였습니다.',
     description: '유저정보를 불러오지 못하였습니다.',

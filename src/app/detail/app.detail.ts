@@ -10,10 +10,12 @@ import { Strings } from '@app/Strings';
 import { ShowUserInfoDialog } from '../sideUserList/app.sideUserList';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { HttpService } from '../service/http.service';
+import { AppService } from '../service/appService';
 
 import * as JSZip from '../../../node_modules/jszip/dist/jszip';
 import * as JSZipUtils from '../../../node_modules/jszip-utils/dist/jszip-utils';
 import * as FileSaver from 'file-saver';
+import { resolve } from 'path';
 
 @Component({
   selector: 'app-detail',
@@ -24,20 +26,9 @@ export class AppDetail implements OnInit {
   isLoading = true;
   testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
 
-  myInfo:user = {
-    userId: 11,
-    name: '권오규',
-    intro: '프로핑명 입니다.',
-    description: '유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.',
-    studentNum:11,
-    recentDate: new Date('1/1/16'),
-    image: this.testImage,
-    subImage01: Strings.TEST_IMAGE2
-  }
-
   classify:string;
   isMine:boolean;
-  postId:string;
+  postId:number;
   post:posts;
   safeHtml:SafeHtml;
   marker:marker;
@@ -59,10 +50,14 @@ export class AppDetail implements OnInit {
       .subscribe(
         data => {
           console.log(JSON.stringify(data));
-          //파싱해라
-          this.post = this.appService.postFactory(data[0]);
-          this.isLoading = false;
-          this.initDetail();  //뷰 초기화
+          if (data.length == 0) { //게시글을 못찾음
+            alert("해당 게시글을 찾지 못하였습니다.");
+            this.router.navigate(['/']);
+          } else {
+            this.post = this.appService.postFactory(data)[0];
+            this.isLoading = false;
+            this.initDetail();  //뷰 초기화
+          }
         },
         error => {
           console.error("[error] - getPost:" + this.postId);
@@ -75,7 +70,7 @@ export class AppDetail implements OnInit {
   }
 
   initDetail(){
-    if(this.myInfo.userId == this.post.publisherId){
+    if(this.appService.myInfo.userId == this.post.publisherId){
       //자기 자신의 글
       this.isMine = true;
     }
@@ -96,8 +91,8 @@ export class AppDetail implements OnInit {
         this.classify = "error";
     }
 
-    if(this.post['commentId'] && this.post['commentId'].length > 0){
-      this.httpService.getComments(this.post['commentId']).subscribe(
+    if(this.post['commentCount'] && this.post['commentCount'] > 0){
+      this.httpService.getComments(this.post['postsID']).subscribe(
         data => {
           console.log(JSON.stringify(data));
           this.comments = data;
@@ -141,9 +136,13 @@ export class AppDetail implements OnInit {
     this.httpService.getUser(userId).subscribe(
       data => {
         console.log(JSON.stringify(data));
-        //파싱해라
-        // let user:user = data;
-        // this.openUserDialog(user);
+        if (data.length == 0) { //해당 유저를 못찾음
+          alert("해당 유저를 찾지 못하였습니다.");
+          throw("해당 유저를 찾지 못하였습니다.");
+        } else {
+          let user:user = data[0];
+          this.openUserDialog(user);
+        }
       },
       error => {
         console.log(error);
@@ -211,26 +210,52 @@ export class AppDetail implements OnInit {
       this.openSnackBar("코멘트를 입력해주세요.");
     }else{
       //코멘트 등록 후 업데이트
-      let paramJson = {
-        studentNum: 99,
-        userId: 9999,
-        userName: "에러",
-        userImg: null,
-        emoticon: null,
-        comment: "코멘트를 불러오지 못하였습니다.",
-        good: 0
+      let paramJson:comment = {
+        // commentId: 1111,
+        postId: 1234,
+        // commentDate: ,
+        // studentNum: 11,
+        userId: this.appService.myInfo.userId,   
+        // userName: 'string',
+        // userImg: '',
+        emoticon: 'emoti001',
+        comment: comment
       }
 
-      this.httpService.postComment(paramJson).subscribe(
-        data => {
-          console.log(JSON.stringify(data));
-          this.comments.push(data);
-        },
-        error => {
-          console.log(error);
-          let user:user = this.httpService.errorUser;
-        }
-      );
+      new Promise((resolve, reject) => {
+        this.httpService.postComment(paramJson).subscribe(
+          data => {
+            console.log(JSON.stringify(data));
+            if(data.result){  //성공
+              resolve();
+            } else {  //실패
+              reject(data.message);
+            }
+          },
+          error => {
+            console.log(error);
+            reject("서버가 불안정합니다.");
+          }
+        );
+      }).then(() => { //댓글 새로 가져오기
+        this.httpService.getComments(this.post['postsID']).subscribe(
+          data => {
+            console.log(JSON.stringify(data));
+            if(data.length > 0){  //성공
+              this.comments = data[0];
+              resolve();
+            } else {  //실패
+              throw("서버가 불안정합니다.");
+            }
+          },
+          error => {
+            console.log(error);
+            this.comments = [this.httpService.errorComment];
+          }
+        );
+      }).catch(err => {
+        alert(err);
+      });
     }
   }
 
