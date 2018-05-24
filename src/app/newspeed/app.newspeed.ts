@@ -48,7 +48,6 @@ export class AppNewspeed implements OnInit {
   }
 
   pressPosts(postsID){
-    alert(postsID);
     this.router.navigate(['detail/' + postsID]);
   }
 

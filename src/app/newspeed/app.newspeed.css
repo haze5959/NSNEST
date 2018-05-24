@@ -1,6 +1,6 @@
 .app-newspeed {
     height: 90%;
-    width: 95%;
+    width: 100%;
     margin-left: 10px;
 }
 
@@ -17,6 +17,10 @@
     height: 100%;
     width: 100%;
     overflow: scroll;
+}
+
+.posts-list {
+    margin-right: 50px !important;
 }
 
 .posts-card:hover {

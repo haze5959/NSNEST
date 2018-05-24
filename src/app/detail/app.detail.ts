@@ -206,7 +206,8 @@ export class AppDetail implements OnInit {
         data => {
           console.log(JSON.stringify(data));
           if(data.result){
-            this.commentInput = ""; 
+            this.post.commentCount = this.post.commentCount + 1;
+            this.commentInput = "";
             this.commentRefresh();
           } else {  //실패
             this.openSnackBar("서버가 불안정 합니다.");

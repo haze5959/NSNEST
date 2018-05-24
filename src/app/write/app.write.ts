@@ -88,6 +88,7 @@ export class AppWrite implements OnInit {
           post.postClassify = 10;
           post.title = this.titleFormControl.value; //제목입력
           post.body = this.editorContent.value; //본문입력
+          alert(post.body);
           this.httpService.postPost(post)
           .subscribe(
             data => {
@@ -97,6 +98,7 @@ export class AppWrite implements OnInit {
                 this.snackBar.open("게시글 업로드 완료", "확인", {
                   duration: 2000,
                 });
+                this.router.navigate(['/']);
               } else {  //실패
                 this.snackBar.open("게시글 업로드 실패 - " + data.message, "확인", {
                   duration: 5000,

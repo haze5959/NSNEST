@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material';
 import { HttpService } from '../service/http.service';
+import { Router } from '@angular/router';
 
 import {zip} from 'rxjs/observable/zip';
 import {of as observableOf} from 'rxjs/observable/of';
@@ -9,9 +10,6 @@ import {map} from 'rxjs/operators/map';
 import {startWith} from 'rxjs/operators/startWith';
 import {switchMap} from 'rxjs/operators/switchMap';
 import { AppService } from '../service/appService';
-// import { posts } from '../model/posts';
-// import { DomSanitizer } from '@angular/platform-browser';
-// import { Strings } from '@app/Strings';
 
 @Component({
   selector: 'app-board',
@@ -21,10 +19,10 @@ import { AppService } from '../service/appService';
 export class AppBoard implements OnInit{
   
   isLoading = true;
-  pageSize = 10;
+  pageSize = 0;
   boardPosts = [];
 
-  constructor(private httpService: HttpService, public appService: AppService) {}
+  constructor(private httpService: HttpService, public appService: AppService, private router: Router) {}
 
   ngOnInit() {
     zip(
@@ -44,9 +42,6 @@ export class AppBoard implements OnInit{
         this.isLoading = false;
       }
     );
-
-
-    
   }
 
   applyFilter(filterValue: string) {
@@ -91,5 +86,9 @@ export class AppBoard implements OnInit{
         // this.initDetail();  //뷰 초기화
       }
     );
+  }
+
+  pressPost(postId:number){
+    this.router.navigate(['detail/' + postId]);
   }
 }
