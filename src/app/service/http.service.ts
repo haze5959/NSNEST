@@ -332,11 +332,7 @@ export class HttpService {
   }
 
   errorUser:user = {
-<<<<<<< HEAD
-    userId: 9999,
-=======
     userId: 999999,
->>>>>>> e980b9423220e68bee2b9bf947f4df03f83cbc6b
     name: '에러',
     intro: '유저정보를 불러오지 못하였습니다.',
     description: '유저정보를 불러오지 못하였습니다.',
