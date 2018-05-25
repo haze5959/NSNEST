@@ -13,7 +13,8 @@
         <mat-card-subtitle>{{post.publisherIntro}}</mat-card-subtitle>
       </mat-card-header>
       <h1>{{post.title}}</h1>
-      <mat-card-content class="ql-editor">
+      <mat-divider></mat-divider>
+      <mat-card-content class="ql-editor font-size20">
         <p [innerHTML]="safeHtml"></p>
       </mat-card-content>
     </mat-card>

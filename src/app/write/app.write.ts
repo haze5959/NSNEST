@@ -194,7 +194,30 @@ export class AppWrite implements OnInit {
     console.log($event.target.files[0]);
     for ( var i=0; i<$event.target.files.length; i++){
       this.isLoading = true;
-      //todo: 서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기
+      //서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기
+      this.httpService.uploadImage
+      .subscribe(
+        data => {
+          this.isLoading = false;
+          console.log(JSON.stringify(data));
+          if(data.result){  //성공
+            this.snackBar.open("게시글 업로드 완료", "확인", {
+              duration: 2000,
+            });
+            this.router.navigate(['/']);
+          } else {  //실패
+            this.snackBar.open("게시글 업로드 실패 - " + data.message, "확인", {
+              duration: 5000,
+            });
+          }
+        },
+        error => {
+          this.isLoading = false;
+          console.error("[error] - " + error.error.text);
+          alert("[error] - " + error.error.text);
+        }
+      );
+
       this.isLoading = false;
   
       switch(this.classify){

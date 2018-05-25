@@ -19,11 +19,11 @@
         
         <!-- 컬럼 -->
         <div class="board-colum">
-            <h4 class="board-table-id">번호</h4>
+            <h4 class="board-table-id" (click)="pressOrderBy('id')">{{orderBy == 'id' ? (orderBySeq == 'desc' ? '↓':'↑') : '↕' }}번호</h4>
             <h4 class="board-table-author">글쓴이</h4>
             <h4 class="board-table-title">제목</h4>
-            <h4 class="board-table-good">좋아요</h4>
-            <h4 class="board-table-bad">싫어요</h4>
+            <h4 class="board-table-good" (click)="pressOrderBy('good')">{{orderBy == 'good' ? (orderBySeq == 'desc' ? '↓':'↑') : '↕' }}좋아요</h4>
+            <h4 class="board-table-bad" (click)="pressOrderBy('bad')">{{orderBy == 'bad' ? (orderBySeq == 'desc' ? '↓':'↑') : '↕' }}싫어요</h4>
         </div>
         <mat-divider></mat-divider>
         <!-- 데이터 -->
@@ -38,7 +38,7 @@
             <mat-divider></mat-divider>
         </mat-nav-list>
         
-        <mat-paginator [length]="boardPosts.length" [pageSize]="pageSize" [showFirstLastButtons]="true" [hidePageSize]="true" (page)="pageEvent($event)">
+        <mat-paginator [length]="pageLength" [pageSize]="pageSize" [showFirstLastButtons]="true" [hidePageSize]="true" (page)="pageEvent($event)">
         </mat-paginator>
     </div>
 </div>

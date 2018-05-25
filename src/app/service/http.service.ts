@@ -105,8 +105,11 @@ export class HttpService {
     });
   }
 
-  getPostSize(classify: number): Observable<Array<any>> {
-    const requestUrl = `${environment.apiUrl}posts/pageSize?classify=${classify}`;
+  getPostSize(classify: number, contents?: string): Observable<Array<any>> {
+    var requestUrl = `${environment.apiUrl}posts/pageSize?classify=${classify}`;
+    if(contents){
+      requestUrl = requestUrl + `&contents=${contents}`;
+    }
 
     return this.http.get<Array<any>>(requestUrl).timeout(timeout)
     .catch((err:Response) => {
@@ -197,11 +200,12 @@ export class HttpService {
   /**
    * 이미지 등록하기
    */
-  uploadImage(image: ImageBitmap): any {
-    const requestUrl = `${environment.apiUrl}comment`;
+  uploadImage(type:string ,image: ImageBitmap): any {
+    const requestUrl = `${environment.apiUrl}file`;
 
     return this.http.post(requestUrl, {
-      "image": image
+      type: type,
+      image: image
     }).timeout(timeout)
     .catch((err:Response) => {
       return Observable.throw({error: timeoutText});
