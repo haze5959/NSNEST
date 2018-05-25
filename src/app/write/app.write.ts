@@ -192,59 +192,122 @@ export class AppWrite implements OnInit {
 
   addImageAndUploadServer($event) {
     console.log($event.target.files[0]);
-    for ( var i=0; i<$event.target.files.length; i++){
-      this.isLoading = true;
-      //서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기
-      this.httpService.uploadImage
-      .subscribe(
-        data => {
-          this.isLoading = false;
-          console.log(JSON.stringify(data));
-          if(data.result){  //성공
-            this.snackBar.open("게시글 업로드 완료", "확인", {
-              duration: 2000,
-            });
-            this.router.navigate(['/']);
-          } else {  //실패
-            this.snackBar.open("게시글 업로드 실패 - " + data.message, "확인", {
-              duration: 5000,
-            });
-          }
-        },
-        error => {
-          this.isLoading = false;
-          console.error("[error] - " + error.error.text);
-          alert("[error] - " + error.error.text);
-        }
-      );
-
-      this.isLoading = false;
+    // for ( var i=0; i<$event.target.files.length; i++){
+    // }
   
-      switch(this.classify){
-        case 'post':{ //게시글
-          console.log('게시글 이미지 업로드 완료');
-          var range = this.quillInstance.getSelection(!this.quillInstance.hasFocus()); 
-          this.quillInstance.insertEmbed(range, 'image', "/../assets/testImage2.jpg");
-          break;
-        }
-        case 'elbum':{ //앨범
-          console.log('앨범 이미지 업로드 완료');
-          this.imageArr.push("/../assets/testImage2.jpg");
-          console.log(this.imageArr.length);
-          break;
-        }
-        case 'map':{ //맛집
-          console.log('맛집 이미지 업로드 완료');
-          this.imageArr.push("/../assets/testImage2.jpg");
-          console.log(this.imageArr.length);
-          break;
-        }
-        default:{
-          console.error('알 수 없는 이미지 업로드');
-          break;
-        }
-      }  
-    }
+    switch(this.classify){
+      case 'post':{ //게시글
+        //서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기=============================
+        this.isLoading = true;
+        this.httpService.uploadImage('elbum', $event.target.files)
+        .subscribe(
+          data => {
+            this.isLoading = false;
+            console.log(JSON.stringify(data));
+            if(data.result){  //성공
+              console.log('게시글 이미지 업로드 완료');
+              var range = this.quillInstance.getSelection(!this.quillInstance.hasFocus()); 
+              this.quillInstance.insertEmbed(range, 'image', data.data);
+              this.snackBar.open("게시글 업로드 완료", "확인", {
+                duration: 2000,
+              });
+            } else {  //실패
+              this.snackBar.open("게시글 업로드 실패 - " + data.message, "확인", {
+                duration: 5000,
+              });
+            }
+            this.isLoading = false;
+          },
+          error => {
+            this.isLoading = false;
+            console.error("[error] - " + error.error.text);
+            alert("[error] - " + error.error.text);
+          }
+        );
+        //======================================================================
+        break;
+      }
+      case 'elbum':{ //앨범
+        //서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기=============================
+        this.isLoading = true;
+        this.httpService.uploadImage('elbum', $event.target.files)
+        .subscribe(
+          data => {
+            this.isLoading = false;
+            console.log(JSON.stringify(data));
+            if(data.result){  //성공
+              console.log('앨범 이미지 업로드 완료');
+              if(data.data.length > 0){
+                for (const imagePath in data.data) {
+                  this.imageArr.push(imagePath);
+                  console.log(this.imageArr.length);
+                }
+              }
+              this.snackBar.open("앨범 이미지 업로드 완료", "확인", {
+                duration: 2000,
+              });
+        
+            } else {  //실패
+              this.snackBar.open("앨범 업로드 실패 - " + data.message, "확인", {
+                duration: 5000,
+              });
+            }
+            this.isLoading = false;
+          },
+          error => {
+            this.isLoading = false;
+            console.error("[error] - " + error.error.text);
+            alert("[error] - " + error.error.text);
+          }
+        );
+
+        this.isLoading = false;
+        //======================================================================
+        break;
+      }
+      case 'map':{ //맛집
+        //서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기=============================
+        this.isLoading = true;
+        this.httpService.uploadImage('elbum', $event.target.files)
+        .subscribe(
+          data => {
+            this.isLoading = false;
+            console.log(JSON.stringify(data));
+            if(data.result){  //성공
+              console.log('맛집 이미지 업로드 완료');
+              if(data.data.length > 0){
+                for (const imagePath in data.data) {
+                  this.imageArr.push(imagePath);
+                  console.log(this.imageArr.length);
+                }
+              }
+              this.snackBar.open("맛집 이미지 업로드 완료", "확인", {
+                duration: 2000,
+              });
+        
+            } else {  //실패
+              this.snackBar.open("맛집 업로드 실패 - " + data.message, "확인", {
+                duration: 5000,
+              });
+            }
+            this.isLoading = false;
+          },
+          error => {
+            this.isLoading = false;
+            console.error("[error] - " + error.error.text);
+            alert("[error] - " + error.error.text);
+          }
+        );
+
+        this.isLoading = false;
+        //======================================================================
+        break;
+      }
+      default:{
+        console.error('알 수 없는 이미지 업로드');
+        break;
+      }
+    }  
   }
 
   addEmoticon(){

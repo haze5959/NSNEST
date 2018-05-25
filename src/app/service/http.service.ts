@@ -200,7 +200,7 @@ export class HttpService {
   /**
    * 이미지 등록하기
    */
-  uploadImage(type:string ,image: ImageBitmap): any {
+  uploadImage(type:string ,image: File[]): any {
     const requestUrl = `${environment.apiUrl}file`;
 
     return this.http.post(requestUrl, {
