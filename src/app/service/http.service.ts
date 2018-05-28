@@ -57,7 +57,7 @@ export class HttpService {
     });
 
     if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
-      alert("토큰 리프레시");
+      // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -88,7 +88,7 @@ export class HttpService {
     });
 
     if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
-      alert("토큰 리프레시");
+      // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -161,7 +161,7 @@ export class HttpService {
     });
 
     if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
-      alert("토큰 리프레시");
+      // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -200,15 +200,37 @@ export class HttpService {
   /**
    * 이미지 등록하기
    */
-  uploadImage(type:string ,image: File[]): any {
-    const requestUrl = `${environment.apiUrl}file`;
+  uploadImage(type:string ,image: File): any {
+    var accessToken = "";
+    this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+    });
 
-    return this.http.post(requestUrl, {
-      type: type,
-      image: image
-    }).timeout(timeout)
+    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
+      // alert("토큰 리프레시");
+      this.cognitoUtil.refresh();
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+      });
+    }
+
+    const requestUrl = `${environment.apiUrl}file/${type}`;
+
+    const formData = new FormData();
+    formData.append('file', image);
+
+    return this.http.post(requestUrl, formData, {
+      headers: {accessToken: accessToken}
+    })
+    // .timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: err});
     });
   }
 
@@ -228,7 +250,7 @@ export class HttpService {
     });
 
     if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
-      alert("토큰 리프레시");
+      // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -270,7 +292,7 @@ export class HttpService {
     });
 
     if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
-      alert("토큰 리프레시");
+      // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
         callback(): void{},

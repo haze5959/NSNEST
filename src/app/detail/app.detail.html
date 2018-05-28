@@ -29,10 +29,10 @@
         <mat-card-subtitle>{{post.publisherIntro}}</mat-card-subtitle>
       </mat-card-header>
       <div *ngFor="let image of post.images">
-        <img src="{{image}}">
+        <img class="detail-elbum-image" src="{{image}}">
       </div>
       <mat-card-content>
-        <p>{{post.body}}</p>
+        <p class="detail-elbum-body">{{post.body}}</p>
       </mat-card-content>
       <button mat-raised-button (click)="pressImageDownload(post.images)">총 [{{post.images.length}}]개의 이미지 다운로드</button>
     </mat-card>

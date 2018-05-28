@@ -18,11 +18,15 @@
     height: 80%;
 }
 
-.write-title {
+/* .write-title {
     width: 80%;
-}
+} */
 
 .write-elbum {
+}
+
+.elbum-image {
+    height: 280px !important;
 }
 
 .write-elbum-desc {

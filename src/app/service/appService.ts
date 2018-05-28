@@ -48,6 +48,18 @@ export class AppService {
     var result:posts[] = [];
 
     postArr.forEach(element => {
+      let imageArr:string[] = [];
+      if(element[7]){
+        let imageStr:string = element[7];
+        imageArr = imageStr.split(',');
+      }
+
+      let tagArr:string[] = [];
+      if(element[14]){
+        let tagStr:string = element[14];
+        tagArr = tagStr.split(',');
+      }
+
         let posts:posts = {
           postsID: element[0],
           postClassify: element[1],
@@ -56,14 +68,14 @@ export class AppService {
           publisher: element[4],
           publisherIntro: element[5],
           publisherImg: element[6],
-          images: element[7],
+          images: imageArr,
           title: element[8],
           body: element[9],
           good: element[10],
           bad: element[11],
           postDate: element[12],
           marker: element[13],
-          tag: element[14],
+          tag: tagArr,
           commentCount: element[15]
         };
         result.push(posts);

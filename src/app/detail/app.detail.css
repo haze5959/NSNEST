@@ -51,6 +51,15 @@
     max-height:100%;
 }
 
+.detail-elbum-image {
+    max-width: 100%; 
+    margin-bottom: 20px;
+}
+
+.detail-elbum-body {
+    font-size: 20px;
+}
+
 .comment-content {
     padding-left: 5px;
     margin: 10px 0px;

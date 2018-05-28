@@ -16,6 +16,7 @@ import { CookieService } from 'angular2-cookie/core';
 import * as JSZip from '../../../node_modules/jszip/dist/jszip';
 import * as JSZipUtils from '../../../node_modules/jszip-utils/dist/jszip-utils';
 import * as FileSaver from 'file-saver';
+import { saveAs } from 'file-saver/FileSaver';
 import { resolve } from 'path';
 
 @Component({
@@ -148,8 +149,6 @@ export class AppDetail implements OnInit {
   pressImageDownload(images:Array<string>){
     var zip = new JSZip();
     var count = 0;
-    var zipFilename = "zipFilename.zip";
-
     images.forEach(function(url){
       console.log("url : " + url);
       var filename = url.substr(url.lastIndexOf('/') + 1);
@@ -157,13 +156,19 @@ export class AppDetail implements OnInit {
       // loading a file and add it in a zip file
       JSZipUtils.getBinaryContent(url, function (err, data) {
         if(err) {
+          console.error('이미지 압축 에러 - '+ err);
             throw err; // or handle the error
         }
         zip.file(filename, data, {binary:true});
         count++;
         if (count == images.length) {
-          var zipFile = zip.generateAsync({compression:'STORE', type:'base64'});
-          FileSaver.saveAs(zipFile, filename);
+          zip.generateAsync({compression:'STORE', type:'blob'}).then((zipFile) => {
+            saveAs(zipFile, "NSNEST_IMAGES.zip");
+            
+          }).catch((err) => {
+            console.error(err);
+            alert(err);
+          });
         }
       });
     });
@@ -223,11 +228,11 @@ export class AppDetail implements OnInit {
   }
 
   pressGood(postId:number){ //좋아요
-    var isAlreadyUse = true;
+    var isAlreayVote = true;
     //쿠키 가져오기==================================================
     var userGoodBadInfo:string = this.cookieService.get('nsnest_good_bad_info');
     if(!userGoodBadInfo){
-      isAlreadyUse = false;
+      isAlreayVote = false;
     } else {
       let usedPostIdArr:string[] = userGoodBadInfo.split(',');
       var isContainPostId:boolean = false;
@@ -238,12 +243,12 @@ export class AppDetail implements OnInit {
       }
 
       if(!isContainPostId){
-        isAlreadyUse = false;
+        isAlreayVote = false;
       }
     }
     //=========================================================
 
-    if(isAlreadyUse){ //이미 사용하셨습니다.
+    if(isAlreayVote){ //이미 사용하셨습니다.
       this.openSnackBar("이미 투표하셨습니다.");
     } else {
       this.httpService.putPostGoodBad(postId, true).subscribe(
@@ -258,6 +263,7 @@ export class AppDetail implements OnInit {
             } else {
               userGoodBadInfo = userGoodBadInfo.concat(',' + postId.toString())
             }
+            
             this.cookieService.put('nsnest_good_bad_info', userGoodBadInfo, { expires: new Date('2030-07-19') });
             //=========================================================
 
@@ -275,11 +281,11 @@ export class AppDetail implements OnInit {
   }
 
   pressBad(postId:number){  //싫어요
-    var isAlreadyUse = true;
+    var isAlreayVote = true;
     //쿠키 가져오기==================================================
     var userGoodBadInfo:string = this.cookieService.get('nsnest_good_bad_info');
     if(!userGoodBadInfo){
-      isAlreadyUse = false;
+      isAlreayVote = false;
     } else {
       let usedPostIdArr:string[] = userGoodBadInfo.split(',');
       var isContainPostId:boolean = false;
@@ -290,12 +296,12 @@ export class AppDetail implements OnInit {
       }
 
       if(!isContainPostId){
-        isAlreadyUse = false;
+        isAlreayVote = false;
       }
     }
     //=========================================================
 
-    if(isAlreadyUse){ //이미 사용하셨습니다.
+    if(isAlreayVote){ //이미 사용하셨습니다.
       this.openSnackBar("이미 투표하셨습니다.");
     } else {
       this.httpService.putPostGoodBad(postId, false).subscribe(

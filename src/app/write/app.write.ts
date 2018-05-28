@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
+import { environment } from '../../environments/environment';
 import { marker } from "../model/marker";
 import { AppService } from '../service/appService';
 import { HttpService } from '../service/http.service';
@@ -66,7 +67,7 @@ export class AppWrite implements OnInit {
 
   //글 등록!
   pressSaveBtn() {
-    if(this.editorContent.valid && this.titleFormControl.valid){
+    
       var post:posts = {  //게시글 뼈대 제작
         postClassify: 0,
         studentNum: this.appService.myInfo.studentNum,
@@ -85,41 +86,73 @@ export class AppWrite implements OnInit {
       
       switch(this.classify){
         case 'post':{ //게시글
-          post.postClassify = 10;
-          post.title = this.titleFormControl.value; //제목입력
-          post.body = this.editorContent.value; //본문입력
-          alert(post.body);
-          this.httpService.postPost(post)
-          .subscribe(
-            data => {
-              this.isLoading = false;
-              console.log(JSON.stringify(data));
-              if(data.result){  //성공
-                this.snackBar.open("게시글 업로드 완료", "확인", {
-                  duration: 2000,
-                });
-                this.router.navigate(['/']);
-              } else {  //실패
-                this.snackBar.open("게시글 업로드 실패 - " + data.message, "확인", {
-                  duration: 5000,
-                });
+          if(this.editorContent.valid && this.titleFormControl.valid){
+            post.postClassify = 10;
+            post.title = this.titleFormControl.value; //제목입력
+            post.body = this.editorContent.value; //본문입력
+            this.httpService.postPost(post)
+            .subscribe(
+              data => {
+                this.isLoading = false;
+                console.log(JSON.stringify(data));
+                if(data.result){  //성공
+                  this.snackBar.open("게시글 업로드 완료", "확인", {
+                    duration: 2000,
+                  });
+                  this.router.navigate(['/']);
+                } else {  //실패
+                  this.snackBar.open("게시글 업로드 실패 - " + data.message, "확인", {
+                    duration: 5000,
+                  });
+                }
+              },
+              error => {
+                this.isLoading = false;
+                console.error("[error] - " + error.error.text);
+                alert("[error] - " + error.error.text);
               }
-            },
-            error => {
-              this.isLoading = false;
-              console.error("[error] - " + error.error.text);
-              alert("[error] - " + error.error.text);
-            }
-          );
+            );
+          } else {  //벨리데이션 실패
+            this.snackBar.open("제목과 본문을 작성하시오.", "확인", {
+              duration: 2000,
+            });
+          }
           
           break;
         }  
         case 'elbum':{ //앨범
-          post.postClassify = 20;
-          console.log('앨범 업로드 완료');
-          this.snackBar.open("앨범 업로드 완료", "확인", {
-            duration: 2000,
-          });
+          if(this.editorContent.valid){
+            post.postClassify = 20;
+            post.body = this.editorContent.value; //본문입력
+            post.images = this.imageArr;
+            this.httpService.postPost(post)
+            .subscribe(
+              data => {
+                this.isLoading = false;
+                console.log(JSON.stringify(data));
+                if(data.result){  //성공
+                  this.snackBar.open("게시글 업로드 완료", "확인", {
+                    duration: 2000,
+                  });
+                  this.router.navigate(['/']);
+                } else {  //실패
+                  this.snackBar.open("게시글 업로드 실패 - " + data.message, "확인", {
+                    duration: 5000,
+                  });
+                }
+              },
+              error => {
+                this.isLoading = false;
+                console.error("[error] - " + error.error.text);
+                alert("[error] - " + error.error.text);
+              }
+            );
+          } else {  //벨리데이션 실패
+            this.snackBar.open("본문을 작성하시오.", "확인", {
+              duration: 2000,
+            });
+          }
+          
           break;
         }
         case 'map':{ //맛집
@@ -138,11 +171,6 @@ export class AppWrite implements OnInit {
           break;
         }
       }  
-    } else {  //벨리데이션 실패
-      this.snackBar.open("제목과 본문을 작성하시오.", "확인", {
-        duration: 2000,
-      });
-    }
   }
 
   pressDeleteImage(index:number){
@@ -157,6 +185,8 @@ export class AppWrite implements OnInit {
       let dialogRef = this.dialog.open(ShowDetailImageDialog, {
         height: image.height.toString(),
         width: image.width.toString(),
+        maxHeight: '100vmin',
+        maxWidth: '100vmin',
         data: { imageUrl: image.src }
       });
 
@@ -191,9 +221,6 @@ export class AppWrite implements OnInit {
   }
 
   addImageAndUploadServer($event) {
-    console.log($event.target.files[0]);
-    // for ( var i=0; i<$event.target.files.length; i++){
-    // }
   
     switch(this.classify){
       case 'post':{ //게시글
@@ -229,39 +256,7 @@ export class AppWrite implements OnInit {
       }
       case 'elbum':{ //앨범
         //서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기=============================
-        this.isLoading = true;
-        this.httpService.uploadImage('elbum', $event.target.files)
-        .subscribe(
-          data => {
-            this.isLoading = false;
-            console.log(JSON.stringify(data));
-            if(data.result){  //성공
-              console.log('앨범 이미지 업로드 완료');
-              if(data.data.length > 0){
-                for (const imagePath in data.data) {
-                  this.imageArr.push(imagePath);
-                  console.log(this.imageArr.length);
-                }
-              }
-              this.snackBar.open("앨범 이미지 업로드 완료", "확인", {
-                duration: 2000,
-              });
-        
-            } else {  //실패
-              this.snackBar.open("앨범 업로드 실패 - " + data.message, "확인", {
-                duration: 5000,
-              });
-            }
-            this.isLoading = false;
-          },
-          error => {
-            this.isLoading = false;
-            console.error("[error] - " + error.error.text);
-            alert("[error] - " + error.error.text);
-          }
-        );
-
-        this.isLoading = false;
+        this.uploadImages($event.target.files, 0);
         //======================================================================
         break;
       }
@@ -308,6 +303,46 @@ export class AppWrite implements OnInit {
         break;
       }
     }  
+  }
+
+  uploadImages(imageArr:File[], sequence:number){
+    this.isLoading = true;
+    this.httpService.uploadImage('elbum', imageArr[sequence])
+          .subscribe(
+            data => {
+              // console.log(JSON.stringify(data));
+              if(data.result){  //성공
+                const fileInfo = data.message.files.file;
+                if(fileInfo && fileInfo.path){
+                  let filePath:string = fileInfo.path;
+                  filePath = filePath.replace('NSNEST_PUBLIC/', '');
+                  const fileUrl = environment.fileUrl + filePath;
+                  console.log('이미지 업로드 완료 - ' + fileUrl);
+                  this.imageArr.push(fileUrl);
+                } else {
+                  throw new Error('이미지 형식이 이상합니다.');
+                }
+                
+                if(imageArr.length > sequence + 1){
+                  this.snackBar.open(`앨범 이미지 업로드 중... [${sequence + 1}/${imageArr.length}]`, "확인");
+                  // setTimeout(() => this.uploadImages(imageArr, sequence + 1), 2000);
+                  this.uploadImages(imageArr, sequence + 1);
+                  
+                }else{
+                  this.snackBar.open(`앨범 이미지 업로드 완료[${imageArr.length}]`, "확인");
+                  this.isLoading = false;
+                }
+          
+              } else {  //실패
+                throw new Error("앨범 업로드 실패 - " + data.message);
+              }
+            },
+            error => {
+              console.error("앨범 업로드 실패 - " + error.message);
+              alert(`앨범 업로드 실패[${sequence + 1}/${imageArr.length}] - ` + error.message);
+              this.isLoading = false;
+            }
+          );
   }
 
   addEmoticon(){

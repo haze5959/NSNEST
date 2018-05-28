@@ -21,9 +21,9 @@
 
     <!--=================== 앨범 올리기 =====================-->
     <form *ngIf="classify == 'elbum'" class="write-elbum">
-        <mat-form-field class="write-title">
+        <!-- <mat-form-field class="write-title">
             <input matInput placeholder="게시글 제목" [formControl]="titleFormControl">
-        </mat-form-field>
+        </mat-form-field> -->
         <mat-form-field class="write-elbum-desc">
             <textarea matInput [formControl]="editorContent" placeholder="게시글 설명"></textarea>
         </mat-form-field>
@@ -32,10 +32,10 @@
         <button mat-raised-button color="primary" (click)="fileInput.click()" style="margin-bottom:20px;">이미지 등록</button>
         
         <!-- 이미지 표시 -->
-        <mat-grid-list cols="2" rowHeight="1:2" rowHeight="570px" gutterSize="20px">
+        <mat-grid-list cols="3" rowHeight="1:2" rowHeight="400px" gutterSize="20px">
             <mat-grid-tile *ngFor="let image of imageArr; let index = index">
                 <mat-card class="elbum-card">
-                    <img mat-card-image src="{{image}}" alt="Photo">
+                    <img mat-card-image class="elbum-image" src="{{image}}" alt="Photo">
                     <mat-card-actions>
                         <button mat-raised-button color="primary" style="margin-bottom:10px;" (click)="pressDeleteImage(index)">삭제</button>
                         <button mat-raised-button color="primary" style="margin-bottom:10px;" (click)="pressDetailmage(index)">자세히 보기</button>
