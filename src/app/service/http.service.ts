@@ -23,7 +23,7 @@ export class HttpService {
   //============================================================
   /**
    * 유저정보 가져오기
-   * sort = rank:잉여랭크 / stNum:학번
+   * sort = rank:잉여랭크 / update:활동일
    */
   getUsers(sort: string, count: number): Observable<Array<any>> {
     const requestUrl = `${environment.apiUrl}users?sort=${sort}&count=${count}`;

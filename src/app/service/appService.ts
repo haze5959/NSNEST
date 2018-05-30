@@ -106,7 +106,24 @@ export class AppService {
     return result
   }
 
-  // getUserid(): string {
-  //   return this.jwtHelper.decodeToken(this.getToken()).userid;
-  // }
+  userFactory(userArr: Array<any>){
+    var result:user[] = [];
+
+    userArr.forEach(element => {
+        let user:user = {
+          userId: element[0],
+          studentNum: element[1],
+          name: element[2],
+          image: element[3],
+          intro: element[4],
+          description: element[5],
+          recentDate: element[6],
+          subImage01: element[7],
+          point: element[8]
+        };
+        result.push(user);
+    });
+
+    return result
+  }
 }

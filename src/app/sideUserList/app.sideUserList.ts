@@ -1,7 +1,9 @@
-import { Component, Directive, ElementRef, Input, Output, Inject } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, Output, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Strings } from '@app/Strings';
 import { DomSanitizer } from '@angular/platform-browser';
+import { HttpService } from '../service/http.service';
+import { AppService } from '../service/appService';
 import { user } from '../model/user';
 
 @Component({
@@ -9,69 +11,34 @@ import { user } from '../model/user';
   templateUrl: '/app.sideUserList.html',
   styleUrls: ['/app.sideUserList.css']
 })
-export class AppSideUserList {
+export class AppSideUserList implements OnInit {
   testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
   
-  connectedUsers: user[] = [
-    {
-      userId: 1000,
-      name: '권오규',
-      intro: '프로핑명 입니다.',
-      description: '유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.유저 소개입니다.',
-      studentNum:11,
-      recentDate: new Date('1/1/16'),
-      image: this.testImage,
-      subImage01: Strings.TEST_IMAGE2
-    },
-    {
-      userId: 1001,
-      name: '이한빈',
-      studentNum:12,
-      recentDate: new Date('1/17/16'),
-      image: this.testImage
-    },
-    {
-      userId: 1002,
-      name: '유현우',
-      studentNum:13,
-      recentDate: new Date('1/28/16'),
-      image: this.testImage
-    }
-  ];
+  userOrderByLank: user[] = [];
+  recentUsers: user[] = [];
+  
+  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, private appService: AppService, private httpService: HttpService) {}
+  
+  ngOnInit() {
+    //해당 게시글 DB에서 빼온다
+    this.httpService.getUsers('update', 10)
+    .subscribe(
+      data => {
+        console.log(JSON.stringify(data));
+        if (data.length == 0) {
+          alert("유저 정보를 가져오지 못하였습니다.");
+        } else {
+          this.recentUsers = this.appService.userFactory(data)
+          // this.isLoading = false;
+        }
+      },
+      error => {
+        console.error("[error] - error:" + error);
+        alert("유저 정보를 가져오지 못하였습니다. " + error);
+      }
+    );
+  }
 
-  allUsers: user[] = [
-    {
-      userId: 1003,
-      name: '서명균',
-      studentNum:11,
-      recentDate: new Date('1/1/16'),
-      image: this.testImage
-    },
-    {
-      userId: 1004,
-      name: '박상은',
-      studentNum:12,
-      recentDate: new Date('1/17/16'),
-      image: this.testImage
-    },
-    {
-      userId: 1005,
-      name: '서영광',
-      studentNum:13,
-      recentDate: new Date('1/28/16'),
-      image: this.testImage
-    },
-    {
-      userId: 1006,
-      name: '이중민',
-      studentNum:14,
-      recentDate: new Date('1/28/16'),
-      image: this.testImage
-    }
-  ];
-  
-  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer) {}
-  
   pressOneUser(user:user){
     console.log(user.name);
 

@@ -7,7 +7,7 @@ export class user {
     image?: SafeStyle;
     intro?: string;
     description?: string;
-    recentDate?: Date;
+    recentDate?: Date;  //접속일이 아닌 프로필 수정이나 게시글 올렸을 때 활동일
     subImage01?: string;
     point?: number;
 }
