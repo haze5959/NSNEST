@@ -83,7 +83,7 @@
                                 {{posts.bad}}
                             </div>
                         </mat-card-header>
-                        <img mat-card-image src="{{posts.images[0]}}" alt="Photo">
+                        <img mat-card-image src="{{posts.images[0]}}" alt="Photo" onError="this.src='/../assets/testImage.jpg';">
                         <div class="mat-card-image-cover" *ngIf="posts.images.length > 1">{{posts.images.length}} +</div>
                         <mat-card-content>
                             <p class="posts-image-title"> {{posts.body}} </p>

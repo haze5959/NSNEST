@@ -240,7 +240,7 @@ export class HttpService {
   /**
    * 게시글 수정하기
    */
-  putPostGoodBad(postId:number, isGood:boolean): any {
+  putPostGoodBad(postId:number, userId:number, isGood:boolean): any {
     var accessToken = "";
     this.cognitoUtil.getAccessToken({
         callback(): void{},
@@ -266,6 +266,7 @@ export class HttpService {
       accessToken: accessToken,
       payload: {
         postId: postId,
+        userId: userId,
         isGood: isGood
       }
     }
@@ -313,8 +314,8 @@ export class HttpService {
   /**
    * 코멘트 삭제
    */
-  deleteComment(commentId:number): any {
-    const requestUrl = `${environment.apiUrl}comment?commentId=${commentId}`;
+  deleteComment(commentId:number, postId:number): any {
+    const requestUrl = `${environment.apiUrl}comment?commentId=${commentId}&postId=${postId}`;
 
     return this.http.delete(requestUrl).timeout(timeout)
     .catch((err:Response) => {
