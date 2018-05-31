@@ -1,5 +1,5 @@
 <mat-card class="app-card-sideUserList">
-    <mat-tab-group class="app-tab-group">
+    <mat-tab-group class="app-tab-group" (selectedTabChange)="tabChange(event)">
         <!-- 접속 중 인원 리스트 -->
         <mat-tab label="활동순">
                 <mat-list>
@@ -27,7 +27,7 @@
         </mat-tab>
 
         <!-- 잉여랭킹 인원 리스트 -->
-        <mat-tab label="잉여랭킹">
+        <mat-tab label="잉여랭킹" isActive>
                 <mat-list>
                     <h3 mat-subheader>Folders</h3>
                     <mat-nav-list *ngFor="let user of userOrderByLank">
@@ -42,6 +42,24 @@
                         <mat-divider></mat-divider>
                     </mat-nav-list>
                 </mat-list>
+        </mat-tab>
+
+        <!-- 일정 리스트 -->
+        <mat-tab label="일정" disabled>
+            <mat-list>
+                <h3 mat-subheader>Folders</h3>
+                <mat-nav-list *ngFor="let schedule of scheduleArr">
+                    <a mat-list-item (click)="pressOneSchedule(schedule.postId)">
+                        <!-- <mat-icon mat-list-icon>folder</mat-icon> -->
+                        <div class="profile-info">
+                            <h4 class="profile-info-name">{{schedule.title}}</h4>
+                            <p class="profile-info-intro"> {{schedule.startDate | date:'M월 d일 H시'}} ~ {{schedule.endDate | date:'M월 d일 H시'}}</p>
+                            <p class="profile-info-intro"> 참석자 수: {{schedule.participantsId.length}}</p>
+                        </div>
+                    </a>
+                    <mat-divider></mat-divider>
+                </mat-nav-list>
+            </mat-list>
         </mat-tab>
     </mat-tab-group>
 </mat-card>

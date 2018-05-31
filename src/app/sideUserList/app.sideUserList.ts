@@ -1,10 +1,13 @@
 import { Component, OnInit, ElementRef, Input, Output, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Strings } from '@app/Strings';
+import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpService } from '../service/http.service';
 import { AppService } from '../service/appService';
 import { user } from '../model/user';
+import { posts } from '../model/posts';
+import { schedule } from '../model/schedule';
 
 @Component({
   selector: 'app-sideUserList',
@@ -16,8 +19,28 @@ export class AppSideUserList implements OnInit {
   
   userOrderByLank: user[] = [];
   recentUsers: user[] = [];
+  // scheduleArr: schedule[] = [
+  //   {
+  //     scheduleId:1000,
+  //     userId: 1000,
+  //     title: 'test일정001',
+  //     description: '테스트용 일정입니다 001',
+  //     startDate: new Date('18/06/17'),
+  //     endDate: new Date('18/06/18'),
+  //     participantsId: [1001, 1002]
+  //   },
+  //   {
+  //     scheduleId:1001,
+  //     userId: 1001,
+  //     title: 'test일정002',
+  //     description: '테스트용 일정입니다 002',
+  //     startDate: new Date('18/07/17'),
+  //     endDate: new Date('18/07/30'),
+  //     participantsId: []
+  //   }
+  // ];
   
-  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, private appService: AppService, private httpService: HttpService) {}
+  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, private appService: AppService, private httpService: HttpService, private router: Router) {}
   
   ngOnInit() {
     //해당 게시글 DB에서 빼온다
@@ -51,6 +74,14 @@ export class AppSideUserList implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+
+  pressOneSchedule(scheduleId:number){
+    this.router.navigate(['detail/' + scheduleId]);
+  }
+
+  tabChange(event){
+    console.log("testOQOQOQO");
   }
 }
 

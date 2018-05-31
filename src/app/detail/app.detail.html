@@ -74,6 +74,22 @@
     </mat-card>
   </div>
 
+  <!--=================== 일정 =====================-->
+  <div *ngIf="classify == 'schedule'" class="detail-post">
+    <mat-card class="detail-post-card">
+      <mat-card-header>
+        <div mat-card-avatar [style.background-image]="post.publisherImg" class="profile-image" (click)="pressOneUser(post.publisherId)"></div>
+        <mat-card-title>{{post.publisher}}</mat-card-title>
+        <mat-card-subtitle>{{post.publisherIntro}}</mat-card-subtitle>
+      </mat-card-header>
+      <h1>{{post.title}}</h1>
+      <mat-divider></mat-divider>
+      <mat-card-content class="font-size20">
+        <p></p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
   <!--=================== 좋아요 싫어요 글삭제 =====================-->
   <div class="detail-goodBad" *ngIf="!isMine">
     <button mat-raised-button color="primary" class="detail-goodBad-btn" (click)="pressGood(post.postsID)">좋아요({{post.good}})</button>
