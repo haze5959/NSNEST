@@ -29,11 +29,14 @@ export class AppService {
 
     this.myInfo = {
       userId: 999,
-      name: '테스터',
-      intro: '테스터 인트로',
-      description: '테스터 설명',
+      cognitoSub: null,
+      name: '이름',
+      birthDay: null,
+      gender: null,
+      intro: '프로필명을 입력하지 않았습니다.',
+      description: '자기소개를 입력하지 않았습니다.',
       studentNum:9999,
-      recentDate: new Date('9/9/99'),
+      recentDate: new Date(),
       image: null,
       subImage01: null
     }
@@ -110,6 +113,7 @@ export class AppService {
     var result:user[] = [];
 
     userArr.forEach(element => {
+      console.log(element);
         let user:user = {
           userId: element[0],
           studentNum: element[1],

@@ -56,8 +56,8 @@ export class AppSideUserList implements OnInit {
         }
       },
       error => {
-        console.error("[error] - error:" + error);
-        alert("유저 정보를 가져오지 못하였습니다. " + error);
+        console.error("[error] - " + error.error.text);
+        alert("유저 정보를 가져오지 못하였습니다. - " + error.error.text);
       }
     );
   }

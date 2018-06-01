@@ -2,8 +2,11 @@ import { SafeStyle } from "@angular/platform-browser/src/security/dom_sanitizati
 
 export class user {
     userId: number;
+    cognitoSub?: string;
     studentNum: number;
     name: string;
+    birthDay?: Date;
+    gender?: string;
     image?: SafeStyle;
     intro?: string;
     description?: string;

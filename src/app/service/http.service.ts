@@ -129,25 +129,26 @@ export class HttpService {
     });
   }
 
-  //============================================================
-  //POST
-  //============================================================
   /**
-   * 로그인하기
+   * 코그니토를 통한 유저정보 가져오기
    * 서버에서 해당 유저의 정보가 없는 경우, 첫 로그인이라고 판별하고 유저를 디비에 등록시킨다.
    */
-  postLogin(userId:String, userPw:String): any {
-    const requestUrl = `${environment.apiUrl}login`;
+  getUserWithConito(cognitoSub: string, name?: string, birthDay?: string, gender?: string): Observable<Array<any>> {
+    var requestUrl = `${environment.apiUrl}users/cognito?cognitoSub=${cognitoSub}`;
+    if(name && birthDay && gender){
+      requestUrl = requestUrl + `&name=${name}` + `&birthDay=${birthDay}` + `&gender=${gender}`;
+    }
 
-    return this.http.post(requestUrl, {
-      "userId": userId,
-      "userPw": userPw
-    }).timeout(timeout)
+    return this.http.get<Array<any>>(requestUrl).timeout(timeout)
     .catch((err:Response) => {
       return Observable.throw({error: timeoutText});
     });
   }
 
+  //============================================================
+  //POST
+  //============================================================
+  
   /**
    * 게시글 등록하기
    */

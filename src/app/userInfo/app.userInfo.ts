@@ -11,6 +11,8 @@ import { ChallengeParameters, CognitoCallback, LoggedInCallback } from "../servi
 import { environment } from '../../environments/environment';
 
 import { AppService } from '../service/appService';
+import { CognitoUtil } from '../service/awsService/cognito.service';
+import { HttpService } from '../service/http.service';
 
 @Component({
   selector: 'app-userInfo',
@@ -25,7 +27,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   userId = new FormControl('', [Validators.required]);
   userPw = new FormControl('', [Validators.required]);
  
-  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, public userService: UserLoginService, public snackBar: MatSnackBar, public appService: AppService) {}
+  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, private userService: UserLoginService, private snackBar: MatSnackBar, private appService: AppService, private httpService: HttpService, private cognitoUtil: CognitoUtil) {}
 
   ngOnInit(){
     this.appService.isAppLoading = true;
@@ -89,17 +91,49 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
    * AWS Delegate
    */
   isLoggedIn(message: string, isLoggedIn: boolean) {
-    this.appService.isAppLoading = false;
     if(isLoggedIn){ //로그인이 유지되어 있다면
-      this.appService.isAppLogin = true;
+      var userPayload;
+      this.cognitoUtil.getIdToken({
+          callback(): void{},
+          callbackWithParam(result: any): void {
+            console.log(JSON.stringify(result));
+            let jwtHelper: JwtHelper = new JwtHelper();
+            userPayload = result.idToken.payload;
+          }
+      });
+
+      console.log("유저 정보 - " + JSON.stringify(userPayload));
+      //유저 정보 설정
+      this.httpService.getUserWithConito(userPayload.sub, userPayload.name, userPayload.birthdate, userPayload.gender).subscribe(
+        data => {
+          console.log(JSON.stringify(data));
+          if(data.length > 0){
+            this.appService.myInfo = this.appService.userFactory(data[0])[0]; //로그인 유저 매핑
+            this.appService.isAppLogin = true;
+            this.snackBar.open("로그인 성공", "확인", {
+              duration: 2000,
+            });
+          } else {
+            console.error("[error] - error: 데이터 없음");
+            alert("유저 정보를 가져오지 못하였습니다. ");
+          }
+          
+          this.appService.isAppLoading = false;
+        },
+        error => {
+          console.error("[error] - " + error.error.text);
+          alert("유저 정보를 가져오지 못하였습니다. - " + error.error.text);
+          this.appService.isAppLoading = false;
+        }
+      );
       //유저 정보
     }else{  //로그인 안되어있음
       this.appService.isAppLogin = false;
+      this.appService.isAppLoading = false;
     }
   }
 
   cognitoCallback(message: string, result: any) {
-    this.appService.isAppLoading = false;
     if (message != null) { //error
         console.log("result: " + message);
         if (message === 'User is not confirmed.') {
@@ -116,11 +150,34 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
             duration: 2000,
           });
         }
+
+        this.appService.isAppLoading = false;
     } else { //로그인 성공
-      this.appService.isAppLogin = true;
-      this.snackBar.open("로그인 성공", "확인", {
-        duration: 2000,
-      });
+      console.log("유저 정보 - " + JSON.stringify(result));
+      const userPayload = result.idToken.payload;
+      //유저 정보 설정
+      this.httpService.getUserWithConito(userPayload.sub, userPayload.name, userPayload.birthdate, userPayload.gender).subscribe(
+        data => {
+          console.log(JSON.stringify(data));
+          if(data.length > 0){
+            this.appService.myInfo = this.appService.userFactory(data[0])[0]; //로그인 유저 매핑
+            this.appService.isAppLogin = true;
+            this.snackBar.open("로그인 성공", "확인", {
+              duration: 2000,
+            });
+          } else {
+            console.error("[error] - error: 데이터 없음");
+            alert("유저 정보를 가져오지 못하였습니다. ");
+          }
+          
+          this.appService.isAppLoading = false;
+        },
+        error => {
+          console.error("[error] - error:" + error.message);
+          alert("유저 정보를 가져오지 못하였습니다. " + error.message);
+          this.appService.isAppLoading = false;
+        }
+      );
     }
   }
 }

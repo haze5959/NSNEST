@@ -251,7 +251,7 @@ export class AppDetail implements OnInit {
     if(isAlreayVote){ //이미 사용하셨습니다.
       this.openSnackBar("이미 투표하셨습니다.");
     } else {
-      this.httpService.putPostGoodBad(postId, true).subscribe(
+      this.httpService.putPostGoodBad(postId, this.appService.myInfo.userId, true).subscribe(
         data => {
           console.log(JSON.stringify(data));
           if(data.result){
@@ -304,7 +304,7 @@ export class AppDetail implements OnInit {
     if(isAlreayVote){ //이미 사용하셨습니다.
       this.openSnackBar("이미 투표하셨습니다.");
     } else {
-      this.httpService.putPostGoodBad(postId, false).subscribe(
+      this.httpService.putPostGoodBad(postId, this.appService.myInfo.userId, false).subscribe(
         data => {
           console.log(JSON.stringify(data));
           if(data.result){
@@ -351,7 +351,7 @@ export class AppDetail implements OnInit {
   }
 
   pressDeleteComment(commentId:number){
-    this.httpService.deleteComment(commentId).subscribe(
+    this.httpService.deleteComment(commentId, this.postId).subscribe(
       data => {
         console.log(JSON.stringify(data));
         if(data.result){
