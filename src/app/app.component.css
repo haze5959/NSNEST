@@ -9,6 +9,12 @@
     width: 50%;
 }
 
+@media screen and (max-width: 1499px) {
+    .app-sidenav {
+        width: 90%;
+    }
+}
+
 .app-showSidenavBtn {
     height: 100%;
 }

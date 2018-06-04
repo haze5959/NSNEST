@@ -45,6 +45,7 @@ export class HttpService {
 
   /**
    * 게시글 가져오기
+   * classify = 0:전체 / 10:게시글 / 20:앨범 / 30:지도 / 40:스케쥴
    * sort = id / good / bad
    */
   getPosts(classify: number, sort: string, order: string, page: number, contents?: string): Observable<Array<any>> {
