@@ -1,6 +1,5 @@
 import { Component, OnInit, ElementRef, Input, Output, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Strings } from '@app/Strings';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpService } from '../service/http.service';
@@ -15,7 +14,7 @@ import { schedule } from '../model/schedule';
   styleUrls: ['/app.sideUserList.css']
 })
 export class AppSideUserList implements OnInit {
-  testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
+  testImage = this.sanitizer.bypassSecurityTrustStyle(this.appService.TEST_IMAGE);
   
   userOrderByLank: user[] = [];
   recentUsers: user[] = [];

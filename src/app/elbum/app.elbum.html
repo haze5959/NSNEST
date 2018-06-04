@@ -9,7 +9,7 @@
         <mat-grid-tile *ngFor="let postImage of postImages">
             <mat-card class="elbum-card" (click)="pressOneImage(postImage)">
                 <mat-card-header>
-                    <div mat-card-avatar class="elbum-header-image" [style.background-image]="postImage.publisherImg"></div>
+                    <div mat-card-avatar class="elbum-header-image" [ngStyle]="{ 'background-image': 'url(' + postImage.publisherImg + ')'}"></div>
                     <mat-card-title>{{postImage.publisher}}</mat-card-title>
                     <mat-card-subtitle>{{postImage.publisherIntro}}</mat-card-subtitle>
                 </mat-card-header>

@@ -148,6 +148,7 @@ export class AppWrite implements OnInit {
               }
             );
           } else {  //벨리데이션 실패
+            this.isLoading = false;
             this.snackBar.open("본문을 작성하시오.", "확인", {
               duration: 2000,
             });
@@ -334,7 +335,9 @@ export class AppWrite implements OnInit {
                 }
           
               } else {  //실패
-                throw new Error("앨범 업로드 실패 - " + data.message);
+                console.error("앨범 업로드 실패 - " + data.message);
+                alert("앨범 업로드 실패 - " + data.message);
+                this.isLoading = false;
               }
             },
             error => {

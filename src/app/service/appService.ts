@@ -18,7 +18,14 @@ import { schedule } from '../model/schedule';
 
 @Injectable()
 export class AppService {
-  myInfo:user
+  APP_NAME = "NSNEST of Ancient";
+  APP_VERSION = "V0.1";
+  APP_COPYRIGHTS = "Copyright©2018 OQ All rights reserved.";
+  emptyUserImage = "/../assets/testImage.jpg";
+  TEST_IMAGE : "url('https://material.angular.io/assets/img/examples/shiba1.jpg')";
+  TEST_IMAGE2 : "/../assets/testImage2.jpg";
+
+  myInfo:user;
   isAppLoading = false;  //로딩 프로그레스를 보일지말지를 관장하는 환경변수
   isAppLogin = false;  //로그인이 됐는지 안됐는지 관장
   isPhone = false;
@@ -84,7 +91,7 @@ export class AppService {
           publisherId: element[3],
           publisher: element[4],
           publisherIntro: element[5],
-          publisherImg: element[6],
+          publisherImg: element[6]?element[6]:this.emptyUserImage,
           images: imageArr,
           title: element[8],
           body: element[9],
@@ -111,7 +118,7 @@ export class AppService {
           studentNum: element[2],
           userId: element[3],
           userName: element[4],
-          userImg: element[5],
+          userImg: element[5]?element[5]:this.emptyUserImage,
           emoticon: element[6],
           good: element[7],
           comment: element[8],
@@ -127,22 +134,34 @@ export class AppService {
     var result:user[] = [];
 
     userArr.forEach(element => {
-      console.log(element);
-        let user:user = {
-          userId: element[0],
-          cognitoSub: element[1],
-          studentNum: element[1],
-          name: element[2],
-          birthDay: element[3],
-          gender: element[3],
-          image: element[3],
-          intro: element[4],
-          description: element[5],
-          recentDate: element[6],
-          subImage01: element[7],
-          point: element[8]
-        };
-        result.push(user);
+      let recentDate;
+      if(element[4]){
+        let tempStr:string = element[4];
+        recentDate = tempStr.replace(/\\/gi, '-');
+      }
+
+      let birthDay;
+      if(element[10]){
+        let tempStr:string = element[10];
+        birthDay = tempStr.replace(/\\/gi, '-');
+      }
+      
+      let user:user = {
+        name: element[0],
+        userId: element[1],
+        intro: element[2],
+        studentNum: element[3],
+        recentDate: recentDate,
+        image: element[5]?element[5]:this.emptyUserImage,
+        subImage01: element[6],
+        point: element[7],
+        description: element[8],
+        cognitoSub: element[9],
+        birthDay: birthDay,
+        gender: element[11]
+      };
+      
+      result.push(user);
     });
 
     return result

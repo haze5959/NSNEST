@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { posts } from '../model/posts';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Strings } from '@app/Strings';
 
 import { AppService } from "../service/appService";
 import { HttpService } from '../service/http.service';
@@ -14,7 +13,7 @@ import { CognitoUtil } from '../service/awsService/cognito.service';
   styleUrls: ['/app.newspeed.css']
 })
 export class AppNewspeed implements OnInit {
-  testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
+  testImage = this.sanitizer.bypassSecurityTrustStyle(this.appService.TEST_IMAGE);
   isLoading = true;
   pageIndex: number = 1;
   recentPosts: posts[] = [];

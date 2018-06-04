@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Inject } from '@angular/core';
-import { Strings } from '@app/Strings';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
 import { user } from '../model/user';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { UserLoginService } from "../service/awsService/user-login.service";
@@ -21,14 +20,14 @@ import { HttpService } from '../service/http.service';
   styleUrls: ['/app.userInfo.css']
 })
 export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
-  appName = Strings.APP_NAME;
-  appVersion = Strings.APP_VERSION;
-  appCopyrights = Strings.APP_COPYRIGHTS;
+  appName = this.appService.APP_NAME;
+  appVersion = this.appService.APP_VERSION;
+  appCopyrights = this.appService.APP_COPYRIGHTS;
 
   userId = new FormControl('', [Validators.required]);
   userPw = new FormControl('', [Validators.required]);
  
-  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, private userService: UserLoginService, private snackBar: MatSnackBar, private appService: AppService, private httpService: HttpService, private cognitoUtil: CognitoUtil) {}
+  constructor(public dialog: MatDialog, private userService: UserLoginService, private snackBar: MatSnackBar, private appService: AppService, private httpService: HttpService, private cognitoUtil: CognitoUtil, private router: Router) {}
 
   ngOnInit(){
     this.appService.isAppLoading = true;
@@ -76,12 +75,12 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   openProfileImage(){
     console.log("이미지 열기");
     var image = new Image();
-    image.src = Strings.TEST_IMAGE2;
+    image.src = this.appService.TEST_IMAGE2;
     image.onload = () => {
       let dialogRef = this.dialog.open(ShowDetailImageDialog, {
         height: image.height.toString(),
         width: image.width.toString(),
-        data: { imageUrl: Strings.TEST_IMAGE2 }
+        data: { imageUrl: this.appService.TEST_IMAGE2 }
       });
 
       dialogRef.afterClosed().subscribe(result => {});
@@ -103,17 +102,19 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
           }
       });
 
-      console.log("유저 정보 - " + JSON.stringify(userPayload));
+      // console.log("유저 정보 - " + JSON.stringify(userPayload));
       //유저 정보 설정
       this.httpService.getUserWithConito(userPayload.sub, userPayload.name, userPayload['custom:studentNum'], userPayload.birthdate, userPayload.gender).subscribe(
         data => {
           console.log(JSON.stringify(data));
           if(data.length > 0){
-            this.appService.myInfo = this.appService.userFactory(data[0])[0]; //로그인 유저 매핑
+            this.appService.myInfo = this.appService.userFactory(data)[0]; //로그인 유저 매핑
             this.appService.isAppLogin = true;
             this.snackBar.open("로그인 성공", "확인", {
               duration: 2000,
             });
+
+            this.router.navigate(['newspeed/']);
           } else {
             console.error("[error] - error: 데이터 없음");
             alert("유저 정보를 가져오지 못하였습니다. ");
@@ -154,7 +155,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
 
         this.appService.isAppLoading = false;
     } else { //로그인 성공
-      console.log("유저 정보 - " + JSON.stringify(result));
+      // console.log("유저 정보 - " + JSON.stringify(result));
       const userPayload = result.idToken.payload;
       // userPayload.studentNum
       //유저 정보 설정custom:studentNum
@@ -167,6 +168,8 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
             this.snackBar.open("로그인 성공", "확인", {
               duration: 2000,
             });
+
+            this.router.navigate(['newspeed/']);
           } else {
             console.error("[error] - error: 데이터 없음");
             alert("유저 정보를 가져오지 못하였습니다. ");
@@ -195,8 +198,9 @@ export class SetUserInfoDialog {
   userInfo: FormGroup;
   profileText = this.data.profileText;
   profileDescription = this.data.profileDescription;
-  profileImage = Strings.TEST_IMAGE2;
+  profileImage = this.appService.TEST_IMAGE2;
   constructor(
+    private appService: AppService,
     public dialogRef: MatDialogRef<ShowDetailImageDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any, fb: FormBuilder) {
       //초기화 구문

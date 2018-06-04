@@ -9,8 +9,9 @@ import {map} from 'rxjs/operators/map';
 import {startWith} from 'rxjs/operators/startWith';
 import {switchMap} from 'rxjs/operators/switchMap';
 
+import { AppService } from "../service/appService";
+
 import { posts } from '../model/posts';
-import { Strings } from '@app/Strings';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { marker } from "../model/marker";
@@ -54,7 +55,7 @@ export class AppTastyLoad {
 	  }
   ];
 
-  testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
+  testImage = this.sanitizer.bypassSecurityTrustStyle(this.appService.TEST_IMAGE);
   postMarkers: posts[] = [
     {
       postsID: 1000,
@@ -63,7 +64,7 @@ export class AppTastyLoad {
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
       publisherImg: this.testImage,
-      images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE, Strings.TEST_IMAGE2],
+      images: [this.appService.TEST_IMAGE2, this.appService.emptyUserImage, this.appService.TEST_IMAGE2],
       title: '타이틀 입니다.',
       body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 10,
@@ -77,7 +78,7 @@ export class AppTastyLoad {
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
       publisherImg: this.testImage,
-      images: [Strings.TEST_IMAGE2, Strings.TEST_IMAGE2],
+      images: [this.appService.TEST_IMAGE2, this.appService.TEST_IMAGE2],
       title: '타이틀 입니다.',
       body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 0,
@@ -91,7 +92,7 @@ export class AppTastyLoad {
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
       publisherImg: this.testImage,
-      images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE],
+      images: [this.appService.TEST_IMAGE2, this.appService.emptyUserImage],
       title: '타이틀 입니다.',
       body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 0,
@@ -105,7 +106,7 @@ export class AppTastyLoad {
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
       publisherImg: this.testImage,
-      images: [Strings.TEST_IMAGE2],
+      images: [this.appService.TEST_IMAGE2],
       title: '타이틀 입니다.',
       body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 0,
@@ -119,7 +120,7 @@ export class AppTastyLoad {
       publisher: '권오규',
       publisherIntro: '프로필 명 입니다.',
       publisherImg: this.testImage,
-      images: [Strings.TEST_IMAGE2],
+      images: [this.appService.TEST_IMAGE2],
       title: '타이틀 입니다.',
       body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
       good: 0,
@@ -128,7 +129,7 @@ export class AppTastyLoad {
     }
   ];
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer, private appService: AppService) {}
   displayedColumns = ['created', 'writer', 'number', 'title'];
   exampleDatabase: ExampleHttpDao | null;
   dataSource = new MatTableDataSource();

@@ -6,7 +6,6 @@ import { posts } from '../model/posts';
 import { marker } from '../model/marker';
 import { user } from '../model/user';
 import { comment } from '../model/comment';
-import { Strings } from '@app/Strings';
 import { ShowUserInfoDialog } from '../sideUserList/app.sideUserList';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { HttpService } from '../service/http.service';
@@ -26,7 +25,7 @@ import { resolve } from 'path';
 })
 export class AppDetail implements OnInit {
   isLoading = true;
-  testImage = this.sanitizer.bypassSecurityTrustStyle(Strings.TEST_IMAGE);
+  testImage = this.sanitizer.bypassSecurityTrustStyle(this.appService.TEST_IMAGE);
 
   classify:string;
   isMine:boolean = false;

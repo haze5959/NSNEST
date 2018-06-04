@@ -1,7 +1,7 @@
 <!-- 로그인 중 -->
 <mat-card *ngIf="appService.isAppLogin" class="userInfoCard">
     <mat-card-header>
-        <div mat-card-avatar [style.background-image]="appService.myInfo.image" class="profileImage" (click)="openProfileImage()"></div>
+        <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + appService.myInfo.image + ')'}" class="profileImage" (click)="openProfileImage()"></div>
         <mat-card-title>{{appService.myInfo.name}}</mat-card-title>
         <mat-card-subtitle>{{appService.myInfo.intro}}</mat-card-subtitle>
     </mat-card-header>

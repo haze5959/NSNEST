@@ -9,7 +9,7 @@
     width: 50%;
 }
 
-@media screen and (max-width: 1499px) {
+@media screen and (max-width: 1000px) {
     .app-sidenav {
         width: 90%;
     }

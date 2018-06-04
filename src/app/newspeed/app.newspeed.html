@@ -37,7 +37,7 @@
                 <!--========================================게시판 글========================================-->
                 <mat-card *ngIf="posts.postClassify == 10" class="posts-card" (click)="pressPosts(posts.postsID)">
                     <mat-card-header>
-                        <div mat-card-avatar [style.background-image]="posts.publisherImg"></div>
+                        <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + posts.publisherImg + ')'}"></div>
                         <mat-card-title>{{posts.publisher}}</mat-card-title>
                         <mat-card-subtitle>{{posts.publisherIntro}}</mat-card-subtitle>
                         <div class="posts-card-classify-logo">
@@ -64,7 +64,7 @@
                 <!-- ========================================앨범 글========================================-->
                 <mat-card *ngIf="posts.postClassify == 20" class="posts-card" (click)="pressPosts(posts.postsID)">
                         <mat-card-header>
-                            <div mat-card-avatar [style.background-image]="posts.publisherImg"></div>
+                            <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + posts.publisherImg + ')'}"></div>
                             <mat-card-title>{{posts.publisher}}</mat-card-title>
                             <mat-card-subtitle>{{posts.publisherIntro}}</mat-card-subtitle>
                             <div class="posts-card-classify-logo">
@@ -93,7 +93,7 @@
                     <!--========================================맛집 글========================================-->
                 <mat-card *ngIf="posts.postClassify == 30" class="posts-card" (click)="pressPosts(posts.postsID)">
                     <mat-card-header>
-                        <div mat-card-avatar [style.background-image]="posts.publisherImg"></div>
+                        <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + posts.publisherImg + ')'}"></div>
                         <mat-card-title>{{posts.publisher}}</mat-card-title>
                         <mat-card-subtitle>{{posts.publisherIntro}}</mat-card-subtitle>
                         <div class="posts-card-classify-logo">
