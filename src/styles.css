@@ -5,8 +5,14 @@ body{
     position: absolute;
     height: 100%;
     width: 100%;
-    min-width: 800px;
+    min-width: 1500px;
     margin: 0px;
+}
+
+@media screen and (max-width: 1499px) {
+    body{
+        min-width: 100%;
+    }
 }
 
 /* 색 */

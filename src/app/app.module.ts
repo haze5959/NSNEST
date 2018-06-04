@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { AgmCoreModule } from '@agm/core';
 import { QuillModule } from 'ngx-quill';
+import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 import {
   MatToolbarModule, 
   MatButtonModule, 
@@ -69,6 +70,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
     ShowDetailImageDialog
   ],
   imports: [
+    Ng2DeviceDetectorModule.forRoot(),
     QuillModule,
     HttpClientModule,
     AppRoutingModule,

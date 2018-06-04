@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { JwtHelper } from 'angular2-jwt';
 import { CognitoUtil } from './awsService/cognito.service';
+import { Ng2DeviceService } from 'ng2-device-detector';
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
@@ -13,14 +14,27 @@ import { user } from '../model/user';
 // import { token } from '../model/token';
 import { posts } from '../model/posts';
 import { comment } from '../model/comment';
+import { schedule } from '../model/schedule';
 
 @Injectable()
 export class AppService {
   myInfo:user
   isAppLoading = false;  //로딩 프로그레스를 보일지말지를 관장하는 환경변수
   isAppLogin = false;  //로그인이 됐는지 안됐는지 관장
+  isPhone = false;
 
-  constructor(private cognitoUtil: CognitoUtil) {
+  constructor(private cognitoUtil: CognitoUtil, private deviceService: Ng2DeviceService) {
+    let deviceInfo = this.deviceService.getDeviceInfo();
+    // console.log(deviceInfo);
+    if(deviceInfo.device == "unknown"){
+      //모바일 화면입니다.
+      console.log('PC 화면입니다.');
+      this.isPhone = false;
+    } else {
+      console.log('모바일 화면입니다.');
+      this.isPhone = true;
+    }
+
     if(this.cognitoUtil.getCurrentUser()){
       this.isAppLogin = true;
     } else {
@@ -116,8 +130,11 @@ export class AppService {
       console.log(element);
         let user:user = {
           userId: element[0],
+          cognitoSub: element[1],
           studentNum: element[1],
           name: element[2],
+          birthDay: element[3],
+          gender: element[3],
           image: element[3],
           intro: element[4],
           description: element[5],
@@ -126,6 +143,26 @@ export class AppService {
           point: element[8]
         };
         result.push(user);
+    });
+
+    return result
+  }
+
+  scheduleFactory(scheduleArr: Array<any>){
+    var result:schedule[] = [];
+
+    scheduleArr.forEach(element => {
+      console.log(element);
+        let schedule:schedule = {
+          scheduleId: element[0],
+          userId: element[0],
+          title: element[0],
+          description: element[0],
+          startDate: element[0],
+          endDate: element[0],
+          participantsId: element[0]
+        };
+        result.push(schedule);
     });
 
     return result

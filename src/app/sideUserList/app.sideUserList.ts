@@ -19,26 +19,7 @@ export class AppSideUserList implements OnInit {
   
   userOrderByLank: user[] = [];
   recentUsers: user[] = [];
-  // scheduleArr: schedule[] = [
-  //   {
-  //     scheduleId:1000,
-  //     userId: 1000,
-  //     title: 'test일정001',
-  //     description: '테스트용 일정입니다 001',
-  //     startDate: new Date('18/06/17'),
-  //     endDate: new Date('18/06/18'),
-  //     participantsId: [1001, 1002]
-  //   },
-  //   {
-  //     scheduleId:1001,
-  //     userId: 1001,
-  //     title: 'test일정002',
-  //     description: '테스트용 일정입니다 002',
-  //     startDate: new Date('18/07/17'),
-  //     endDate: new Date('18/07/30'),
-  //     participantsId: []
-  //   }
-  // ];
+  scheduleArr: schedule[] = [];
   
   constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, private appService: AppService, private httpService: HttpService, private router: Router) {}
   
@@ -81,7 +62,68 @@ export class AppSideUserList implements OnInit {
   }
 
   tabChange(event){
-    console.log("testOQOQOQO");
+    console.log("testOQ - " + event);
+    switch (event) {
+      case 1: //recent==================================================
+        this.httpService.getUsers('update', 10)
+        .subscribe(
+          data => {
+            console.log(JSON.stringify(data));
+            if (data.length == 0) {
+              alert("유저 정보를 가져오지 못하였습니다.");
+            } else {
+              this.recentUsers = this.appService.userFactory(data)
+              // this.isLoading = false;
+            }
+          },
+          error => {
+            console.error("[error] - " + error.error.text);
+            alert("유저 정보를 가져오지 못하였습니다. - " + error.error.text);
+          }
+        );
+        break;
+
+      case 2: //rank==================================================
+        this.httpService.getUsers('rank', 10)
+        .subscribe(
+          data => {
+            console.log(JSON.stringify(data));
+            if (data.length == 0) {
+              alert("유저 정보를 가져오지 못하였습니다.");
+            } else {
+              this.userOrderByLank = this.appService.userFactory(data)
+              // this.isLoading = false;
+            }
+          },
+          error => {
+            console.error("[error] - " + error.error.text);
+            alert("유저 정보를 가져오지 못하였습니다. - " + error.error.text);
+          }
+        );
+        break;
+
+      case 2: //schedule==================================================
+        this.httpService.getPosts(40, 'id', 'desc', 1)
+        .subscribe(
+          data => {
+            console.log(JSON.stringify(data));
+            if (data.length == 0) {
+              alert("스케쥴 정보를 가져오지 못하였습니다.");
+            } else {
+              this.scheduleArr = this.appService.scheduleFactory(data)
+              // this.isLoading = false;
+            }
+          },
+          error => {
+            console.error("[error] - " + error.error.text);
+            alert("스케쥴 정보를 가져오지 못하였습니다. - " + error.error.text);
+          }
+        );
+        break;
+    
+      default:
+        break;
+    }
   }
 }
 

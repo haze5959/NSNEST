@@ -9,6 +9,7 @@ import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { UserLoginService } from "../service/awsService/user-login.service";
 import { ChallengeParameters, CognitoCallback, LoggedInCallback } from "../service/awsService/cognito.service";
 import { environment } from '../../environments/environment';
+import { JwtHelper } from 'angular2-jwt';
 
 import { AppService } from '../service/appService';
 import { CognitoUtil } from '../service/awsService/cognito.service';

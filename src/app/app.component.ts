@@ -7,11 +7,18 @@ import { AppService } from "./service/appService";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
+  appTitle = "NSNEST of Ancient";
 
   constructor(public appService: AppService) {}
 
   ngOnInit(){
+    if(this.appService.isPhone){
+      this.appTitle = '';
+    }
+  }
 
+  openSideUserListDialog(){
+    console.log("사이드유저 다이얼로그 오픈");
   }
 }
 
