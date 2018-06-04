@@ -9,6 +9,7 @@ import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { UserLoginService } from "../service/awsService/user-login.service";
 import { ChallengeParameters, CognitoCallback, LoggedInCallback } from "../service/awsService/cognito.service";
 import { environment } from '../../environments/environment';
+import { JwtHelper } from 'angular2-jwt';
 
 import { AppService } from '../service/appService';
 import { CognitoUtil } from '../service/awsService/cognito.service';
@@ -98,13 +99,13 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
           callbackWithParam(result: any): void {
             console.log(JSON.stringify(result));
             let jwtHelper: JwtHelper = new JwtHelper();
-            userPayload = result.idToken.payload;
+            userPayload = jwtHelper.decodeToken(result)
           }
       });
 
       console.log("유저 정보 - " + JSON.stringify(userPayload));
       //유저 정보 설정
-      this.httpService.getUserWithConito(userPayload.sub, userPayload.name, userPayload.birthdate, userPayload.gender).subscribe(
+      this.httpService.getUserWithConito(userPayload.sub, userPayload.name, userPayload['custom:studentNum'], userPayload.birthdate, userPayload.gender).subscribe(
         data => {
           console.log(JSON.stringify(data));
           if(data.length > 0){
@@ -155,8 +156,9 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
     } else { //로그인 성공
       console.log("유저 정보 - " + JSON.stringify(result));
       const userPayload = result.idToken.payload;
-      //유저 정보 설정
-      this.httpService.getUserWithConito(userPayload.sub, userPayload.name, userPayload.birthdate, userPayload.gender).subscribe(
+      // userPayload.studentNum
+      //유저 정보 설정custom:studentNum
+      this.httpService.getUserWithConito(userPayload.sub, userPayload.name, userPayload['custom:studentNum'], userPayload.birthdate, userPayload.gender).subscribe(
         data => {
           console.log(JSON.stringify(data));
           if(data.length > 0){
@@ -173,8 +175,8 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
           this.appService.isAppLoading = false;
         },
         error => {
-          console.error("[error] - error:" + error.message);
-          alert("유저 정보를 가져오지 못하였습니다. " + error.message);
+          console.error("[error] - " + error.error.text);
+          alert("유저 정보를 가져오지 못하였습니다. - " + error.error.text);
           this.appService.isAppLoading = false;
         }
       );

@@ -133,10 +133,10 @@ export class HttpService {
    * 코그니토를 통한 유저정보 가져오기
    * 서버에서 해당 유저의 정보가 없는 경우, 첫 로그인이라고 판별하고 유저를 디비에 등록시킨다.
    */
-  getUserWithConito(cognitoSub: string, name?: string, birthDay?: string, gender?: string): Observable<Array<any>> {
+  getUserWithConito(cognitoSub: string, name?: string, studentNum?: number, birthDay?: string, gender?: string): Observable<Array<any>> {
     var requestUrl = `${environment.apiUrl}users/cognito?cognitoSub=${cognitoSub}`;
-    if(name && birthDay && gender){
-      requestUrl = requestUrl + `&name=${name}` + `&birthDay=${birthDay}` + `&gender=${gender}`;
+    if(name && studentNum && birthDay && gender){
+      requestUrl = requestUrl + `&name=${name}` + `&studentNum=${studentNum}` + `&birthDay=${birthDay}` + `&gender=${gender}`;
     }
 
     return this.http.get<Array<any>>(requestUrl).timeout(timeout)
