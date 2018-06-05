@@ -46,8 +46,22 @@ export class AppElbum implements OnInit{
     );
   }
 
-  setPageEvent($event:PageEvent){
-    console.log($event.pageIndex);
+  setPageEvent(pageEvent: PageEvent){
+    this.isLoading = true;
+    this.httpService.getPosts(10, 'id', 'desc', pageEvent.pageIndex + 1)
+    .subscribe(
+      data => {
+        console.log(JSON.stringify(data));
+        this.postImages = this.appService.postFactory(data);
+        this.isLoading = false;
+      },
+      error => {
+        console.error("[error] - " + error.error.text);
+        alert("[error] - " + error.error.text);
+        this.postImages.push(this.httpService.errorPost);
+        this.isLoading = false;
+      }
+    );
   }
 
   pressOneImage(postImage:posts){

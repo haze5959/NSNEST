@@ -42,5 +42,5 @@
             </mat-card>
         </mat-grid-tile>
     </mat-grid-list>
-    <mat-paginator class="color-50" [length]="100" [pageSize]="10" [showFirstLastButtons]="true" [hidePageSize]="true" (page)="setPageEvent($event)"></mat-paginator>
+    <mat-paginator class="color-50" [length]="pageLength" [pageSize]="pageSize" [showFirstLastButtons]="true" [hidePageSize]="true" (page)="setPageEvent($event)"></mat-paginator>
 </div>
