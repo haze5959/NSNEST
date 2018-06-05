@@ -279,6 +279,47 @@ export class HttpService {
     });
   }
 
+  /**
+   * 프로필 수정하기
+   */
+  putUserInfo(userId:number, intro:string, description:string, profileImage:string): any {
+    var accessToken = "";
+    this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+    });
+
+    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
+      // alert("토큰 리프레시");
+      this.cognitoUtil.refresh();
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+      });
+    }
+
+    const requestUrl = `${environment.apiUrl}users`;
+
+    let param = {
+      accessToken: accessToken,
+      payload: {
+        userId: userId,
+        intro: intro,
+        description: description,
+        profileImage: profileImage
+      }
+    }
+    
+    return this.http.put(requestUrl, param).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: timeoutText});
+    });
+  }
+
   //============================================================
   //DELETE
   //============================================================

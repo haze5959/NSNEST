@@ -61,26 +61,49 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
       height: "90%",
       width: "80%",
       data: { 
-        profileText: this.appService.myInfo.intro,
-        profileDescription: this.appService.myInfo.description,
-        profileImage: this.appService.myInfo.image
+        // profileText: this.appService.myInfo.intro,
+        // profileDescription: this.appService.myInfo.description,
+        // profileImage: this.appService.myInfo.image
        }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      if(result){
+        this.appService.isAppLoading = true;
+        this.httpService.getUser(this.appService.myInfo.userId)
+        .subscribe(
+          data => {
+            console.log(JSON.stringify(data));
+            if(data.length > 0){
+              this.appService.myInfo = this.appService.userFactory(data)[0]; //로그인 유저 매핑
+              this.appService.isAppLogin = true;
+            } else {
+              console.error("[error] - error: 데이터 없음");
+              alert("유저 정보를 가져오지 못하였습니다. ");
+            }
+            
+            this.appService.isAppLoading = false;
+          },
+          error => {
+            console.error("[error] - " + error.error.text);
+            alert("유저 정보를 가져오지 못하였습니다. - " + error.error.text);
+            this.appService.isAppLoading = false;
+          }
+        );
+      }
     });
   }
 
   openProfileImage(){
     console.log("이미지 열기");
     var image = new Image();
-    image.src = this.appService.TEST_IMAGE2;
+    image.src = this.appService.myInfo.image;
     image.onload = () => {
       let dialogRef = this.dialog.open(ShowDetailImageDialog, {
         height: image.height.toString(),
         width: image.width.toString(),
-        data: { imageUrl: this.appService.TEST_IMAGE2 }
+        data: { imageUrl: this.appService.myInfo.image }
       });
 
       dialogRef.afterClosed().subscribe(result => {});
@@ -163,7 +186,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
         data => {
           console.log(JSON.stringify(data));
           if(data.length > 0){
-            this.appService.myInfo = this.appService.userFactory(data[0])[0]; //로그인 유저 매핑
+            this.appService.myInfo = this.appService.userFactory(data)[0]; //로그인 유저 매핑
             this.appService.isAppLogin = true;
             this.snackBar.open("로그인 성공", "확인", {
               duration: 2000,
@@ -195,20 +218,14 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   templateUrl: 'dialog.setUserInfoDialog.html',
 })
 export class SetUserInfoDialog {
-  userInfo: FormGroup;
-  profileText = this.data.profileText;
-  profileDescription = this.data.profileDescription;
-  profileImage = this.appService.TEST_IMAGE2;
+  profileText = new FormControl(this.appService.myInfo.intro);
+  profileDescription = new FormControl(this.appService.myInfo.description);
+  profileImage = this.appService.myInfo.image;
   constructor(
     private appService: AppService,
-    public dialogRef: MatDialogRef<ShowDetailImageDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any, fb: FormBuilder) {
-      //초기화 구문
-      this.userInfo = fb.group({
-        'profileText': this.profileText,
-        'profileDescription': this.profileDescription
-      });
-     }
+    private httpService: HttpService,
+    public dialogRef: MatDialogRef<ShowDetailImageDialog>){}
+    // @Inject(MAT_DIALOG_DATA) public data: any, fb: FormBuilder) {}
 
     //이미지 변경
     changeImage(event: EventTarget): void {
@@ -217,13 +234,59 @@ export class SetUserInfoDialog {
       let files: FileList = target.files;
       let file: File = files[0];
       console.log(file);
-
-      //todo: 상태정보 변경에서 이미지 수정 시, 파일 서버에 저장하고 뿌려라
+      this.uploadImages(file);
     }
 
     //유저정보 수정 저장
     pressSaveBtn(): void {
-      //todo: 상태정보 저장 시, 디비에 수정목록 저장해라
-      this.dialogRef.close();
+      this.httpService.putUserInfo(this.appService.myInfo.userId, this.profileText.value, this.profileDescription.value, this.profileImage)
+      .subscribe(
+        data => {
+          console.log(JSON.stringify(data));
+          if(data.result){  //성공
+            this.dialogRef.close(true);
+          } else {  //실패
+            throw new Error(data.message);
+          }
+        },
+        error => {
+          console.error("프로필 수정 실패 - " + error.message);
+          alert("프로필 수정 실패 - " + error.message);
+          this.appService.isAppLoading = false;
+        }
+      );
+    }
+
+    uploadImages(imageFile:File){
+      this.appService.isAppLoading = true;
+      this.httpService.uploadImage('profile', imageFile)
+      .subscribe(
+        data => {
+          // console.log(JSON.stringify(data));
+          if(data.result){  //성공
+            const fileInfo = data.message.files.file;
+            if(fileInfo && fileInfo.path){
+              let filePath:string = fileInfo.path;
+              filePath = filePath.replace('/1TB_Drive/NSNEST_PUBLIC/', '');
+              const fileUrl = environment.fileUrl + filePath;
+              console.log('이미지 업로드 완료 - ' + fileUrl);
+              this.profileImage = fileUrl;
+
+              this.appService.isAppLoading = false;
+            } else {
+              throw new Error('이미지 형식이 이상합니다.');
+            }
+          } else {  //실패
+            console.error("앨범 업로드 실패 - " + data.message);
+            alert("앨범 업로드 실패 - " + data.message);
+            this.appService.isAppLoading = false;
+          }
+        },
+        error => {
+          console.error("앨범 업로드 실패 - " + error.message);
+          alert("앨범 업로드 실패 - " + error.message);
+          this.appService.isAppLoading = false;
+        }
+      );
     }
 }

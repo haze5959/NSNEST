@@ -1,148 +1,51 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpService } from '../service/http.service';
+import { AppService } from '../service/appService';
+import { Router } from '@angular/router';
 import { posts } from '../model/posts';
-import { DomSanitizer } from '@angular/platform-browser';
 import { PageEvent } from '@angular/material';
+
+import {zip} from 'rxjs/observable/zip';
+import {of as observableOf} from 'rxjs/observable/of';
+import {catchError} from 'rxjs/operators/catchError';
+import {map} from 'rxjs/operators/map';
+import {startWith} from 'rxjs/operators/startWith';
+import {switchMap} from 'rxjs/operators/switchMap';
 
 @Component({
   selector: 'app-elbum',
   templateUrl: '/app.elbum.html',
   styleUrls: ['/app.elbum.css']
 })
-export class AppElbum {
-  postImages: posts[] = [
-    // {
-    //   postsID: 1000,
-    //   postClassify: 20,
-    //   studentNum: 11,
-    //   publisher: '권오규',
-    //   publisherIntro: '프로필 명 입니다.',
-    //   publisherImg: this.testImage,
-    //   images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE, Strings.TEST_IMAGE2],
-    //   title: '타이틀 입니다.',
-    //   body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-    //   good: 10,
-    //   bad: 0
-    // },
-    // {
-    //   postsID: 1001,
-    //   postClassify: 20,
-    //   studentNum: 11,
-    //   publisher: '권오규',
-    //   publisherIntro: '프로필 명 입니다.',
-    //   publisherImg: this.testImage,
-    //   images: [Strings.TEST_IMAGE2, Strings.TEST_IMAGE2],
-    //   title: '타이틀 입니다.',
-    //   body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-    //   good: 0,
-    //   bad: 20
-    // },
-    // {
-    //   postsID: 1000,
-    //   postClassify: 20,
-    //   studentNum: 11,
-    //   publisher: '권오규',
-    //   publisherIntro: '프로필 명 입니다.',
-    //   publisherImg: this.testImage,
-    //   images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE],
-    //   title: '타이틀 입니다.',
-    //   body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-    //   good: 0,
-    //   bad: 0
-    // },
-    // {
-    //   postsID: 1000,
-    //   postClassify: 20,
-    //   studentNum: 11,
-    //   publisher: '권오규',
-    //   publisherIntro: '프로필 명 입니다.',
-    //   publisherImg: this.testImage,
-    //   images: [Strings.TEST_IMAGE2],
-    //   title: '타이틀 입니다.',
-    //   body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-    //   good: 0,
-    //   bad: 0
-    // },
-    // {
-    //   postsID: 1000,
-    //   postClassify: 20,
-    //   studentNum: 11,
-    //   publisher: '권오규',
-    //   publisherIntro: '프로필 명 입니다.',
-    //   publisherImg: this.testImage,
-    //   images: [Strings.TEST_IMAGE2],
-    //   title: '타이틀 입니다.',
-    //   body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-    //   good: 0,
-    //   bad: 0
-    // },
-    // {
-    //   postsID: 1000,
-    //   postClassify: 20,
-    //   studentNum: 11,
-    //   publisher: '권오규',
-    //   publisherIntro: '프로필 명 입니다.',
-    //   publisherImg: this.testImage,
-    //   images: [Strings.NODATA_IMAGE],
-    //   title: '타이틀 입니다.',
-    //   body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-    //   good: 0,
-    //   bad: 0
-    // },
-    // {
-    //   postsID: 1000,
-    //   postClassify: 20,
-    //   studentNum: 11,
-    //   publisher: '권오규',
-    //   publisherIntro: '프로필 명 입니다.',
-    //   publisherImg: this.testImage,
-    //   images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE, Strings.TEST_IMAGE2],
-    //   title: '타이틀 입니다.',
-    //   body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-    //   good: 0,
-    //   bad: 0
-    // },
-    // {
-    //   postsID: 1000,
-    //   postClassify: 20,
-    //   studentNum: 11,
-    //   publisher: '권오규',
-    //   publisherIntro: '프로필 명 입니다.',
-    //   publisherImg: this.testImage,
-    //   images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE, Strings.TEST_IMAGE2],
-    //   title: '타이틀 입니다.',
-    //   body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-    //   good: 0,
-    //   bad: 0
-    // },
-    // {
-    //   postsID: 1000,
-    //   postClassify: 20,
-    //   studentNum: 11,
-    //   publisher: '권오규',
-    //   publisherIntro: '프로필 명 입니다.',
-    //   publisherImg: this.testImage,
-    //   images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE, Strings.TEST_IMAGE2],
-    //   title: '타이틀 입니다.',
-    //   body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-    //   good: 0,
-    //   bad: 0
-    // },
-    // {
-    //   postsID: 1000,
-    //   postClassify: 20,
-    //   studentNum: 11,
-    //   publisher: '권오규',
-    //   publisherIntro: '프로필 명 입니다.',
-    //   publisherImg: this.testImage,
-    //   images: [Strings.TEST_IMAGE2, Strings.NODATA_IMAGE, Strings.TEST_IMAGE2],
-    //   title: '타이틀 입니다.',
-    //   body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-    //   good: 0,
-    //   bad: 0
-    // }
-  ];
+export class AppElbum implements OnInit{
+  postImages: posts[] = [];
+  pageSize = 0;
+  pageLength = 0;
+  isLoading = true;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private httpService: HttpService, public appService: AppService, private router: Router) {}
+
+  ngOnInit() {
+    zip(
+      this.httpService.getPosts(20, 'id', 'desc', 1), //해당 게시글 DB에서 빼온다
+      this.httpService.getPostSize(20)  //해당 게시글 숫자를 가져온다
+    ).subscribe(
+      data => {
+        console.log(JSON.stringify(data));
+        this.postImages = this.appService.postFactory(data[0]);
+        this.pageLength = data[1][0];
+        this.pageSize = this.postImages.length;
+        this.isLoading = false;
+      },
+      error => {
+        console.error("[error] - " + error.error.text);
+        alert("[error] - " + error.error.text);
+        this.postImages.push(this.httpService.errorPost);
+        this.isLoading = false;
+      }
+    );
+  }
+
   setPageEvent($event:PageEvent){
     console.log($event.pageIndex);
   }

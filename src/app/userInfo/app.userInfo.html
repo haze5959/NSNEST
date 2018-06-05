@@ -1,16 +1,14 @@
 <!-- 로그인 중 -->
 <mat-card *ngIf="appService.isAppLogin" class="userInfoCard">
-    <mat-card-header>
+    <mat-card-header class="userInfoCard-header">
         <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + appService.myInfo.image + ')'}" class="profileImage" (click)="openProfileImage()"></div>
         <mat-card-title>{{appService.myInfo.name}}</mat-card-title>
         <mat-card-subtitle>{{appService.myInfo.intro}}</mat-card-subtitle>
     </mat-card-header>
-    잉어력 프로그래스(12/100)
+    <b class="userInfoCard-abandonmentLV">잉어력: {{appService.myInfo.point}}</b>
     <!-- <img mat-card-image src="{{profileImage}}" alt="Photo of a user"> -->
     <mat-card-content>
-        <p>
-        {{appService.myInfo.description}}
-        </p>
+        <pre>{{appService.myInfo.description}}</pre>
     </mat-card-content>
     <mat-card-actions>
         <button mat-raised-button (click)="pressLogout()">로그아웃</button>

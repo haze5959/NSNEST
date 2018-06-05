@@ -1,4 +1,7 @@
 <div class="app-elbum">
+    <div class="elbum-loading-shade" *ngIf="isLoading">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
     <div class="elbum-header">
         <mat-form-field style="width: 60%;">
             <input #filterBtn matInput placeholder="Filter">
@@ -8,7 +11,7 @@
     <mat-grid-list cols="2" rowHeight="1:2" rowHeight="800px">
         <mat-grid-tile *ngFor="let postImage of postImages">
             <mat-card class="elbum-card" (click)="pressOneImage(postImage)">
-                <mat-card-header>
+                <mat-card-header class="card-header">
                     <div mat-card-avatar class="elbum-header-image" [ngStyle]="{ 'background-image': 'url(' + postImage.publisherImg + ')'}"></div>
                     <mat-card-title>{{postImage.publisher}}</mat-card-title>
                     <mat-card-subtitle>{{postImage.publisherIntro}}</mat-card-subtitle>
@@ -33,7 +36,7 @@
                     </div>
                     <div class="comment-count">
                         <mat-icon mat-list-icon>comment</mat-icon>
-                        {{postImage.commentId.length}}
+                        {{postImage.commentCount}}
                     </div>
                 </mat-card-actions>
             </mat-card>

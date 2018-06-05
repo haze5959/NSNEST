@@ -21,6 +21,10 @@
     margin-bottom: 3px;
 }
 
+.post-card-header {
+    margin-bottom: 20px;
+}
+
 .detail-chip {
     float: right;
 }

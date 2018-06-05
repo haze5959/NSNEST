@@ -1,15 +1,15 @@
 <mat-card class="app-card-sideUserList">
-    <mat-tab-group class="app-tab-group" (selectedTabChange)="tabChange(event)">
+    <mat-tab-group class="app-tab-group" (selectedIndexChange)="tabChange($event)">
         <!-- 접속 중 인원 리스트 -->
         <mat-tab label="활동순">
                 <mat-list>
-                    <h3 mat-subheader>Folders</h3>
+                    <!-- <h3 mat-subheader>Folders</h3> -->
                     <mat-nav-list *ngFor="let user of recentUsers">
                         <a mat-list-item (click)="pressOneUser(user)">
                             <!-- <mat-icon mat-list-icon>folder</mat-icon> -->
                             <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + user.image + ')'}" class="profile-image"></div>
                             <div class="profile-info">
-                                <h4 class="profile-info-name">{{user.name}}({{user.studentNum}})</h4>
+                                <h4 class="profile-info-name">{{user.name}}</h4>
                                 <p class="profile-info-intro"> {{user.recentDate}} </p>
                             </div>
                         </a>
@@ -29,14 +29,14 @@
         <!-- 잉여랭킹 인원 리스트 -->
         <mat-tab label="잉여랭킹" isActive>
                 <mat-list>
-                    <h3 mat-subheader>Folders</h3>
+                    <!-- <h3 mat-subheader>Folders</h3> -->
                     <mat-nav-list *ngFor="let user of userOrderByLank">
                         <a mat-list-item (click)="pressOneUser(user)">
                             <!-- <mat-icon mat-list-icon>folder</mat-icon> -->
                             <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + user.image + ')'}" class="profile-image"></div>
                             <div class="profile-info">
-                                <h4 class="profile-info-name">{{user.name}}({{user.studentNum}})</h4>
-                                <p class="profile-info-intro"> {{user.recentDate | date:'M월 d일 H시'}} </p>
+                                <h4 class="profile-info-name">{{user.name}}</h4>
+                                <p class="profile-info-intro"> 잉어력: {{user.point}} </p>
                             </div>
                         </a>
                         <mat-divider></mat-divider>

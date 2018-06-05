@@ -43,27 +43,23 @@ export class AppSideUserList implements OnInit {
   }
 
   pressOneUser(user:user){
-    console.log(user.name);
-
     const dialogRef = this.dialog.open(ShowUserInfoDialog, {
       height: "80%",
       width: "50%",
       data: user
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   pressOneSchedule(scheduleId:number){
     this.router.navigate(['detail/' + scheduleId]);
   }
 
-  tabChange(event){
+  tabChange(event:number){
     console.log("testOQ - " + event);
     switch (event) {
-      case 1: //recent==================================================
+      case 0: //recent==================================================
         this.httpService.getUsers('update', 10)
         .subscribe(
           data => {
@@ -82,7 +78,7 @@ export class AppSideUserList implements OnInit {
         );
         break;
 
-      case 2: //rank==================================================
+      case 1: //rank==================================================
         this.httpService.getUsers('rank', 10)
         .subscribe(
           data => {
@@ -136,6 +132,7 @@ export class AppSideUserList implements OnInit {
 export class ShowUserInfoDialog {
   user = this.data
   constructor(
+    private appService: AppService,
     public dialogRef: MatDialogRef<ShowUserInfoDialog>,
     @Inject(MAT_DIALOG_DATA) public data: user) {}
 }

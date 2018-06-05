@@ -49,17 +49,7 @@ export class AppService {
     }
 
     this.myInfo = {
-      userId: 999,
-      cognitoSub: null,
-      name: '이름',
-      birthDay: null,
-      gender: null,
-      intro: '프로필명을 입력하지 않았습니다.',
-      description: '자기소개를 입력하지 않았습니다.',
-      studentNum:9999,
-      recentDate: new Date(),
-      image: null,
-      subImage01: null
+      image: this.emptyUserImage
     }
   }
 

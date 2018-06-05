@@ -27,9 +27,8 @@ export class AppNewspeed implements OnInit {
       this.httpService.getPosts(0, "id", "desc", this.pageIndex) //해당 게시글 DB에서 빼온다
       .subscribe(
         data => {
-          // console.log(JSON.stringify(data));
           this.recentPosts = this.recentPosts.concat(this.appService.postFactory(data));
-          console.log(JSON.stringify(this.recentPosts));
+          // console.log(JSON.stringify(this.recentPosts));
           this.isLoading = false;
         },
         error => {

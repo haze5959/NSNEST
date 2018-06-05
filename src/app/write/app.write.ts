@@ -316,7 +316,7 @@ export class AppWrite implements OnInit {
                 const fileInfo = data.message.files.file;
                 if(fileInfo && fileInfo.path){
                   let filePath:string = fileInfo.path;
-                  filePath = filePath.replace('NSNEST_PUBLIC/', '');
+                  filePath = filePath.replace('/1TB_Drive/NSNEST_PUBLIC/', '');
                   const fileUrl = environment.fileUrl + filePath;
                   console.log('이미지 업로드 완료 - ' + fileUrl);
                   this.imageArr.push(fileUrl);

@@ -1,15 +1,24 @@
-.userInfoCard{
+.userInfoCard {
     /* height: ; */
 }
 
-.userInfoCard-btn-bundle{
+.userInfoCard-header {
+    margin-bottom: 20px;
+}
+
+.userInfoCard-abandonmentLV {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.userInfoCard-btn-bundle {
     margin-top: 10px;
 }
 
-.profileImage{
+.profileImage {
     background-size: cover;
 }
 
-.siteInfo{
+.siteInfo {
     margin-top: 10px;
 }

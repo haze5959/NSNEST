@@ -7,7 +7,7 @@
   <!--=================== 게시글 =====================-->
   <div *ngIf="classify == 'post' || classify == 'error'" class="detail-post">
     <mat-card class="detail-post-card">
-      <mat-card-header>
+      <mat-card-header class="post-card-header">
         <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + post.publisherImg + ')'}" class="profile-image" (click)="pressOneUser(post.publisherId)"></div>
         <mat-card-title>{{post.publisher}}</mat-card-title>
         <mat-card-subtitle>{{post.publisherIntro}}</mat-card-subtitle>
@@ -23,7 +23,7 @@
   <!--=================== 앨범 =====================-->
   <div *ngIf="classify == 'elbum'" class="detail-elbum">
     <mat-card class="detail-post-card">
-      <mat-card-header>
+      <mat-card-header class="post-card-header">
         <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + post.publisherImg + ')'}" class="profile-image" (click)="pressOneUser(post.publisherId)"></div>
         <mat-card-title>{{post.publisher}}</mat-card-title>
         <mat-card-subtitle>{{post.publisherIntro}}</mat-card-subtitle>
@@ -41,7 +41,7 @@
   <!--=================== 지도 =====================-->
   <div *ngIf="classify == 'map'" class="detail-map">
     <mat-card class="detail-post-card">
-      <mat-card-header>
+      <mat-card-header class="post-card-header">
         <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + post.publisherImg + ')'}" class="profile-image" (click)="pressOneUser(post.publisherId)"></div>
         <mat-card-title>{{post.publisher}}</mat-card-title>
         <mat-card-subtitle>{{post.publisherIntro}}</mat-card-subtitle>
@@ -77,7 +77,7 @@
   <!--=================== 일정 =====================-->
   <div *ngIf="classify == 'schedule'" class="detail-post">
     <mat-card class="detail-post-card">
-      <mat-card-header>
+      <mat-card-header class="post-card-header">
         <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + post.publisherImg + ')'}" class="profile-image" (click)="pressOneUser(post.publisherId)"></div>
         <mat-card-title>{{post.publisher}}</mat-card-title>
         <mat-card-subtitle>{{post.publisherIntro}}</mat-card-subtitle>

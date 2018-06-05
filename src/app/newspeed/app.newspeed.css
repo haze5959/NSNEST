@@ -34,6 +34,10 @@
     width: 95%;
 }
 
+.posts-card-header {
+    margin-bottom: 20px;
+}
+
 .posts-card-chip {
     float: right;
 }
@@ -72,7 +76,7 @@
 .mat-card-image-cover {
     height: 400px;
     position: absolute;
-    top: 64px;
+    top: 104px;
     left: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.2);
@@ -87,7 +91,7 @@
     margin-left: auto;
     padding: 0 25px;
 }
-
+ㅇ
 .comment-count {
     padding: 0 20px;
 }

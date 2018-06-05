@@ -12,7 +12,7 @@
             <mat-nav-list *ngFor="let posts of recentPosts" class="posts-list">
                 <!--========================================에러 발생========================================-->
                 <mat-card *ngIf="posts.postClassify == 99" class="posts-card" (click)="pressPosts(posts.postsID)">
-                    <mat-card-header>
+                    <mat-card-header class="posts-card-header">
                         <div class="posts-card-classify-logo">
                             <mat-icon mat-list-icon>subtitles</mat-icon>
                         </div>
@@ -36,7 +36,7 @@
 
                 <!--========================================게시판 글========================================-->
                 <mat-card *ngIf="posts.postClassify == 10" class="posts-card" (click)="pressPosts(posts.postsID)">
-                    <mat-card-header>
+                    <mat-card-header class="posts-card-header">
                         <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + posts.publisherImg + ')'}"></div>
                         <mat-card-title>{{posts.publisher}}</mat-card-title>
                         <mat-card-subtitle>{{posts.publisherIntro}}</mat-card-subtitle>
@@ -63,7 +63,7 @@
 
                 <!-- ========================================앨범 글========================================-->
                 <mat-card *ngIf="posts.postClassify == 20" class="posts-card" (click)="pressPosts(posts.postsID)">
-                        <mat-card-header>
+                        <mat-card-header class="posts-card-header">
                             <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + posts.publisherImg + ')'}"></div>
                             <mat-card-title>{{posts.publisher}}</mat-card-title>
                             <mat-card-subtitle>{{posts.publisherIntro}}</mat-card-subtitle>
@@ -92,7 +92,7 @@
 
                     <!--========================================맛집 글========================================-->
                 <mat-card *ngIf="posts.postClassify == 30" class="posts-card" (click)="pressPosts(posts.postsID)">
-                    <mat-card-header>
+                    <mat-card-header class="posts-card-header">
                         <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + posts.publisherImg + ')'}"></div>
                         <mat-card-title>{{posts.publisher}}</mat-card-title>
                         <mat-card-subtitle>{{posts.publisherIntro}}</mat-card-subtitle>

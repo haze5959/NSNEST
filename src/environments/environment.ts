@@ -17,10 +17,10 @@ export const environment = {
   sts_endpoint: '',
 
   //서버주소
-  // apiUrl: 'http://nsnest.iptime.org:3000/api/',
-  // fileUrl: 'http://nsnest.iptime.org:3000/',
-  apiUrl: 'http:///localhost:3000/api/',
-  fileUrl: 'http:///localhost:3000/',
+  apiUrl: 'http://nsnest.iptime.org:3000/api/',
+  fileUrl: 'http://nsnest.iptime.org:3000/',
+  // apiUrl: 'http:///localhost:3000/api/',
+  // fileUrl: 'http:///localhost:3000/',
 
   //가입페이지
   registPage: 'http://nsnest.s3-website.ap-northeast-2.amazonaws.com/'
