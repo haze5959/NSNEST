@@ -5,7 +5,11 @@
         <mat-card-title>{{appService.myInfo.name}}</mat-card-title>
         <mat-card-subtitle>{{appService.myInfo.intro}}</mat-card-subtitle>
     </mat-card-header>
-    <b class="userInfoCard-abandonmentLV">잉어력: {{appService.myInfo.point}}</b>
+    <b class="userInfoCard-userinfo">잉어력: {{appService.myInfo.point}}</b>
+    <b class="userInfoCard-userinfo">학번: {{appService.myInfo.studentNum}}</b>
+    <b class="userInfoCard-userinfo">생일: {{appService.myInfo.birthDay}}</b>
+    <b class="userInfoCard-userinfo">성별: {{appService.myInfo.gender}}</b>
+    <b class="userInfoCard-userinfo">최근활동일: {{appService.myInfo.recentDate}}</b>
     <!-- <img mat-card-image src="{{profileImage}}" alt="Photo of a user"> -->
     <mat-card-content>
         <pre>{{appService.myInfo.description}}</pre>

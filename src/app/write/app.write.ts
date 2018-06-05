@@ -226,19 +226,25 @@ export class AppWrite implements OnInit {
     switch(this.classify){
       case 'post':{ //게시글
         //서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기=============================
-        this.isLoading = true;
-        this.httpService.uploadImage('elbum', $event.target.files)
-        .subscribe(
-          data => {
-            this.isLoading = false;
-            console.log(JSON.stringify(data));
-            if(data.result){  //성공
-              console.log('게시글 이미지 업로드 완료');
-              var range = this.quillInstance.getSelection(!this.quillInstance.hasFocus()); 
-              this.quillInstance.insertEmbed(range, 'image', data.data);
-              this.snackBar.open("게시글 업로드 완료", "확인", {
-                duration: 2000,
-              });
+        this.httpService.uploadImage('board', $event.target.files[0])
+          .subscribe(
+            data => {
+              // console.log(JSON.stringify(data));
+              if(data.result){  //성공
+                const fileInfo = data.message.files.file;
+                if(fileInfo && fileInfo.path){
+                  let filePath:string = fileInfo.path;
+                  filePath = filePath.replace('/1TB_Drive/NSNEST_PUBLIC/', '');
+                  const fileUrl = environment.fileUrl + filePath;
+                  console.log('이미지 업로드 완료 - ' + fileUrl);
+                  var range = this.quillInstance.getSelection(!this.quillInstance.hasFocus()); 
+                  this.quillInstance.insertEmbed(range, 'image', fileUrl);
+                  this.snackBar.open("게시글 업로드 완료", "확인", {
+                    duration: 2000,
+                  });
+                } else {
+                  throw new Error('이미지 형식이 이상합니다.');
+                }
             } else {  //실패
               this.snackBar.open("게시글 업로드 실패 - " + data.message, "확인", {
                 duration: 5000,

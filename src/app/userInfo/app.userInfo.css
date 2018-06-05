@@ -3,12 +3,12 @@
 }
 
 .userInfoCard-header {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
-.userInfoCard-abandonmentLV {
+.userInfoCard-userinfo {
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 7px;
 }
 
 .userInfoCard-btn-bundle {

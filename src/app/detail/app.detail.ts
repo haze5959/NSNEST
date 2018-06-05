@@ -112,7 +112,6 @@ export class AppDetail implements OnInit {
   }
   
   pressOneUser(userId:number){
-    console.log("유저 아이디 : " + userId);
     //유저 DB에서 가져오기!
     this.httpService.getUser(userId).subscribe(
       data => {
@@ -121,7 +120,7 @@ export class AppDetail implements OnInit {
           alert("해당 유저를 찾지 못하였습니다.");
           throw("해당 유저를 찾지 못하였습니다.");
         } else {
-          let user:user = data[0];
+          let user:user = this.appService.userFactory(data)[0];
           this.openUserDialog(user);
         }
       },

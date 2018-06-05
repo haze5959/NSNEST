@@ -130,7 +130,7 @@ export class AppSideUserList implements OnInit {
   templateUrl: 'dialog.showUserInfoDialog.html',
 })
 export class ShowUserInfoDialog {
-  user = this.data
+  user = this.data;
   constructor(
     private appService: AppService,
     public dialogRef: MatDialogRef<ShowUserInfoDialog>,
