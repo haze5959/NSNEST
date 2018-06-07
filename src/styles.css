@@ -123,6 +123,11 @@ body{
     background-image: black;
 }
 
+/* 디테일뷰의 게시글 이미지 크기를 맟추기 위함(quill 라이브러리를 써서 어쩔 수 없음) */
+.ql-editor > p > p > img { 
+    max-width: 100% !important;
+}
+
 /* 스피너 */
 .fulfilling-square-spinner , .fulfilling-square-spinner * {
     box-sizing: border-box;

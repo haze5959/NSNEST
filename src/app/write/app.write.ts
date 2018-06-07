@@ -113,6 +113,7 @@ export class AppWrite implements OnInit {
               }
             );
           } else {  //벨리데이션 실패
+            this.isLoading = false;
             this.snackBar.open("제목과 본문을 작성하시오.", "확인", {
               duration: 2000,
             });
