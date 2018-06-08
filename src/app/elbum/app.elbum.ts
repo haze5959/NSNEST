@@ -51,7 +51,7 @@ export class AppElbum implements OnInit{
     this.httpService.getPosts(10, 'id', 'desc', pageEvent.pageIndex + 1)
     .subscribe(
       data => {
-        console.log(JSON.stringify(data));
+        // console.log(JSON.stringify(data));
         this.postImages = this.appService.postFactory(data);
         this.isLoading = false;
       },
@@ -64,7 +64,7 @@ export class AppElbum implements OnInit{
     );
   }
 
-  pressOneImage(postImage:posts){
-    console.log(postImage.postsID);
+  pressOneImage(postId:number){
+    this.router.navigate(['detail/' + postId]);
   }
 }

@@ -158,11 +158,42 @@ export class AppWrite implements OnInit {
           break;
         }
         case 'map':{ //맛집
-          post.postClassify = 30;
-          console.log('맛집 업로드 완료');
-          this.snackBar.open("맛집 업로드 완료", "확인", {
-            duration: 2000,
-          });
+          if(this.editorContent.valid && this.titleFormControl.valid && this.marker){
+            post.postClassify = 30;
+            post.title = this.titleFormControl.value; //제목입력
+            this.marker.label = this.titleFormControl.value;
+            post.body = this.editorContent.value; //본문입력
+            post.images = this.imageArr;
+            post.marker = this.marker;
+            post.tag = [this.selectType];
+            this.httpService.postPost(post)
+            .subscribe(
+              data => {
+                this.isLoading = false;
+                console.log(JSON.stringify(data));
+                if(data.result){  //성공
+                  this.snackBar.open("맛집 업로드 완료", "확인", {
+                    duration: 2000,
+                  });
+                  this.router.navigate(['/']);
+                } else {  //실패
+                  this.snackBar.open("맛집 업로드 실패 - " + data.message, "확인", {
+                    duration: 5000,
+                  });
+                }
+              },
+              error => {
+                this.isLoading = false;
+                console.error("[error] - " + error.error.text);
+                alert("[error] - " + error.error.text);
+              }
+            );
+          } else {  //벨리데이션 실패
+            this.isLoading = false;
+            this.snackBar.open("본문을 작성하시오.", "확인", {
+              duration: 2000,
+            });
+          }
           break;
         }
         default:{
@@ -180,15 +211,13 @@ export class AppWrite implements OnInit {
   }
 
   pressDetailmage(index:number){
-    console.log("이미지 열기");
     var image = new Image();
     image.src = this.imageArr[index];
     image.onload = () => {
       let dialogRef = this.dialog.open(ShowDetailImageDialog, {
         height: image.height.toString(),
         width: image.width.toString(),
-        maxHeight: '100vmin',
-        maxWidth: '100vmin',
+        maxHeight: '95vmin',
         data: { imageUrl: image.src }
       });
 
@@ -269,41 +298,7 @@ export class AppWrite implements OnInit {
         break;
       }
       case 'map':{ //맛집
-        //서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기=============================
-        this.isLoading = true;
-        this.httpService.uploadImage('elbum', $event.target.files)
-        .subscribe(
-          data => {
-            this.isLoading = false;
-            console.log(JSON.stringify(data));
-            if(data.result){  //성공
-              console.log('맛집 이미지 업로드 완료');
-              if(data.data.length > 0){
-                for (const imagePath in data.data) {
-                  this.imageArr.push(imagePath);
-                  console.log(this.imageArr.length);
-                }
-              }
-              this.snackBar.open("맛집 이미지 업로드 완료", "확인", {
-                duration: 2000,
-              });
-        
-            } else {  //실패
-              this.snackBar.open("맛집 업로드 실패 - " + data.message, "확인", {
-                duration: 5000,
-              });
-            }
-            this.isLoading = false;
-          },
-          error => {
-            this.isLoading = false;
-            console.error("[error] - " + error.error.text);
-            alert("[error] - " + error.error.text);
-          }
-        );
-
-        this.isLoading = false;
-        //======================================================================
+        this.uploadImages($event.target.files, 0);
         break;
       }
       default:{
@@ -315,7 +310,27 @@ export class AppWrite implements OnInit {
 
   uploadImages(imageArr:File[], sequence:number){
     this.isLoading = true;
-    this.httpService.uploadImage('elbum', imageArr[sequence])
+    let classfiyUpload: string;
+    switch(this.classify){
+      case 'post':{ //게시글
+        classfiyUpload = 'board';
+        break;
+      }
+      case 'elbum':{ //앨범
+        classfiyUpload = 'elbum';
+        break;
+      }
+      case 'map':{ //맛집
+        classfiyUpload = 'food';
+        break;
+      }
+      default: {
+        classfiyUpload = 'elbum';
+        break;
+      }
+    };
+
+    this.httpService.uploadImage(classfiyUpload, imageArr[sequence])
           .subscribe(
             data => {
               // console.log(JSON.stringify(data));
@@ -332,24 +347,24 @@ export class AppWrite implements OnInit {
                 }
                 
                 if(imageArr.length > sequence + 1){
-                  this.snackBar.open(`앨범 이미지 업로드 중... [${sequence + 1}/${imageArr.length}]`, "확인");
+                  this.snackBar.open(`이미지 업로드 중... [${sequence + 1}/${imageArr.length}]`, "확인");
                   // setTimeout(() => this.uploadImages(imageArr, sequence + 1), 2000);
                   this.uploadImages(imageArr, sequence + 1);
                   
                 }else{
-                  this.snackBar.open(`앨범 이미지 업로드 완료[${imageArr.length}]`, "확인");
+                  this.snackBar.open(`이미지 업로드 완료[${imageArr.length}]`, "확인");
                   this.isLoading = false;
                 }
           
               } else {  //실패
-                console.error("앨범 업로드 실패 - " + data.message);
-                alert("앨범 업로드 실패 - " + data.message);
+                console.error("이미지 업로드 실패 - " + data.message);
+                alert("이미지 업로드 실패 - " + data.message);
                 this.isLoading = false;
               }
             },
             error => {
-              console.error("앨범 업로드 실패 - " + error.message);
-              alert(`앨범 업로드 실패[${sequence + 1}/${imageArr.length}] - ` + error.message);
+              console.error("이미지 업로드 실패 - " + error.message);
+              alert(`이미지 업로드 실패[${sequence + 1}/${imageArr.length}] - ` + error.message);
               this.isLoading = false;
             }
           );
@@ -363,7 +378,7 @@ export class AppWrite implements OnInit {
     this.marker = {
       lat: $event.coords.lat,
 		  lng: $event.coords.lng,
-		  label: "위치"
+		  label: this.titleFormControl.value?this.titleFormControl.value:"위치"
     }
   }
 }

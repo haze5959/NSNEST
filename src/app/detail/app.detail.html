@@ -53,10 +53,10 @@
       </h1>
 
       <!-- 이미지 표시 -->
-      <mat-grid-list cols="2" rowHeight="1:2" rowHeight="570px" gutterSize="0px" class="detail-elbum-imglist">
+      <mat-grid-list cols="2" rowHeight="1:2" rowHeight="400px" gutterSize="0px" class="detail-elbum-imglist">
           <mat-grid-tile *ngFor="let image of post.images">
               <mat-card class="elbum-card" (click)="openImageVeiwer(image)">
-                  <img class="detail-elbum-card-img" src="{{image}}" alt="Photo">
+                  <img class="detail-map-card-img" src="{{image}}" alt="Photo">
               </mat-card>
           </mat-grid-tile>
       </mat-grid-list>

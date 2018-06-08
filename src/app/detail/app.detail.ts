@@ -173,13 +173,13 @@ export class AppDetail implements OnInit {
   }
 
   openImageVeiwer(imageStr:string){
-    console.log("이미지 열기");
     var image = new Image();
     image.src = imageStr;
     image.onload = () => {
       let dialogRef = this.dialog.open(ShowDetailImageDialog, {
         height: image.height.toString(),
         width: image.width.toString(),
+        maxHeight: '95vmin',
         data: { imageUrl: imageStr }
       });
 

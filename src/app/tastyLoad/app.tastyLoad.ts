@@ -1,20 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
-import {merge} from 'rxjs/observable/merge';
+import { PageEvent } from '@angular/material';
+import { HttpService } from '../service/http.service';
+import { Router } from '@angular/router';
+
+import {zip} from 'rxjs/observable/zip';
 import {of as observableOf} from 'rxjs/observable/of';
 import {catchError} from 'rxjs/operators/catchError';
 import {map} from 'rxjs/operators/map';
 import {startWith} from 'rxjs/operators/startWith';
 import {switchMap} from 'rxjs/operators/switchMap';
-
-import { AppService } from "../service/appService";
+import { AppService } from '../service/appService';
 
 import { posts } from '../model/posts';
+import { marker } from "../model/marker";
 import { DomSanitizer } from '@angular/platform-browser';
 
-import { marker } from "../model/marker";
+
 
 @Component({
   selector: 'app-tasty-load',
@@ -25,192 +26,85 @@ export class AppTastyLoad {
   // initial center position for the map
   lat: number = 37.520000;
   lng: number = 127.000000; //용산구 좌표
+
   clickedMarker(label: string, index: number) {
     console.log(`clicked the marker: ${label || index}`)
   }
 
   showDetailView(postID:number){
-    alert(postID);
+    this.router.navigate(['detail/' + postID]);
   }
-
-  mapClicked(){
-
-  }
-
-  markers: marker[] = [
-	  {
-		  lat: 37.497959,
-		  lng: 126.929769,
-		  label: '오규집'
-	  },
-	  {
-		  lat: 37.450524,
-		  lng: 127.128913,
-		  label: '가천대'
-	  },
-	  {
-		  lat: 37.516430,
-		  lng: 126.907832,
-		  label: '영등포역'
-	  }
-  ];
 
   testImage = this.sanitizer.bypassSecurityTrustStyle(this.appService.TEST_IMAGE);
-  postMarkers: posts[] = [
-    {
-      postsID: 1000,
-      postClassify: 30, //지도
-      studentNum: 11,
-      publisher: '권오규',
-      publisherIntro: '프로필 명 입니다.',
-      publisherImg: this.testImage,
-      images: [this.appService.TEST_IMAGE2, this.appService.emptyUserImage, this.appService.TEST_IMAGE2],
-      title: '타이틀 입니다.',
-      body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-      good: 10,
-      bad: 0,
-      marker: this.markers[0]
-    },
-    {
-      postsID: 1001,
-      postClassify: 30,
-      studentNum: 11,
-      publisher: '권오규',
-      publisherIntro: '프로필 명 입니다.',
-      publisherImg: this.testImage,
-      images: [this.appService.TEST_IMAGE2, this.appService.TEST_IMAGE2],
-      title: '타이틀 입니다.',
-      body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-      good: 0,
-      bad: 20,
-      marker: this.markers[1]
-    },
-    {
-      postsID: 1000,
-      postClassify: 30,
-      studentNum: 11,
-      publisher: '권오규',
-      publisherIntro: '프로필 명 입니다.',
-      publisherImg: this.testImage,
-      images: [this.appService.TEST_IMAGE2, this.appService.emptyUserImage],
-      title: '타이틀 입니다.',
-      body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-      good: 0,
-      bad: 0,
-      marker: this.markers[2]
-    },
-    {
-      postsID: 1000,
-      postClassify: 30,
-      studentNum: 11,
-      publisher: '권오규',
-      publisherIntro: '프로필 명 입니다.',
-      publisherImg: this.testImage,
-      images: [this.appService.TEST_IMAGE2],
-      title: '타이틀 입니다.',
-      body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-      good: 0,
-      bad: 0,
-      marker: this.markers[0]
-    },
-    {
-      postsID: 1000,
-      postClassify: 30,
-      studentNum: 11,
-      publisher: '권오규',
-      publisherIntro: '프로필 명 입니다.',
-      publisherImg: this.testImage,
-      images: [this.appService.TEST_IMAGE2],
-      title: '타이틀 입니다.',
-      body: '내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.용 입니다. 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.내용 입니다.',
-      good: 0,
-      bad: 0,
-      marker: this.markers[2]
-    }
-  ];
+  postMarkers: posts[] = [];
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer, private appService: AppService) {}
-  displayedColumns = ['created', 'writer', 'number', 'title'];
-  exampleDatabase: ExampleHttpDao | null;
-  dataSource = new MatTableDataSource();
-
-  resultsLength = 0;
-  isLoadingResults = true;
-  isRateLimitReached = false;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  constructor(private sanitizer: DomSanitizer, private appService: AppService, private httpService: HttpService, private router: Router) {}
+  isLoading = true;
+  pageSize = 0;
+  pageLength = 0;
+  orderBy = "id";
+  orderBySeq = "desc";
+  filterValue = "";
 
   ngOnInit() {
-    this.exampleDatabase = new ExampleHttpDao(this.http);
-
-    // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
-          return this.exampleDatabase!.getRepoIssues(
-            this.sort.active, this.sort.direction, this.paginator.pageIndex);
-        }),
-        map(data => {
-          // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
-          this.isRateLimitReached = false;
-          this.resultsLength = data.total_count;
-          console.log(data);
-          for(var i = 0; i < 20; i++){
-            data.items.pop();
-          }
-          return data.items;
-        }),
-        catchError(() => {
-          this.isLoadingResults = false;
-          // Catch if the GitHub API has reached its rate limit. Return empty data.
-          // this.isRateLimitReached = true;
-          return observableOf([{
-            created_at:new Date('1/1/16'),
-            number: '777',
-            state: '777',
-            title: 'ddd'
-          }]);
-        })
-      ).subscribe(data => this.dataSource.data = data);
+    zip(
+      this.httpService.getPosts(30, this.orderBy, this.orderBySeq, 1), //해당 게시글 DB에서 빼온다
+      this.httpService.getPostSize(30)  //해당 게시글 숫자를 가져온다
+    ).subscribe(
+      data => {
+        // console.log(JSON.stringify(data));
+        this.postMarkers = this.appService.postFactory(data[0]);
+        this.pageLength = data[1][0];
+        this.pageSize = this.postMarkers.length;
+        this.isLoading = false;
+      },
+      error => {
+        console.error("[error] - " + error.error.text);
+        alert("[error] - " + error.error.text);
+        this.postMarkers.push(this.httpService.errorPost);
+        this.isLoading = false;
+      }
+    );
   }
 
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     console.log(filterValue);
-    this.dataSource.filter = filterValue;
+    this.isLoading = true;
+    zip(
+      this.httpService.getPosts(10, this.orderBy, this.orderBySeq, 1, filterValue), //해당 게시글 DB에서 빼온다
+      this.httpService.getPostSize(10, filterValue)  //해당 게시글 숫자를 가져온다
+    ).subscribe(
+      data => {
+        // console.log(JSON.stringify(data));
+        this.postMarkers = this.appService.postFactory(data[0]);
+        this.pageLength = data[1][0];
+        this.pageSize = this.postMarkers.length;
+        this.isLoading = false;
+        this.filterValue = filterValue;
+      },
+      error => {
+        console.error("[error] - " + error.error.text);
+        alert("[error] - " + error.error.text);
+        this.postMarkers.push(this.httpService.errorPost);
+        this.isLoading = false;
+      }
+    );
   }
-}
 
-/**
- * =========================예제 쓸어온거============================
- */
-export interface GithubApi {
-  items: GithubIssue[];
-  total_count: number;
-}
+  pressOrderBy(orderByStr:string){
+    if(this.orderBy == orderByStr){
+      this.orderBySeq = this.orderBySeq == 'desc' ? 'asc' : 'desc';
+    }else{
+      this.orderBy = orderByStr;
+      this.orderBySeq = 'desc';
+    }
 
-export interface GithubIssue {
-  created_at: string;
-  number: string;
-  hot: string;
-  title: string;
-}
+    this.applyFilter(this.filterValue);
+  }
 
-/** An example database that the data source uses to retrieve data for the table. */
-export class ExampleHttpDao {
-  constructor(private http: HttpClient) {}
-  getRepoIssues(sort: string, order: string, page: number): Observable<GithubApi> {
-    const href = 'https://api.github.com/search/issues';
-    const requestUrl =
-        `${href}?q=repo:angular/material2&sort=${sort}&order=${order}&page=${page + 1}`;
-
-    return this.http.get<GithubApi>(requestUrl);
+  pressPost(postId:number){
+    this.router.navigate(['detail/' + postId]);
   }
 }

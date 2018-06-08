@@ -49,6 +49,7 @@
 
 .mat-card-image {
     height: 400px;
+    width: 400px;
     /* background-size: fill; */
 }
 
@@ -85,4 +86,9 @@
 .comment-count {
     float: left;
     margin-left: 15px;
+}
+
+.label-date {
+    float: right;
+    margin-right: 15px;
 }

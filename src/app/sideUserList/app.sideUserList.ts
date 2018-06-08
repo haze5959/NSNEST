@@ -27,7 +27,7 @@ export class AppSideUserList implements OnInit {
     this.httpService.getUsers('update', 10)
     .subscribe(
       data => {
-        console.log(JSON.stringify(data));
+        // console.log(JSON.stringify(data));
         if (data.length == 0) {
           alert("유저 정보를 가져오지 못하였습니다.");
         } else {

@@ -1,16 +1,18 @@
 <div class="app-elbum">
-    <div class="elbum-loading-shade" *ngIf="isLoading">
-        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div *ngIf="isLoading" class="elbum-loading-shade">
+        <div  class="fulfilling-square-spinner">
+            <div class="spinner-inner"></div>
+        </div>
     </div>
     <div class="elbum-header">
-        <mat-form-field style="width: 60%;">
+        <!-- <mat-form-field style="width: 60%;">
             <input #filterBtn matInput placeholder="Filter">
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="applyFilter(filterBtn.value)">검색</button>
+        <button mat-raised-button color="primary" (click)="applyFilter(filterBtn.value)">검색</button> -->
     </div>
-    <mat-grid-list cols="2" rowHeight="1:2" rowHeight="800px">
+    <mat-grid-list cols="2" rowHeight="1:2" rowHeight="650px">
         <mat-grid-tile *ngFor="let postImage of postImages">
-            <mat-card class="elbum-card" (click)="pressOneImage(postImage)">
+            <mat-card class="elbum-card" (click)="pressOneImage(postImage.postsID)">
                 <mat-card-header class="card-header">
                     <div mat-card-avatar class="elbum-header-image" [ngStyle]="{ 'background-image': 'url(' + postImage.publisherImg + ')'}"></div>
                     <mat-card-title>{{postImage.publisher}}</mat-card-title>
@@ -37,6 +39,10 @@
                     <div class="comment-count">
                         <mat-icon mat-list-icon>comment</mat-icon>
                         {{postImage.commentCount}}
+                    </div>
+                    <div class="label-date">
+                        <mat-icon mat-list-icon>date_range</mat-icon>
+                        {{postImage.postDate}}
                     </div>
                 </mat-card-actions>
             </mat-card>

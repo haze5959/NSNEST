@@ -59,7 +59,7 @@ export class AppBoard implements OnInit{
       this.httpService.getPostSize(10, filterValue)  //해당 게시글 숫자를 가져온다
     ).subscribe(
       data => {
-        console.log(JSON.stringify(data));
+        // console.log(JSON.stringify(data));
         this.boardPosts = this.appService.postFactory(data[0]);
         this.pageLength = data[1][0];
         this.pageSize = this.boardPosts.length;

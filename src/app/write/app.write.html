@@ -75,6 +75,22 @@
             </agm-marker>
         </agm-map>
 
+        <!-- 이미지 인풋 -->
+        <button mat-raised-button color="primary" (click)="fileInput.click()" style="margin-bottom:20px;">이미지 등록</button>
+        
+        <!-- 이미지 표시 -->
+        <mat-grid-list cols="3" rowHeight="1:2" rowHeight="400px" gutterSize="20px">
+            <mat-grid-tile *ngFor="let image of imageArr; let index = index">
+                <mat-card class="elbum-card">
+                    <img mat-card-image class="elbum-image" src="{{image}}" alt="Photo">
+                    <mat-card-actions>
+                        <button mat-raised-button color="primary" style="margin-bottom:10px;" (click)="pressDeleteImage(index)">삭제</button>
+                        <button mat-raised-button color="primary" style="margin-bottom:10px;" (click)="pressDetailmage(index)">자세히 보기</button>
+                    </mat-card-actions>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+
         <!-- 수정 저장 -->
         <button class="write-save-btn" mat-raised-button color="primary" (click)="pressSaveBtn()">올리기</button>
     </div>

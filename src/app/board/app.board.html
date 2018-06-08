@@ -2,11 +2,9 @@
     <!-- <mat-card class="board-background">Simple card</mat-card> -->
 
     <div class="board-background">
-        <div class="board-loading-shade"
-                *ngIf="isLoading">
-            <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-            <div class="board-rate-limit-reached" *ngIf="isRateLimitReached">
-            GitHub's API rate limit has been reached. It will be reset in one minute.
+        <div *ngIf="isLoading" class="board-loading-shade">
+            <div  class="fulfilling-square-spinner">
+                <div class="spinner-inner"></div>
             </div>
         </div>
 

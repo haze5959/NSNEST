@@ -96,13 +96,13 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   }
 
   openProfileImage(){
-    console.log("이미지 열기");
     var image = new Image();
     image.src = this.appService.myInfo.image;
     image.onload = () => {
       let dialogRef = this.dialog.open(ShowDetailImageDialog, {
         height: image.height.toString(),
         width: image.width.toString(),
+        maxHeight: '95vmin',
         data: { imageUrl: this.appService.myInfo.image }
       });
 
@@ -119,7 +119,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
       this.cognitoUtil.getIdToken({
           callback(): void{},
           callbackWithParam(result: any): void {
-            console.log(JSON.stringify(result));
+            // console.log(JSON.stringify(result));
             let jwtHelper: JwtHelper = new JwtHelper();
             userPayload = jwtHelper.decodeToken(result)
           }
@@ -129,7 +129,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
       //유저 정보 설정
       this.httpService.getUserWithConito(userPayload.sub, userPayload.name, userPayload['custom:studentNum'], userPayload.birthdate, userPayload.gender).subscribe(
         data => {
-          console.log(JSON.stringify(data));
+          // console.log(JSON.stringify(data));
           if(data.length > 0){
             this.appService.myInfo = this.appService.userFactory(data)[0]; //로그인 유저 매핑
             this.appService.isAppLogin = true;

@@ -15,6 +15,7 @@ import { user } from '../model/user';
 import { posts } from '../model/posts';
 import { comment } from '../model/comment';
 import { schedule } from '../model/schedule';
+import { marker } from '../model/marker';
 
 @Injectable()
 export class AppService {
@@ -68,6 +69,11 @@ export class AppService {
         imageArr = imageStr.split(',');
       }
 
+      let marker:marker = null;
+      if(element[13]){
+        marker = JSON.parse(element[13]);
+      }
+
       let tagArr:string[] = [];
       if(element[14]){
         let tagStr:string = element[14];
@@ -88,7 +94,7 @@ export class AppService {
           good: element[10],
           bad: element[11],
           postDate: element[12],
-          marker: element[13],
+          marker: marker,
           tag: tagArr,
           commentCount: element[15]
         };
