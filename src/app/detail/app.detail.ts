@@ -51,7 +51,7 @@ export class AppDetail implements OnInit {
       this.httpService.getPost(this.postId)
       .subscribe(
         data => {
-          console.log(JSON.stringify(data));
+          // console.log(JSON.stringify(data));
           if (data.length == 0) { //게시글을 못찾음
             alert("해당 게시글을 찾지 못하였습니다.");
             this.router.navigate(['/']);
@@ -100,7 +100,7 @@ export class AppDetail implements OnInit {
     if(this.post['commentCount'] > 0){
       this.httpService.getComments(this.postId).subscribe(
         data => {
-          console.log(JSON.stringify(data));
+          // console.log(JSON.stringify(data));
           this.comments = this.appService.commentFactory(data);
         },
         error => {
@@ -115,7 +115,7 @@ export class AppDetail implements OnInit {
     //유저 DB에서 가져오기!
     this.httpService.getUser(userId).subscribe(
       data => {
-        console.log(JSON.stringify(data));
+        // console.log(JSON.stringify(data));
         if (data.length == 0) { //해당 유저를 못찾음
           alert("해당 유저를 찾지 못하였습니다.");
           throw("해당 유저를 찾지 못하였습니다.");
@@ -134,8 +134,8 @@ export class AppDetail implements OnInit {
 
   openUserDialog(user:user){
     const dialogRef = this.dialog.open(ShowUserInfoDialog, {
-      height: "80%",
-      width: "50%",
+      height: this.appService.isPhone?"95%":"80%",
+      width: this.appService.isPhone?"95%":"50%",
       data: user
     });
 
@@ -177,9 +177,9 @@ export class AppDetail implements OnInit {
     image.src = imageStr;
     image.onload = () => {
       let dialogRef = this.dialog.open(ShowDetailImageDialog, {
+        maxHeight: '100vmin',
         height: image.height.toString(),
         width: image.width.toString(),
-        maxHeight: '95vmin',
         data: { imageUrl: imageStr }
       });
 
@@ -251,7 +251,7 @@ export class AppDetail implements OnInit {
     } else {
       this.httpService.putPostGoodBad(postId, this.appService.myInfo.userId, true).subscribe(
         data => {
-          console.log(JSON.stringify(data));
+          // console.log(JSON.stringify(data));
           if(data.result){
             this.openSnackBar("좋아요 성공");
 

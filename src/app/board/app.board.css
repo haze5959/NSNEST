@@ -1,5 +1,5 @@
 .app-board {
-    height: 90%;
+    height: calc(100% - 70px);
     width: 95%;
     margin-left: 10px;
     overflow: scroll;
@@ -86,4 +86,38 @@
   
 .mat-column-created {
     max-width: 100px;
+}
+
+@media screen and (max-width: 1000px) {
+    .app-board {
+        margin-left: 0px;
+        height: calc(100% - 56px);
+        width: 100%;
+        /* background-color: #CFD8DC; */
+    }
+
+    .board-colum {
+        font-size: 8px;
+    }
+
+    .board-table-id {
+        font-size: 8px;
+    }
+    
+    .board-table-author {
+        font-size: 8px;
+    }
+    
+    .board-table-title {
+        font-size: 8px;
+    }
+    
+    .board-table-good {
+        font-size: 8px;
+        text-align: center;
+    }
+    
+    .board-table-bad {
+        display: none;
+    }
 }

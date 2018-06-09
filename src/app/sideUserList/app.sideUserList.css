@@ -22,3 +22,9 @@
 .profile-info-intro {
     margin: 0px;
 }
+
+@media screen and (max-width: 1000px) {
+    .app-card-sideUserList {
+        width: 100%;
+    }
+}

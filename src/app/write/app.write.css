@@ -1,13 +1,13 @@
 .app-write {
-    height: 90%;
+    height: calc(100% - 70px);
     width: 95%;
     margin-left: 10px;
-    padding-bottom: 500px;
+    /* padding-bottom: 500px; */
     overflow: scroll;
 }
 
 .write-loading-screen {
-    height: 90%;
+    height: calc(100% - 70px);
     width: 95%;
     position: absolute;
     background-color: rgba(0, 0, 0, 0.3);
@@ -15,7 +15,7 @@
 }
 
 .write-editor {
-    height: 80%;
+    height: calc(80% - 70px);
 }
 
 /* .write-title {
@@ -56,4 +56,22 @@
 
 .agm-map {
     height: 600px;
+}
+
+@media screen and (max-width: 1000px) {
+    .app-write {
+        margin-left: 0px;
+        height: calc(100% - 56px);
+        width: 100%;
+    }
+    
+    .write-loading-screen {
+        margin-left: 0px;
+        height: calc(100% - 56px);
+        width: 100%;
+    }
+
+    .agm-map {
+        height: 300px;
+    }
 }

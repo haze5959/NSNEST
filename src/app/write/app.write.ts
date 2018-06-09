@@ -217,7 +217,7 @@ export class AppWrite implements OnInit {
       let dialogRef = this.dialog.open(ShowDetailImageDialog, {
         height: image.height.toString(),
         width: image.width.toString(),
-        maxHeight: '95vmin',
+        maxHeight: '100vmin',
         data: { imageUrl: image.src }
       });
 

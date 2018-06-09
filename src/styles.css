@@ -195,3 +195,10 @@ body{
       height: 0%;
     }
 }
+
+@media screen and (max-width: 1000px) {
+    .mat-list-text {
+        /* 코맨트 전용 */
+        max-width: 80px !important;    
+    }
+}

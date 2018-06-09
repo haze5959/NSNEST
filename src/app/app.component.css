@@ -9,12 +9,6 @@
     width: 50%;
 }
 
-@media screen and (max-width: 1000px) {
-    .app-sidenav {
-        width: 90%;
-    }
-}
-
 .app-showSidenavBtn {
     height: 100%;
 }
@@ -60,4 +54,14 @@ mat-icon{
     font-size:50px; 
     height:50px; 
     width:50px;
+}
+
+@media screen and (max-width: 1000px) {
+    .app-sidenav {
+        width: 90%;
+    }
+
+    .app-sidenav-content {
+        padding-top: 0px;
+    }
 }

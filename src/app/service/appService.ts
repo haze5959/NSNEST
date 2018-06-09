@@ -20,14 +20,14 @@ import { marker } from '../model/marker';
 @Injectable()
 export class AppService {
   APP_NAME = "NSNEST of Ancient";
-  APP_VERSION = "V0.1";
+  APP_VERSION = "V1.0";
   APP_COPYRIGHTS = "Copyright©2018 OQ All rights reserved.";
   emptyUserImage = "/../assets/testImage.jpg";
   TEST_IMAGE : "url('https://material.angular.io/assets/img/examples/shiba1.jpg')";
   TEST_IMAGE2 : "/../assets/testImage2.jpg";
 
   myInfo:user;
-  isAppLoading = false;  //로딩 프로그레스를 보일지말지를 관장하는 환경변수
+  isAppLoading = true;  //로딩 프로그레스를 보일지말지를 관장하는 환경변수
   isAppLogin = false;  //로그인이 됐는지 안됐는지 관장
   isPhone = false;
 

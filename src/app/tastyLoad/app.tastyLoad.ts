@@ -70,11 +70,11 @@ export class AppTastyLoad {
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    console.log(filterValue);
+    // console.log(filterValue);
     this.isLoading = true;
     zip(
-      this.httpService.getPosts(10, this.orderBy, this.orderBySeq, 1, filterValue), //해당 게시글 DB에서 빼온다
-      this.httpService.getPostSize(10, filterValue)  //해당 게시글 숫자를 가져온다
+      this.httpService.getPosts(30, this.orderBy, this.orderBySeq, 1, filterValue), //해당 게시글 DB에서 빼온다
+      this.httpService.getPostSize(30, filterValue)  //해당 게시글 숫자를 가져온다
     ).subscribe(
       data => {
         // console.log(JSON.stringify(data));

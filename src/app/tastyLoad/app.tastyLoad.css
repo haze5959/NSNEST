@@ -1,5 +1,5 @@
 .app-tastyload {
-    height: 90%;
+    height: calc(100% - 70px);
     width: 95%;
     margin-left: 10px;
     overflow: scroll;
@@ -71,4 +71,41 @@
     color: #980000;
     max-width: 360px;
     text-align: center;
+}
+
+@media screen and (max-width: 1000px) {
+    .app-tastyload {
+        margin-left: 0px;
+        height: calc(100% - 56px);
+        width: 100%;
+    }
+
+    .agm-map {
+        height: 400px;
+    }
+
+    .tastyload-colum {
+        font-size: 8px;
+    }
+
+    .tastyload-table-id {
+        font-size: 8px;
+    }
+    
+    .tastyload-table-author {
+        font-size: 8px;
+    }
+    
+    .tastyload-table-title {
+        font-size: 8px;
+    }
+    
+    .tastyload-table-good {
+        font-size: 8px;
+        text-align: center;
+    }
+    
+    .tastyload-table-bad {
+        display: none;
+    }
 }

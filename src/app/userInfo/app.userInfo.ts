@@ -102,7 +102,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
       let dialogRef = this.dialog.open(ShowDetailImageDialog, {
         height: image.height.toString(),
         width: image.width.toString(),
-        maxHeight: '95vmin',
+        maxHeight: '100vmin',
         data: { imageUrl: this.appService.myInfo.image }
       });
 
@@ -137,7 +137,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
               duration: 2000,
             });
 
-            this.router.navigate(['newspeed/']);
+            // this.router.navigate(['newspeed/']);
           } else {
             console.error("[error] - error: 데이터 없음");
             alert("유저 정보를 가져오지 못하였습니다. ");
@@ -192,7 +192,8 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
               duration: 2000,
             });
 
-            this.router.navigate(['newspeed/']);
+            // this.router.navigate(['newspeed/']);
+            location.reload();
           } else {
             console.error("[error] - error: 데이터 없음");
             alert("유저 정보를 가져오지 못하였습니다. ");

@@ -1,8 +1,8 @@
 .app-detail {
-    height: 90%;
+    height: calc(100% - 70px);
     width: 95%;
     margin-left: 10px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 ::-webkit-scrollbar {
@@ -56,8 +56,8 @@
 }
 
 .detail-map-card-img {
-    max-width:300px;
-    max-height:100%;
+    max-width:450px;
+    max-height:300px;
 }
 
 .detail-elbum-image {
@@ -73,6 +73,8 @@
     padding-left: 5px;
     margin: 10px 0px;
     border-left: thin solid #CFD8DC;
+    width: calc(100% - 178px);
+    word-wrap: break-word;
 }
 
 .detail-comment{
@@ -102,4 +104,42 @@
 
 .agm-map {
     height: 600px;
+}
+
+@media screen and (max-width: 1000px) {
+    .app-detail {
+        margin-left: 0px;
+        height: calc(100% - 56px);
+        width: 100%;
+        /* background-color: #CFD8DC; */
+    }
+
+    .agm-map {
+        height: 300px;
+    }
+
+    .detail-comment {
+        font-size: 12px;
+    }
+
+    .detail-comment p {
+        font-size: 12px !important;
+    }
+    
+    .detail-comment-input {
+        font-size: 12px;
+    }
+
+    .comment-content {
+        width: calc(100% - 148px);
+    }
+
+    ::-webkit-scrollbar {
+        width: 0px;  /* remove scrollbar space */
+        background: transparent;  /* optional: just make scrollbar invisible */
+    }
+    /* optional: show position indicator in red */
+    /* ::-webkit-scrollbar-thumb {
+        background: #FF0000;
+    } */
 }

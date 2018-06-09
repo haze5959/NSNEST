@@ -1,4 +1,4 @@
-<div *ngIf="!appService || appService.isAppLoading" class="app-loading-screen">
+<div *ngIf="appService && appService.isAppLoading" class="app-loading-screen">
   <div  class="fulfilling-square-spinner">
     <div class="spinner-inner"></div>
   </div>

@@ -10,7 +10,7 @@
         </mat-form-field>
         <button mat-raised-button color="primary" (click)="applyFilter(filterBtn.value)">검색</button> -->
     </div>
-    <mat-grid-list cols="2" rowHeight="1:2" rowHeight="650px">
+    <mat-grid-list cols="{{appService.isPhone?'1':'2'}}" rowHeight="1:2" rowHeight="{{appService.isPhone?'550px':'650px'}}">
         <mat-grid-tile *ngFor="let postImage of postImages">
             <mat-card class="elbum-card" (click)="pressOneImage(postImage.postsID)">
                 <mat-card-header class="card-header">

@@ -1,4 +1,5 @@
 import { Component, OnInit, Directive, ElementRef, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { AppService } from "./service/appService";
 
 @Component({
@@ -9,7 +10,7 @@ import { AppService } from "./service/appService";
 export class AppComponent implements OnInit{
   appTitle = "NSNEST of Ancient";
 
-  constructor(public appService: AppService) {}
+  constructor(private appService: AppService, private router: Router) {}
 
   ngOnInit(){
     if(this.appService.isPhone){
@@ -18,23 +19,6 @@ export class AppComponent implements OnInit{
   }
 
   openSideUserListDialog(){
-    console.log("사이드유저 다이얼로그 오픈");
+    this.router.navigate(['userList/']);
   }
 }
-
-
-
-// @Directive({ selector: 'mat-button-toggle-group:not([multiple])' })
-// export class matButtonToggleGroup {
-
-
-//     constructor(el: ElementRef) {
-      
-//     }
-//     testEvent(){
-//       console.log("ss");
-//       alert("ddd");
-//     }
-
-
-// }
