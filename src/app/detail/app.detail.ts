@@ -10,7 +10,7 @@ import { ShowUserInfoDialog } from '../sideUserList/app.sideUserList';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { HttpService } from '../service/http.service';
 import { AppService } from '../service/appService';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 
 import * as JSZip from '../../../node_modules/jszip/dist/jszip';
 import * as JSZipUtils from '../../../node_modules/jszip-utils/dist/jszip-utils';
@@ -25,7 +25,6 @@ import { resolve } from 'path';
 })
 export class AppDetail implements OnInit {
   isLoading = true;
-  testImage = this.sanitizer.bypassSecurityTrustStyle(this.appService.TEST_IMAGE);
 
   classify:string;
   isMine:boolean = false;
@@ -262,7 +261,7 @@ export class AppDetail implements OnInit {
               userGoodBadInfo = userGoodBadInfo.concat(',' + postId.toString())
             }
             
-            this.cookieService.put('nsnest_good_bad_info', userGoodBadInfo, { expires: new Date('2030-07-19') });
+            this.cookieService.set('nsnest_good_bad_info', userGoodBadInfo);
             //=========================================================
 
             this.post.good = this.post.good + 1;
@@ -314,7 +313,7 @@ export class AppDetail implements OnInit {
             } else {
               userGoodBadInfo = userGoodBadInfo.concat(',' + postId.toString())
             }
-            this.cookieService.put('nsnest_good_bad_info', userGoodBadInfo, { expires: new Date('2030-07-19') });
+            this.cookieService.set('nsnest_good_bad_info', userGoodBadInfo);
             //=========================================================
 
             this.post.bad = this.post.bad + 1;

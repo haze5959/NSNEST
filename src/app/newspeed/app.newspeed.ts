@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { posts } from '../model/posts';
-import { DomSanitizer } from '@angular/platform-browser';
 
 import { AppService } from "../service/appService";
 import { HttpService } from '../service/http.service';
@@ -9,16 +8,15 @@ import { CognitoUtil } from '../service/awsService/cognito.service';
 
 @Component({
   selector: 'app-newspeed',
-  templateUrl: '/app.newspeed.html',
-  styleUrls: ['/app.newspeed.css']
+  templateUrl: './app.newspeed.html',
+  styleUrls: ['./app.newspeed.css']
 })
 export class AppNewspeed implements OnInit {
-  testImage = this.sanitizer.bypassSecurityTrustStyle(this.appService.TEST_IMAGE);
   isLoading = true;
   pageIndex: number = 1;
   recentPosts: posts[] = [];
 
-  constructor(private sanitizer: DomSanitizer, private router: Router, private httpService: HttpService, private appService: AppService, private cognitoUtil: CognitoUtil) {}
+  constructor(private router: Router, private httpService: HttpService, public appService: AppService, private cognitoUtil: CognitoUtil) {}
 
   ngOnInit(){
     // if(this.cognitoUtil.getCurrentUser()){

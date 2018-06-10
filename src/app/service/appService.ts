@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { JwtHelper } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { CognitoUtil } from './awsService/cognito.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 
@@ -23,8 +23,6 @@ export class AppService {
   APP_VERSION = "V1.0";
   APP_COPYRIGHTS = "Copyright©2018 OQ All rights reserved.";
   emptyUserImage = "/../assets/testImage.jpg";
-  TEST_IMAGE : "url('https://material.angular.io/assets/img/examples/shiba1.jpg')";
-  TEST_IMAGE2 : "/../assets/testImage2.jpg";
 
   myInfo:user;
   isAppLoading = true;  //로딩 프로그레스를 보일지말지를 관장하는 환경변수
@@ -55,7 +53,7 @@ export class AppService {
   }
 
   isTokenExpired(token: string) {
-    let jwtHelper: JwtHelper = new JwtHelper();
+    let jwtHelper = new JwtHelperService();
     return jwtHelper.isTokenExpired(token);
   }
 

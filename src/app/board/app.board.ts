@@ -13,8 +13,8 @@ import { AppService } from '../service/appService';
 
 @Component({
   selector: 'app-board',
-  templateUrl: '/app.board.html',
-  styleUrls: ['/app.board.css']
+  templateUrl: './app.board.html',
+  styleUrls: ['./app.board.css']
 })
 export class AppBoard implements OnInit{
   

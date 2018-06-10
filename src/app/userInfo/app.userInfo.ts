@@ -8,7 +8,7 @@ import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { UserLoginService } from "../service/awsService/user-login.service";
 import { ChallengeParameters, CognitoCallback, LoggedInCallback } from "../service/awsService/cognito.service";
 import { environment } from '../../environments/environment';
-import { JwtHelper } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { AppService } from '../service/appService';
 import { CognitoUtil } from '../service/awsService/cognito.service';
@@ -16,8 +16,8 @@ import { HttpService } from '../service/http.service';
 
 @Component({
   selector: 'app-userInfo',
-  templateUrl: '/app.userInfo.html',
-  styleUrls: ['/app.userInfo.css']
+  templateUrl: './app.userInfo.html',
+  styleUrls: ['./app.userInfo.css']
 })
 export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   appName = this.appService.APP_NAME;
@@ -27,7 +27,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   userId = new FormControl('', [Validators.required]);
   userPw = new FormControl('', [Validators.required]);
  
-  constructor(public dialog: MatDialog, private userService: UserLoginService, private snackBar: MatSnackBar, private appService: AppService, private httpService: HttpService, private cognitoUtil: CognitoUtil, private router: Router) {}
+  constructor(public dialog: MatDialog, private userService: UserLoginService, private snackBar: MatSnackBar, public appService: AppService, private httpService: HttpService, private cognitoUtil: CognitoUtil, private router: Router) {}
 
   ngOnInit(){
     this.appService.isAppLoading = true;
@@ -120,7 +120,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
           callback(): void{},
           callbackWithParam(result: any): void {
             // console.log(JSON.stringify(result));
-            let jwtHelper: JwtHelper = new JwtHelper();
+            let jwtHelper = new JwtHelperService();
             userPayload = jwtHelper.decodeToken(result)
           }
       });
@@ -223,7 +223,7 @@ export class SetUserInfoDialog {
   profileDescription = new FormControl(this.appService.myInfo.description);
   profileImage = this.appService.myInfo.image;
   constructor(
-    private appService: AppService,
+    public appService: AppService,
     private httpService: HttpService,
     public dialogRef: MatDialogRef<ShowDetailImageDialog>){}
     // @Inject(MAT_DIALOG_DATA) public data: any, fb: FormBuilder) {}

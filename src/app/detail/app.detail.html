@@ -103,7 +103,7 @@
   <!--=================== 코맨트 =====================-->
   <mat-list>
     <mat-list-item *ngFor="let thisComment of comments" class="detail-comment">
-      <div mat-list-icon [ngStyle]="{ 'background-image': 'url(' + thisComment.userImg + ')'}" class="profile-image"></div>
+      <div mat-list-icon [ngStyle]="{ 'background-image': 'url(' + thisComment.userImg + ')'}" class="profile-image" (click)="pressOneUser(thisComment.userId)"></div>
       <h4 mat-line>{{thisComment.userName}}</h4>
       <p mat-line>{{thisComment.commentDate}}</p>
       <div class="comment-content" [innerHTML]="replaceLineBreak(thisComment.comment)"></div>

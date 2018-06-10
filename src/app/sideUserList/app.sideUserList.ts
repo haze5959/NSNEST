@@ -1,7 +1,6 @@
-import { Component, OnInit, ElementRef, Input, Output, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
 import { HttpService } from '../service/http.service';
 import { AppService } from '../service/appService';
 import { user } from '../model/user';
@@ -10,17 +9,16 @@ import { schedule } from '../model/schedule';
 
 @Component({
   selector: 'app-sideUserList',
-  templateUrl: '/app.sideUserList.html',
-  styleUrls: ['/app.sideUserList.css']
+  templateUrl: './app.sideUserList.html',
+  styleUrls: ['./app.sideUserList.css']
 })
 export class AppSideUserList implements OnInit {
-  testImage = this.sanitizer.bypassSecurityTrustStyle(this.appService.TEST_IMAGE);
   
   userOrderByLank: user[] = [];
   recentUsers: user[] = [];
   scheduleArr: schedule[] = [];
   
-  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, private appService: AppService, private httpService: HttpService, private router: Router) {}
+  constructor(public dialog: MatDialog, private appService: AppService, private httpService: HttpService, private router: Router) {}
   
   ngOnInit() {
     //해당 게시글 DB에서 빼온다
@@ -44,8 +42,8 @@ export class AppSideUserList implements OnInit {
 
   pressOneUser(user:user){
     const dialogRef = this.dialog.open(ShowUserInfoDialog, {
-      height: "80%",
-      width: "50%",
+      height: this.appService.isPhone?"95%":"80%",
+      width: this.appService.isPhone?"95%":"50%",
       data: user
     });
 

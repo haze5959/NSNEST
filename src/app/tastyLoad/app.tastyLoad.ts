@@ -13,14 +13,11 @@ import { AppService } from '../service/appService';
 
 import { posts } from '../model/posts';
 import { marker } from "../model/marker";
-import { DomSanitizer } from '@angular/platform-browser';
-
-
 
 @Component({
   selector: 'app-tasty-load',
-  templateUrl: '/app.tastyLoad.html',
-  styleUrls: ['/app.tastyLoad.css']
+  templateUrl: './app.tastyLoad.html',
+  styleUrls: ['./app.tastyLoad.css']
 })
 export class AppTastyLoad {
   // initial center position for the map
@@ -35,10 +32,9 @@ export class AppTastyLoad {
     this.router.navigate(['detail/' + postID]);
   }
 
-  testImage = this.sanitizer.bypassSecurityTrustStyle(this.appService.TEST_IMAGE);
   postMarkers: posts[] = [];
 
-  constructor(private sanitizer: DomSanitizer, private appService: AppService, private httpService: HttpService, private router: Router) {}
+  constructor(public appService: AppService, private httpService: HttpService, private router: Router) {}
   isLoading = true;
   pageSize = 0;
   pageLength = 0;
@@ -106,5 +102,23 @@ export class AppTastyLoad {
 
   pressPost(postId:number){
     this.router.navigate(['detail/' + postId]);
+  }
+
+  pageEvent(pageEvent: PageEvent) {
+    this.isLoading = true;
+    this.httpService.getPosts(10, this.orderBy, this.orderBySeq, pageEvent.pageIndex + 1)
+    .subscribe(
+      data => {
+        console.log(JSON.stringify(data));
+        this.postMarkers = this.appService.postFactory(data);
+        this.isLoading = false;
+      },
+      error => {
+        console.error("[error] - " + error.error.text);
+        alert("[error] - " + error.error.text);
+        this.postMarkers.push(this.httpService.errorPost);
+        this.isLoading = false;
+      }
+    );
   }
 }

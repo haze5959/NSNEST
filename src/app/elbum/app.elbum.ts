@@ -14,8 +14,8 @@ import {switchMap} from 'rxjs/operators/switchMap';
 
 @Component({
   selector: 'app-elbum',
-  templateUrl: '/app.elbum.html',
-  styleUrls: ['/app.elbum.css']
+  templateUrl: './app.elbum.html',
+  styleUrls: ['./app.elbum.css']
 })
 export class AppElbum implements OnInit{
   postImages: posts[] = [];

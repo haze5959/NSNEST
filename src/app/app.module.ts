@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule}  from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -47,7 +48,7 @@ import { HttpService } from './service/http.service';
 import { AwsUtil } from './service/awsService/aws.service';
 import { CognitoUtil } from './service/awsService/cognito.service';
 import { UserLoginService } from './service/awsService/user-login.service';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
   imports: [
     Ng2DeviceDetectorModule.forRoot(),
     QuillModule,
+    HttpModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
