@@ -152,6 +152,10 @@ body{
     animation: fulfilling-square-spinner-inner-animation 4s infinite ease-in;
 }
 
+.comment-img {
+    width: 100%;
+}
+
 @keyframes fulfilling-square-spinner-animation {
     0% {
       transform: rotate(0deg);

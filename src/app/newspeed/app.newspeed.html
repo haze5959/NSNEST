@@ -2,11 +2,6 @@
     로그인 필요
 </div>
 <div *ngIf="appService.isAppLogin" class="app-newspeed">
-    <div *ngIf="isLoading" class="newspeed-loading-screen">
-        <div  class="fulfilling-square-spinner">
-            <div class="spinner-inner"></div>
-        </div>
-    </div>
     <div class="newspeed-backgound" infinite-scroll [infiniteScrollDistance]="1.3" [infiniteScrollThrottle]="1000" (scrolled)="onScroll()" [scrollWindow]="false" [immediateCheck]="true">
         <mat-list>
             <mat-nav-list *ngFor="let posts of recentPosts" class="posts-list">

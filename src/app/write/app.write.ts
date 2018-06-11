@@ -18,7 +18,6 @@ export class AppWrite implements OnInit {
 
   @ViewChild('fileInput') fileInputEl:ElementRef;
 
-  isLoading = true;
   classify:string;
 
   constructor(private router: Router,private activeRoute: ActivatedRoute, private ElementRef:ElementRef, public dialog: MatDialog, private appService: AppService, public snackBar: MatSnackBar, private httpService: HttpService) { 
@@ -50,7 +49,6 @@ export class AppWrite implements OnInit {
 
   ngOnInit(): void {
     if(!this.appService.isAppLogin){
-      alert("로그인이 되지 않았습니다.");
       this.router.navigate(['/']);
     } else {
       this.activeRoute.params.forEach((params: Params) => {
@@ -61,7 +59,7 @@ export class AppWrite implements OnInit {
         this.editorContent.reset();
       });
   
-      this.isLoading = false;
+      this.appService.isAppLoading = false;
     }
   }
 
@@ -82,7 +80,7 @@ export class AppWrite implements OnInit {
         tag: null
       };
 
-      this.isLoading = true;
+      this.appService.isAppLoading = true;
       
       switch(this.classify){
         case 'post':{ //게시글
@@ -93,7 +91,7 @@ export class AppWrite implements OnInit {
             this.httpService.postPost(post)
             .subscribe(
               data => {
-                this.isLoading = false;
+                this.appService.isAppLoading = false;
                 console.log(JSON.stringify(data));
                 if(data.result){  //성공
                   this.snackBar.open("게시글 업로드 완료", "확인", {
@@ -107,13 +105,13 @@ export class AppWrite implements OnInit {
                 }
               },
               error => {
-                this.isLoading = false;
+                this.appService.isAppLoading = false;
                 console.error("[error] - " + error.error.text);
                 alert("[error] - " + error.error.text);
               }
             );
           } else {  //벨리데이션 실패
-            this.isLoading = false;
+            this.appService.isAppLoading = false;
             this.snackBar.open("제목과 본문을 작성하시오.", "확인", {
               duration: 2000,
             });
@@ -129,7 +127,7 @@ export class AppWrite implements OnInit {
             this.httpService.postPost(post)
             .subscribe(
               data => {
-                this.isLoading = false;
+                this.appService.isAppLoading = false;
                 console.log(JSON.stringify(data));
                 if(data.result){  //성공
                   this.snackBar.open("게시글 업로드 완료", "확인", {
@@ -143,13 +141,13 @@ export class AppWrite implements OnInit {
                 }
               },
               error => {
-                this.isLoading = false;
+                this.appService.isAppLoading = false;
                 console.error("[error] - " + error.error.text);
                 alert("[error] - " + error.error.text);
               }
             );
           } else {  //벨리데이션 실패
-            this.isLoading = false;
+            this.appService.isAppLoading = false;
             this.snackBar.open("본문을 작성하시오.", "확인", {
               duration: 2000,
             });
@@ -169,7 +167,7 @@ export class AppWrite implements OnInit {
             this.httpService.postPost(post)
             .subscribe(
               data => {
-                this.isLoading = false;
+                this.appService.isAppLoading = false;
                 console.log(JSON.stringify(data));
                 if(data.result){  //성공
                   this.snackBar.open("맛집 업로드 완료", "확인", {
@@ -183,13 +181,13 @@ export class AppWrite implements OnInit {
                 }
               },
               error => {
-                this.isLoading = false;
+                this.appService.isAppLoading = false;
                 console.error("[error] - " + error.error.text);
                 alert("[error] - " + error.error.text);
               }
             );
           } else {  //벨리데이션 실패
-            this.isLoading = false;
+            this.appService.isAppLoading = false;
             this.snackBar.open("본문을 작성하시오.", "확인", {
               duration: 2000,
             });
@@ -280,10 +278,10 @@ export class AppWrite implements OnInit {
                 duration: 5000,
               });
             }
-            this.isLoading = false;
+            this.appService.isAppLoading = false;
           },
           error => {
-            this.isLoading = false;
+            this.appService.isAppLoading = false;
             console.error("[error] - " + error.error.text);
             alert("[error] - " + error.error.text);
           }
@@ -309,7 +307,7 @@ export class AppWrite implements OnInit {
   }
 
   uploadImages(imageArr:File[], sequence:number){
-    this.isLoading = true;
+    this.appService.isAppLoading = true;
     let classfiyUpload: string;
     switch(this.classify){
       case 'post':{ //게시글
@@ -353,19 +351,19 @@ export class AppWrite implements OnInit {
                   
                 }else{
                   this.snackBar.open(`이미지 업로드 완료[${imageArr.length}]`, "확인");
-                  this.isLoading = false;
+                  this.appService.isAppLoading = false;
                 }
           
               } else {  //실패
                 console.error("이미지 업로드 실패 - " + data.message);
                 alert("이미지 업로드 실패 - " + data.message);
-                this.isLoading = false;
+                this.appService.isAppLoading = false;
               }
             },
             error => {
               console.error("이미지 업로드 실패 - " + error.message);
               alert(`이미지 업로드 실패[${sequence + 1}/${imageArr.length}] - ` + error.message);
-              this.isLoading = false;
+              this.appService.isAppLoading = false;
             }
           );
   }

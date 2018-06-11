@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { Inject } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { user } from '../model/user';
+import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { FormControl, Validators } from '@angular/forms';
 import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { UserLoginService } from "../service/awsService/user-login.service";
-import { ChallengeParameters, CognitoCallback, LoggedInCallback } from "../service/awsService/cognito.service";
+import { CognitoCallback } from "../service/awsService/cognito.service";
 import { environment } from '../../environments/environment';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { AppService } from '../service/appService';
 import { CognitoUtil } from '../service/awsService/cognito.service';
@@ -19,7 +16,7 @@ import { HttpService } from '../service/http.service';
   templateUrl: './app.userInfo.html',
   styleUrls: ['./app.userInfo.css']
 })
-export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
+export class AppUserInfo implements CognitoCallback, OnInit {
   appName = this.appService.APP_NAME;
   appVersion = this.appService.APP_VERSION;
   appCopyrights = this.appService.APP_COPYRIGHTS;
@@ -30,8 +27,7 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   constructor(public dialog: MatDialog, private userService: UserLoginService, private snackBar: MatSnackBar, public appService: AppService, private httpService: HttpService, private cognitoUtil: CognitoUtil, private router: Router) {}
 
   ngOnInit(){
-    this.appService.isAppLoading = true;
-    this.userService.isAuthenticated(this); //로그인 중인지 검사
+    // this.appService.isAppLoading = true;
   }
 
   pressLogout(){
@@ -113,51 +109,6 @@ export class AppUserInfo implements CognitoCallback, LoggedInCallback, OnInit {
   /**
    * AWS Delegate
    */
-  isLoggedIn(message: string, isLoggedIn: boolean) {
-    if(isLoggedIn){ //로그인이 유지되어 있다면
-      var userPayload;
-      this.cognitoUtil.getIdToken({
-          callback(): void{},
-          callbackWithParam(result: any): void {
-            // console.log(JSON.stringify(result));
-            let jwtHelper = new JwtHelperService();
-            userPayload = jwtHelper.decodeToken(result)
-          }
-      });
-
-      // console.log("유저 정보 - " + JSON.stringify(userPayload));
-      //유저 정보 설정
-      this.httpService.getUserWithConito(userPayload.sub, userPayload.name, userPayload['custom:studentNum'], userPayload.birthdate, userPayload.gender).subscribe(
-        data => {
-          // console.log(JSON.stringify(data));
-          if(data.length > 0){
-            this.appService.myInfo = this.appService.userFactory(data)[0]; //로그인 유저 매핑
-            this.appService.isAppLogin = true;
-            this.snackBar.open("로그인 성공", "확인", {
-              duration: 2000,
-            });
-
-            // this.router.navigate(['newspeed/']);
-          } else {
-            console.error("[error] - error: 데이터 없음");
-            alert("유저 정보를 가져오지 못하였습니다. ");
-          }
-          
-          this.appService.isAppLoading = false;
-        },
-        error => {
-          console.error("[error] - " + error.error.text);
-          alert("유저 정보를 가져오지 못하였습니다. - " + error.error.text);
-          this.appService.isAppLoading = false;
-        }
-      );
-      //유저 정보
-    }else{  //로그인 안되어있음
-      this.appService.isAppLogin = false;
-      this.appService.isAppLoading = false;
-    }
-  }
-
   cognitoCallback(message: string, result: any) {
     if (message != null) { //error
         console.log("result: " + message);

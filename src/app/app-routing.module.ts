@@ -10,8 +10,8 @@ import { AppDetail } from './detail/app.detail';
 import { AppSideUserList } from './sideUserList/app.sideUserList';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/newspeed', pathMatch: 'full' },
-  { path: 'newspeed', component: AppNewspeed },
+  { path: '', redirectTo: '/newspeed/false', pathMatch: 'full' },
+  { path: 'newspeed/:isRefresh', component: AppNewspeed },
   { path: 'board', component: AppBoard },
   { path: 'elbum', component: AppElbum },
   { path: 'tastyLoad', component: AppTastyLoad },

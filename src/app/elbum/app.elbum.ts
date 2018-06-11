@@ -21,7 +21,6 @@ export class AppElbum implements OnInit{
   postImages: posts[] = [];
   pageSize = 0;
   pageLength = 0;
-  isLoading = true;
 
   constructor(private httpService: HttpService, public appService: AppService, private router: Router) {}
 
@@ -35,31 +34,31 @@ export class AppElbum implements OnInit{
         this.postImages = this.appService.postFactory(data[0]);
         this.pageLength = data[1][0];
         this.pageSize = this.postImages.length;
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       },
       error => {
         console.error("[error] - " + error.error.text);
         alert("[error] - " + error.error.text);
         this.postImages.push(this.httpService.errorPost);
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       }
     );
   }
 
   setPageEvent(pageEvent: PageEvent){
-    this.isLoading = true;
+    this.appService.isAppLoading = true;
     this.httpService.getPosts(10, 'id', 'desc', pageEvent.pageIndex + 1)
     .subscribe(
       data => {
         // console.log(JSON.stringify(data));
         this.postImages = this.appService.postFactory(data);
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       },
       error => {
         console.error("[error] - " + error.error.text);
         alert("[error] - " + error.error.text);
         this.postImages.push(this.httpService.errorPost);
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       }
     );
   }

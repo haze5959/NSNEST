@@ -30,7 +30,6 @@ export class AppSideUserList implements OnInit {
           alert("유저 정보를 가져오지 못하였습니다.");
         } else {
           this.recentUsers = this.appService.userFactory(data)
-          // this.isLoading = false;
         }
       },
       error => {
@@ -55,18 +54,16 @@ export class AppSideUserList implements OnInit {
   }
 
   tabChange(event:number){
-    console.log("testOQ - " + event);
     switch (event) {
       case 0: //recent==================================================
         this.httpService.getUsers('update', 10)
         .subscribe(
           data => {
-            console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
             if (data.length == 0) {
               alert("유저 정보를 가져오지 못하였습니다.");
             } else {
               this.recentUsers = this.appService.userFactory(data)
-              // this.isLoading = false;
             }
           },
           error => {
@@ -80,12 +77,11 @@ export class AppSideUserList implements OnInit {
         this.httpService.getUsers('rank', 10)
         .subscribe(
           data => {
-            console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
             if (data.length == 0) {
               alert("유저 정보를 가져오지 못하였습니다.");
             } else {
               this.userOrderByLank = this.appService.userFactory(data)
-              // this.isLoading = false;
             }
           },
           error => {
@@ -103,8 +99,7 @@ export class AppSideUserList implements OnInit {
             if (data.length == 0) {
               alert("스케쥴 정보를 가져오지 못하였습니다.");
             } else {
-              this.scheduleArr = this.appService.scheduleFactory(data)
-              // this.isLoading = false;
+              this.scheduleArr = this.appService.scheduleFactory(data)              
             }
           },
           error => {

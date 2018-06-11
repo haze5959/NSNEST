@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-// import { Observable } from 'rxjs/Observable';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from "rxjs/Rx";
 import { CognitoUtil } from './awsService/cognito.service';
-import { AppService } from "../service/appService";
 
 import { environment } from '../../environments/environment';
 import { comment } from '../model/comment';
@@ -11,12 +10,12 @@ import { posts } from '../model/posts';
 import { user } from '../model/user';
 
 const timeout = 30000; //30초
-const timeoutText = {text: "타임아웃 되었습니다."};
+// const timeoutText = {text: "타임아웃 되었습니다."};
 
 @Injectable()
 export class HttpService {
 
-  constructor(private http: HttpClient, private cognitoUtil: CognitoUtil, private appService: AppService){}
+  constructor(private http: HttpClient, private cognitoUtil: CognitoUtil){}
 
   //============================================================
   //GET
@@ -30,7 +29,9 @@ export class HttpService {
 
     return this.http.get<Array<any>>(requestUrl).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -39,7 +40,9 @@ export class HttpService {
 
     return this.http.get<Array<any>>(requestUrl).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -57,7 +60,45 @@ export class HttpService {
         }
     });
 
-    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.isTokenExpired(accessToken)){
+      // alert("토큰 리프레시");
+      this.cognitoUtil.refresh();
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+      });
+    }
+  
+    let requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&accessToken=${accessToken}`;
+    if(contents){
+      requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&contents=${contents}&accessToken=${accessToken}`;
+    }
+    
+    return this.http.get<Array<any>>(requestUrl).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
+    });
+  }
+
+  /**
+   * 갯수 상관 없이 게시글 가져오기
+   * classify = 0:전체 / 10:게시글 / 20:앨범 / 30:지도 / 40:스케쥴
+   * sort = id / good / bad
+   */
+  getPostAll(classify: number, sort: string, order: string, contents?: string): Observable<Array<any>> {
+    var accessToken = "";
+    this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+    });
+
+    if(!accessToken || accessToken == "" || this.isTokenExpired(accessToken)){
       // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -68,14 +109,16 @@ export class HttpService {
       });
     }
 
-    let requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&accessToken=${accessToken}`;
+    let requestUrl = `${environment.apiUrl}posts/all?classify=${classify}&sort=${sort}&order=${order}&accessToken=${accessToken}`;
     if(contents){
-      requestUrl = `${environment.apiUrl}posts?classify=${classify}&sort=${sort}&order=${order}&page=${page}&contents=${contents}&accessToken=${accessToken}`;
+      requestUrl = `${environment.apiUrl}posts/all?classify=${classify}&sort=${sort}&order=${order}&contents=${contents}&accessToken=${accessToken}`;
     }
     
     return this.http.get<Array<any>>(requestUrl).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -88,7 +131,7 @@ export class HttpService {
         }
     });
 
-    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.isTokenExpired(accessToken)){
       // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -102,7 +145,9 @@ export class HttpService {
     const requestUrl = `${environment.apiUrl}posts?postId=${postId}&accessToken=${accessToken}`;
     return this.http.get<Array<any>>(requestUrl).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -114,7 +159,9 @@ export class HttpService {
 
     return this.http.get<Array<any>>(requestUrl).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -126,7 +173,9 @@ export class HttpService {
 
     return this.http.get<Array<any>>(requestUrl).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -142,7 +191,9 @@ export class HttpService {
 
     return this.http.get<Array<any>>(requestUrl).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -162,7 +213,7 @@ export class HttpService {
         }
     });
 
-    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.isTokenExpired(accessToken)){
       // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -180,7 +231,9 @@ export class HttpService {
     }
     return this.http.post(requestUrl, param).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -195,7 +248,9 @@ export class HttpService {
 
     return this.http.post(requestUrl, param).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -211,7 +266,7 @@ export class HttpService {
         }
     });
 
-    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.isTokenExpired(accessToken)){
       // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -251,7 +306,7 @@ export class HttpService {
         }
     });
 
-    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.isTokenExpired(accessToken)){
       // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -275,7 +330,9 @@ export class HttpService {
     
     return this.http.put(requestUrl, param).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -291,7 +348,7 @@ export class HttpService {
         }
     });
 
-    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.isTokenExpired(accessToken)){
       // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -316,7 +373,9 @@ export class HttpService {
     
     return this.http.put(requestUrl, param).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -335,7 +394,7 @@ export class HttpService {
         }
     });
 
-    if(!accessToken || accessToken == "" || this.appService.isTokenExpired(accessToken)){
+    if(!accessToken || accessToken == "" || this.isTokenExpired(accessToken)){
       // alert("토큰 리프레시");
       this.cognitoUtil.refresh();
       this.cognitoUtil.getAccessToken({
@@ -350,7 +409,9 @@ export class HttpService {
 
     return this.http.delete(requestUrl).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -362,7 +423,9 @@ export class HttpService {
 
     return this.http.delete(requestUrl).timeout(timeout)
     .catch((err:Response) => {
-      return Observable.throw({error: timeoutText});
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
     });
   }
 
@@ -377,7 +440,7 @@ export class HttpService {
     publisher: '에러',
     publisherIntro: '게시글을 불러오지 못하였습니다.',
     publisherImg: null,
-    images: null,
+    images: ["/../assets/testImage.jpg"],
     title: '게시글을 불러오지 못하였습니다.',
     body: '',
     good: 9,
@@ -411,16 +474,9 @@ export class HttpService {
     image: null,
     subImage01: null
   }
-}
 
-export interface GithubApi {
-  items: GithubIssue[];
-  total_count: number;
-}
-
-export interface GithubIssue {
-  created_at: string;
-  number: string;
-  hot: string;
-  title: string;
+  isTokenExpired(token: string) {
+    let jwtHelper = new JwtHelperService();
+    return jwtHelper.isTokenExpired(token);
+  }
 }

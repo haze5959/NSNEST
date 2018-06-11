@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CognitoUtil } from './awsService/cognito.service';
+import { LoggedInCallback } from "../service/awsService/cognito.service";
 import { Ng2DeviceService } from 'ng2-device-detector';
+import { UserLoginService } from "../service/awsService/user-login.service";
+import { HttpService } from '../service/http.service';
+import { Router } from '@angular/router';
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/shareReplay';
-
-import { environment } from '../../environments/environment';
 
 import { user } from '../model/user';
 // import { token } from '../model/token';
@@ -18,7 +19,7 @@ import { schedule } from '../model/schedule';
 import { marker } from '../model/marker';
 
 @Injectable()
-export class AppService {
+export class AppService implements LoggedInCallback {
   APP_NAME = "NSNEST of Ancient";
   APP_VERSION = "V1.0";
   APP_COPYRIGHTS = "Copyright©2018 OQ All rights reserved.";
@@ -29,7 +30,9 @@ export class AppService {
   isAppLogin = false;  //로그인이 됐는지 안됐는지 관장
   isPhone = false;
 
-  constructor(private cognitoUtil: CognitoUtil, private deviceService: Ng2DeviceService) {
+  constructor(private router: Router, private cognitoUtil: CognitoUtil, private deviceService: Ng2DeviceService, private userService: UserLoginService, private httpService: HttpService) {
+    this.userService.isAuthenticated(this); //로그인 중인지 검사
+    
     let deviceInfo = this.deviceService.getDeviceInfo();
     // console.log(deviceInfo);
     if(deviceInfo.device == "unknown"){
@@ -41,11 +44,11 @@ export class AppService {
       this.isPhone = true;
     }
 
-    if(this.cognitoUtil.getCurrentUser()){
-      this.isAppLogin = true;
-    } else {
-      this.isAppLogin = false;
-    }
+    // if(this.cognitoUtil.getCurrentUser()){
+    //   this.isAppLogin = true;
+    // } else {
+    //   this.isAppLogin = false;
+    // }
 
     this.myInfo = {
       image: this.emptyUserImage
@@ -58,6 +61,51 @@ export class AppService {
   }
 
   postFactory(postArr: Array<any>){
+    var result:posts[] = [];
+
+    postArr.forEach(element => {
+      let imageArr:string[] = [];
+      if(element[7]){
+        let imageStr:string = element[7];
+        imageArr = imageStr.split(',');
+      }
+
+      let marker:marker = null;
+      if(element[13]){
+        marker = JSON.parse(element[13]);
+      }
+
+      let tagArr:string[] = [];
+      if(element[14]){
+        let tagStr:string = element[14];
+        tagArr = tagStr.split(',');
+      }
+
+        let posts:posts = {
+          postsID: element[0],
+          postClassify: element[1],
+          studentNum: element[2],
+          publisherId: element[3],
+          publisher: element[4],
+          publisherIntro: element[5],
+          publisherImg: element[6]?element[6]:this.emptyUserImage,
+          images: imageArr,
+          title: element[8],
+          body: element[9],
+          good: element[10],
+          bad: element[11],
+          postDate: element[12],
+          marker: marker,
+          tag: tagArr,
+          commentCount: element[15]
+        };
+        result.push(posts);
+    });
+
+    return result
+  }
+
+  simplePostFactory(postArr: Array<any>){
     var result:posts[] = [];
 
     postArr.forEach(element => {
@@ -179,5 +227,52 @@ export class AppService {
     });
 
     return result
+  }
+
+  /**
+   * 코그니토 딜리게이트
+   * @param message 
+   * @param isLoggedIn 
+   */
+  isLoggedIn(message: string, isLoggedIn: boolean) {
+    if(isLoggedIn){ //로그인이 유지되어 있다면
+      var userPayload;
+      this.cognitoUtil.getIdToken({
+          callback(): void{},
+          callbackWithParam(result: any): void {
+            // console.log(JSON.stringify(result));
+            let jwtHelper = new JwtHelperService();
+            userPayload = jwtHelper.decodeToken(result)
+          }
+      });
+
+      // console.log("유저 정보 - " + JSON.stringify(userPayload));
+      //유저 정보 설정
+      this.httpService.getUserWithConito(userPayload.sub, userPayload.name, userPayload['custom:studentNum'], userPayload.birthdate, userPayload.gender).subscribe(
+        data => {
+          // console.log(JSON.stringify(data));
+          if(data.length > 0){
+            this.myInfo = this.userFactory(data)[0]; //로그인 유저 매핑
+            this.isAppLogin = true;
+
+            this.router.navigate(['newspeed']);
+          } else {
+            console.error("[error] - error: 데이터 없음");
+            alert("유저 정보를 가져오지 못하였습니다. ");
+          }
+          
+          this.isAppLoading = false;
+        },
+        error => {
+          console.error("[error] - " + error.error.text);
+          alert("유저 정보를 가져오지 못하였습니다. - " + error.error.text);
+          this.isAppLoading = false;
+        }
+      );
+      //유저 정보
+    }else{  //로그인 안되어있음
+      this.isAppLogin = false;
+      this.isAppLoading = false;
+    }
   }
 }

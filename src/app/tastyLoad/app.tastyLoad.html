@@ -1,9 +1,4 @@
 <div class="app-tastyload">
-    <div *ngIf="isLoading" class="tastyload-loading-shade">
-        <div  class="fulfilling-square-spinner">
-            <div class="spinner-inner"></div>
-        </div>
-    </div>
     <agm-map class="agm-map" [latitude]="lat" [longitude]="lng" [zoom]="12" [disableDefaultUI]="false" [zoomControl]="true">
         <agm-marker 
             *ngFor="let marker of postMarkers; let i = index"

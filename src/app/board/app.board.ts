@@ -18,7 +18,6 @@ import { AppService } from '../service/appService';
 })
 export class AppBoard implements OnInit{
   
-  isLoading = true;
   pageSize = 0;
   pageLength = 0;
   boardPosts = [];
@@ -38,13 +37,13 @@ export class AppBoard implements OnInit{
         this.boardPosts = this.appService.postFactory(data[0]);
         this.pageLength = data[1][0];
         this.pageSize = this.boardPosts.length;
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       },
       error => {
         console.error("[error] - " + error.error.text);
         alert("[error] - " + error.error.text);
         this.boardPosts.push(this.httpService.errorPost);
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       }
     );
   }
@@ -53,7 +52,7 @@ export class AppBoard implements OnInit{
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     console.log(filterValue);
-    this.isLoading = true;
+    this.appService.isAppLoading = true;
     zip(
       this.httpService.getPosts(10, this.orderBy, this.orderBySeq, 1, filterValue), //해당 게시글 DB에서 빼온다
       this.httpService.getPostSize(10, filterValue)  //해당 게시글 숫자를 가져온다
@@ -63,32 +62,32 @@ export class AppBoard implements OnInit{
         this.boardPosts = this.appService.postFactory(data[0]);
         this.pageLength = data[1][0];
         this.pageSize = this.boardPosts.length;
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
         this.filterValue = filterValue;
       },
       error => {
         console.error("[error] - " + error.error.text);
         alert("[error] - " + error.error.text);
         this.boardPosts.push(this.httpService.errorPost);
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       }
     );
   }
 
   pageEvent(pageEvent: PageEvent) {
-    this.isLoading = true;
+    this.appService.isAppLoading = true;
     this.httpService.getPosts(10, this.orderBy, this.orderBySeq, pageEvent.pageIndex + 1)
     .subscribe(
       data => {
         console.log(JSON.stringify(data));
         this.boardPosts = this.appService.postFactory(data);
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       },
       error => {
         console.error("[error] - " + error.error.text);
         alert("[error] - " + error.error.text);
         this.boardPosts.push(this.httpService.errorPost);
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       }
     );
   }

@@ -11,6 +11,7 @@ import { ShowDetailImageDialog } from '../image-viewer/image-viewer.component';
 import { HttpService } from '../service/http.service';
 import { AppService } from '../service/appService';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../environments/environment';
 
 import * as JSZip from '../../../node_modules/jszip/dist/jszip';
 import * as JSZipUtils from '../../../node_modules/jszip-utils/dist/jszip-utils';
@@ -24,7 +25,6 @@ import { resolve } from 'path';
   styleUrls: ['./app.detail.css']
 })
 export class AppDetail implements OnInit {
-  isLoading = true;
 
   classify:string;
   isMine:boolean = false;
@@ -34,11 +34,10 @@ export class AppDetail implements OnInit {
   marker:marker;
   comments:comment[] = [];
   commentInput:string;
-  constructor(private router: Router, private appService: AppService, private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar, private cookieService:CookieService) { }
+  constructor(private router: Router, public appService: AppService, private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar, private cookieService:CookieService) { }
 
   ngOnInit() {
     if(!this.appService.isAppLogin){
-      alert("로그인이 되지 않았습니다.");
       this.router.navigate(['/']);
     } else {
       this.isMine = false;
@@ -56,14 +55,14 @@ export class AppDetail implements OnInit {
             this.router.navigate(['/']);
           } else {
             this.post = this.appService.postFactory(data)[0];
-            this.isLoading = false;
+            this.appService.isAppLoading = false;
             this.initDetail();  //뷰 초기화
           }
         },
         error => {
           console.error("[error] - getPost:" + this.postId);
           // this.post = this.httpService.errorPost;
-          this.isLoading = false;
+          this.appService.isAppLoading = false;
           this.router.navigate(['/']);
         }
       );
@@ -373,5 +372,41 @@ export class AppDetail implements OnInit {
 
   replaceLineBreak(s:string) {
     return s && s.replace(/\n/gi,'<br />');
+  }
+
+  uploadImages($event){
+    this.appService.isAppLoading = true;
+
+    this.httpService.uploadImage('board', $event.target.files[0])
+    .subscribe(
+      data => {
+        // console.log(JSON.stringify(data));
+        if(data.result){  //성공
+          const fileInfo = data.message.files.file;
+          if(fileInfo && fileInfo.path){
+            let filePath:string = fileInfo.path;
+            filePath = filePath.replace('/1TB_Drive/NSNEST_PUBLIC/', '');
+            const fileUrl = environment.fileUrl + filePath;
+            console.log('이미지 업로드 완료 - ' + fileUrl);
+            this.pressCommentRegist(`<img class="comment-img" src="${fileUrl}">`);
+          } else {
+            throw new Error('이미지 형식이 이상합니다.');
+          }
+          
+          this.snackBar.open(`이미지 업로드 완료`, "확인");
+          this.appService.isAppLoading = false;
+    
+        } else {  //실패
+          console.error("이미지 업로드 실패 - " + data.message);
+          alert("이미지 업로드 실패 - " + data.message);
+          this.appService.isAppLoading = false;
+        }
+      },
+      error => {
+        console.error("이미지 업로드 실패 - " + error.message);
+        alert(`이미지 업로드 실패 - ` + error.message);
+        this.appService.isAppLoading = false;
+      }
+    );
   }
 }

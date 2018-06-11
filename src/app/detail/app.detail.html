@@ -1,9 +1,4 @@
-<div *ngIf="isLoading" class="app-detail">
-  <div  class="fulfilling-square-spinner">
-    <div class="spinner-inner"></div>
-  </div>
-</div>
-<div *ngIf="!isLoading" class="app-detail">
+<div class="app-detail">
   <!--=================== 게시글 =====================-->
   <div *ngIf="classify == 'post' || classify == 'error'" class="detail-post">
     <mat-card class="detail-post-card">
@@ -92,12 +87,12 @@
 
   <!--=================== 좋아요 싫어요 글삭제 =====================-->
   <div class="detail-goodBad" *ngIf="!isMine">
-    <button mat-raised-button color="primary" class="detail-goodBad-btn" (click)="pressGood(post.postsID)">좋아요({{post.good}})</button>
-    <button mat-raised-button color="accent" class="detail-goodBad-btn" (click)="pressBad(post.postsID)">싫어요({{post.bad}})</button>
+    <button mat-raised-button color="primary" class="detail-goodBad-btn" (click)="pressGood(post.postsID)">좋아요({{post?post.good:0}})</button>
+    <button mat-raised-button color="accent" class="detail-goodBad-btn" (click)="pressBad(post.postsID)">싫어요({{post?post.bad:0}})</button>
   </div>
   <div class="detail-goodBad" *ngIf="isMine">
-    <button mat-raised-button color="primary" class="detail-goodBad-btn" (click)="pressGood(post.postsID)">좋아요({{post.good}})</button>
-    <button mat-raised-button color="accent" class="detail-goodBad-btn" (click)="pressBad(post.postsID)">싫어요({{post.bad}})</button>
+    <button mat-raised-button color="primary" class="detail-goodBad-btn" (click)="pressGood(post.postsID)">좋아요({{post?post.good:0}})</button>
+    <button mat-raised-button color="accent" class="detail-goodBad-btn" (click)="pressBad(post.postsID)">싫어요({{post?post.bad:0}})</button>
     <button mat-raised-button color="accent" class="detail-goodBad-btn" (click)="pressDeletePost(post.postsID)">게시글 삭제하기</button>
   </div>
   <!--=================== 코맨트 =====================-->
@@ -123,6 +118,9 @@
   </mat-list>
 
   <div class="detail-regist-comment">
-    <button mat-raised-button (click)="pressCommentRegist(comment.value)">등록하기</button>
+    <button mat-raised-button (click)="pressCommentRegist(comment.value)">댓글 등록하기</button>
+    <button mat-raised-button (click)="fileInput.click()">이미지 등록</button>
   </div>
 </div>
+
+<input hidden #fileInput type='file' accept="image/*" (change)="uploadImages($event)">

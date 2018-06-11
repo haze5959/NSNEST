@@ -35,7 +35,6 @@ export class AppTastyLoad {
   postMarkers: posts[] = [];
 
   constructor(public appService: AppService, private httpService: HttpService, private router: Router) {}
-  isLoading = true;
   pageSize = 0;
   pageLength = 0;
   orderBy = "id";
@@ -43,22 +42,20 @@ export class AppTastyLoad {
   filterValue = "";
 
   ngOnInit() {
-    zip(
-      this.httpService.getPosts(30, this.orderBy, this.orderBySeq, 1), //해당 게시글 DB에서 빼온다
-      this.httpService.getPostSize(30)  //해당 게시글 숫자를 가져온다
-    ).subscribe(
+    this.httpService.getPostAll(30, this.orderBy, this.orderBySeq)
+    .subscribe(
       data => {
         // console.log(JSON.stringify(data));
-        this.postMarkers = this.appService.postFactory(data[0]);
-        this.pageLength = data[1][0];
+        this.postMarkers = this.appService.simplePostFactory(data);
+        this.pageLength = this.postMarkers.length;
         this.pageSize = this.postMarkers.length;
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       },
       error => {
         console.error("[error] - " + error.error.text);
         alert("[error] - " + error.error.text);
         this.postMarkers.push(this.httpService.errorPost);
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       }
     );
   }
@@ -67,24 +64,22 @@ export class AppTastyLoad {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     // console.log(filterValue);
-    this.isLoading = true;
-    zip(
-      this.httpService.getPosts(30, this.orderBy, this.orderBySeq, 1, filterValue), //해당 게시글 DB에서 빼온다
-      this.httpService.getPostSize(30, filterValue)  //해당 게시글 숫자를 가져온다
-    ).subscribe(
+    this.appService.isAppLoading = true;
+    this.httpService.getPostAll(30, this.orderBy, this.orderBySeq, filterValue)
+    .subscribe(
       data => {
         // console.log(JSON.stringify(data));
-        this.postMarkers = this.appService.postFactory(data[0]);
-        this.pageLength = data[1][0];
+        this.postMarkers = this.appService.simplePostFactory(data);
+        this.pageLength = this.postMarkers.length;
         this.pageSize = this.postMarkers.length;
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
         this.filterValue = filterValue;
       },
       error => {
         console.error("[error] - " + error.error.text);
         alert("[error] - " + error.error.text);
         this.postMarkers.push(this.httpService.errorPost);
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       }
     );
   }
@@ -105,19 +100,19 @@ export class AppTastyLoad {
   }
 
   pageEvent(pageEvent: PageEvent) {
-    this.isLoading = true;
-    this.httpService.getPosts(10, this.orderBy, this.orderBySeq, pageEvent.pageIndex + 1)
+    this.appService.isAppLoading = true;
+    this.httpService.getPostAll(30, this.orderBy, this.orderBySeq, this.filterValue)
     .subscribe(
       data => {
         console.log(JSON.stringify(data));
-        this.postMarkers = this.appService.postFactory(data);
-        this.isLoading = false;
+        this.postMarkers = this.appService.simplePostFactory(data);
+        this.appService.isAppLoading = false;
       },
       error => {
         console.error("[error] - " + error.error.text);
         alert("[error] - " + error.error.text);
         this.postMarkers.push(this.httpService.errorPost);
-        this.isLoading = false;
+        this.appService.isAppLoading = false;
       }
     );
   }
