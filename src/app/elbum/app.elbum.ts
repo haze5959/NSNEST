@@ -24,6 +24,10 @@ export class AppElbum implements OnInit{
 
   constructor(private httpService: HttpService, public appService: AppService, private router: Router) {}
 
+  refreshEmitter(){
+    console.log('refresh');
+  }
+  
   ngOnInit() {
     zip(
       this.httpService.getPosts(20, 'id', 'desc', 1), //해당 게시글 DB에서 빼온다

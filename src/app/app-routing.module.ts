@@ -8,14 +8,16 @@ import { AppTastyLoad } from './tastyLoad/app.tastyLoad';
 import { AppWrite } from './write/app.write';
 import { AppDetail } from './detail/app.detail';
 import { AppSideUserList } from './sideUserList/app.sideUserList';
+import { AppAdmin } from './admin/app.admin';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/newspeed/false', pathMatch: 'full' },
-  { path: 'newspeed/:isRefresh', component: AppNewspeed },
+  { path: '', redirectTo: '/newspeed', pathMatch: 'full' },
+  { path: 'newspeed', component: AppNewspeed },
   { path: 'board', component: AppBoard },
   { path: 'elbum', component: AppElbum },
   { path: 'tastyLoad', component: AppTastyLoad },
   { path: 'userList', component: AppSideUserList },
+  { path: 'admin', component: AppAdmin },
 
   { path: 'write/:classify', component: AppWrite },
   { path: 'detail/:postId', component: AppDetail },

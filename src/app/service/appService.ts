@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CognitoUtil } from './awsService/cognito.service';
 import { LoggedInCallback } from "../service/awsService/cognito.service";
@@ -29,6 +29,8 @@ export class AppService implements LoggedInCallback {
   isAppLoading = true;  //로딩 프로그레스를 보일지말지를 관장하는 환경변수
   isAppLogin = false;  //로그인이 됐는지 안됐는지 관장
   isPhone = false;
+
+  @Output() refreshEventEmitter = new EventEmitter();
 
   constructor(private router: Router, private cognitoUtil: CognitoUtil, private deviceService: Ng2DeviceService, private userService: UserLoginService, private httpService: HttpService) {
     this.userService.isAuthenticated(this); //로그인 중인지 검사
@@ -255,7 +257,7 @@ export class AppService implements LoggedInCallback {
             this.myInfo = this.userFactory(data)[0]; //로그인 유저 매핑
             this.isAppLogin = true;
 
-            this.router.navigate(['newspeed']);
+            this.refreshEventEmitter.emit();
           } else {
             console.error("[error] - error: 데이터 없음");
             alert("유저 정보를 가져오지 못하였습니다. ");

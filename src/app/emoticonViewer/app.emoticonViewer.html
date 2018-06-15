@@ -1,0 +1,20 @@
+<mat-card class="app-card-emoticon">
+    <mat-tab-group class="app-tab-group" (selectedIndexChange)="tabChange($event)">
+        <!-- 접속 중 인원 리스트 -->
+        <mat-tab label={{emoticonInfo.name}} *ngFor="let emoticonInfo of selectEmoticons">
+                <!-- 이모티콘 이미지들 -->
+                <mat-grid-list cols="{{appService.isPhone?'2':'4'}}" rowHeight="1:2" rowHeight="{{appService.isPhone?'450px':'550px'}}">
+                    <mat-grid-tile *ngFor="let emoticon of emoticonInfo.emoticons; let i = index">
+                        <mat-card class="elbum-card" (click)="pressEmoticon(i)">
+                            <mat-card-header class="card-header">
+                            </mat-card-header>
+                            <img mat-card-image src="{{emoticon}}" alt="Photo">
+                            <mat-card-content>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-grid-tile>
+                </mat-grid-list>
+        </mat-tab>
+
+    </mat-tab-group>
+</mat-card>

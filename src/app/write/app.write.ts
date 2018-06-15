@@ -8,6 +8,7 @@ import { marker } from "../model/marker";
 import { AppService } from '../service/appService';
 import { HttpService } from '../service/http.service';
 import { posts } from '../model/posts';
+import { AppEmoticonDialog } from '../emoticonViewer/app.emoticonViewer';
 
 @Component({
   selector: 'app-write',
@@ -244,8 +245,9 @@ export class AppWrite implements OnInit {
     span.appendChild(emoBtn);
     elements[0].appendChild(span);
 
-    emoBtn.addEventListener('click', function() {
-      console.log('여기에 이모티콘 선택창!');
+    emoBtn.addEventListener('click', () => {
+      console.log('OQ emoticon select!!');
+      this.openEmoticonDialog();
     });
   }
 
@@ -368,15 +370,26 @@ export class AppWrite implements OnInit {
           );
   }
 
-  addEmoticon(){
-    console.log("이모티콘 클릭");
-  }
-
   mapClicked($event){
     this.marker = {
       lat: $event.coords.lat,
 		  lng: $event.coords.lng,
 		  label: this.titleFormControl.value?this.titleFormControl.value:"위치"
     }
+  }
+
+  openEmoticonDialog(){
+    const dialogRef = this.dialog.open(AppEmoticonDialog, {
+      height: this.appService.isPhone?"95%":"80%",
+      width: this.appService.isPhone?"95%":"50%"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        console.log("Dialog result: ${result}");
+        let range = this.quillInstance.getSelection(!this.quillInstance.hasFocus()); 
+        this.quillInstance.insertEmbed(range, 'image', result);
+      }
+    });
   }
 }

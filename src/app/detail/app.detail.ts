@@ -15,9 +15,8 @@ import { environment } from '../../environments/environment';
 
 import * as JSZip from '../../../node_modules/jszip/dist/jszip';
 import * as JSZipUtils from '../../../node_modules/jszip-utils/dist/jszip-utils';
-import * as FileSaver from 'file-saver';
 import { saveAs } from 'file-saver/FileSaver';
-import { resolve } from 'path';
+import { AppEmoticonDialog } from '../emoticonViewer/app.emoticonViewer';
 
 @Component({
   selector: 'app-detail',
@@ -36,6 +35,10 @@ export class AppDetail implements OnInit {
   commentInput:string;
   constructor(private router: Router, public appService: AppService, private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar, private cookieService:CookieService) { }
 
+  refreshEmitter(){
+    console.log('refresh');
+  }
+  
   ngOnInit() {
     if(!this.appService.isAppLogin){
       this.router.navigate(['/']);
@@ -139,6 +142,48 @@ export class AppDetail implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log("Dialog result: ${result}");
+    });
+  }
+
+  openEmoticonDialog(){
+    const dialogRef = this.dialog.open(AppEmoticonDialog, {
+      height: this.appService.isPhone?"95%":"80%",
+      width: this.appService.isPhone?"95%":"50%"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        console.log("Dialog result: ${result}");
+        let comment = `<img class="comment-img" src="${result}">`
+        let paramJson = {
+          postId: this.postId,
+          // studentNum: 99,
+          userId: this.appService.myInfo.userId,
+          // userName: "에러",
+          // userImg: null,
+          emoticon: '',
+          comment: comment
+          // good: 0
+        }
+
+        this.httpService.postComment(paramJson).subscribe(
+          data => {
+            console.log(JSON.stringify(data));
+            if(data.result){
+              this.post.commentCount = this.post.commentCount + 1;
+              this.commentInput = "";
+              this.commentRefresh();
+            } else {  //실패
+              this.openSnackBar("서버가 불안정 합니다.");
+              this.router.navigate(['/']);
+            }
+          },
+          error => {
+            console.log(error);
+            alert(error);
+          }
+        );
+      }
     });
   }
 

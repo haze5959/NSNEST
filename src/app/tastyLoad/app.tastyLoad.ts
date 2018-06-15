@@ -41,6 +41,10 @@ export class AppTastyLoad {
   orderBySeq = "desc";
   filterValue = "";
 
+  refreshEmitter(){
+    console.log('refresh');
+  }
+  
   ngOnInit() {
     this.httpService.getPostAll(30, this.orderBy, this.orderBySeq)
     .subscribe(

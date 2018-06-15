@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { posts } from '../model/posts';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AppService } from "../service/appService";
 import { HttpService } from '../service/http.service';
@@ -15,14 +15,17 @@ export class AppNewspeed implements OnInit {
   pageIndex: number = 1;
   recentPosts: posts[] = [];
 
-  constructor(private router: Router, private route: ActivatedRoute, private httpService: HttpService, public appService: AppService, private cognitoUtil: CognitoUtil) {
-    this.route.params.subscribe(params => {
-      this.initPosts();
-    });
+  constructor(private router: Router, private httpService: HttpService, public appService: AppService, private cognitoUtil: CognitoUtil) {}
+
+  refreshEmitter(){
+    console.log('refresh');
+    this.initPosts();
   }
 
   ngOnInit(){
-    // this.initPosts();
+    if(this.appService.isAppLogin){
+      this.initPosts();
+    }
   }
 
   public initPosts(){

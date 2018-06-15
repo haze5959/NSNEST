@@ -48,6 +48,7 @@ import { HttpService } from './service/http.service';
 import { AwsUtil } from './service/awsService/aws.service';
 import { CognitoUtil } from './service/awsService/cognito.service';
 import { UserLoginService } from './service/awsService/user-login.service';
+import { AppEmoticonDialog } from './emoticonViewer/app.emoticonViewer';
 import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
@@ -63,12 +64,14 @@ import { CookieService } from 'ngx-cookie-service';
     ShowUserInfoDialog,
     AppUserInfo,
     SetUserInfoDialog,
-    ShowDetailImageDialog
+    ShowDetailImageDialog,
+    AppEmoticonDialog
   ],
   entryComponents: [
     ShowUserInfoDialog,
     SetUserInfoDialog,
-    ShowDetailImageDialog
+    ShowDetailImageDialog,
+    AppEmoticonDialog
   ],
   imports: [
     Ng2DeviceDetectorModule.forRoot(),

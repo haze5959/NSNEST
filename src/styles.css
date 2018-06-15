@@ -154,6 +154,8 @@ body{
 
 .comment-img {
     width: 100%;
+    max-width: 500px;
+    max-height: 500px;
 }
 
 @keyframes fulfilling-square-spinner-animation {

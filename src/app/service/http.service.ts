@@ -180,6 +180,20 @@ export class HttpService {
   }
 
   /**
+   * 이모티콘 리스트 가져오기
+   */
+  getEmoticon(): Observable<Array<any>> {
+    const requestUrl = `${environment.apiUrl}posts/emoticon`;
+
+    return this.http.get<Array<any>>(requestUrl).timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: {
+        text: JSON.stringify(err)
+      }});
+    });
+  }
+
+  /**
    * 코그니토를 통한 유저정보 가져오기
    * 서버에서 해당 유저의 정보가 없는 경우, 첫 로그인이라고 판별하고 유저를 디비에 등록시킨다.
    */
@@ -284,6 +298,46 @@ export class HttpService {
 
     return this.http.post(requestUrl, formData, {
       headers: {accessToken: accessToken}
+    })
+    // .timeout(timeout)
+    .catch((err:Response) => {
+      return Observable.throw({error: err});
+    });
+  }
+
+    /**
+   * 이모티콘 등록하기
+   */
+  postEmoticon(emoticonName:string ,image: File): any {
+    var accessToken = "";
+    this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+    });
+
+    if(!accessToken || accessToken == "" || this.isTokenExpired(accessToken)){
+      // alert("토큰 리프레시");
+      this.cognitoUtil.refresh();
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(result: any): void {
+          accessToken = result;
+        }
+      });
+    }
+
+    const requestUrl = `${environment.apiUrl}emoticon`;
+
+    const formData = new FormData();
+    formData.append('file', image);
+
+    return this.http.post(requestUrl, formData, {
+      headers: {
+        accessToken: accessToken,
+        emoticonName: emoticonName
+      }
     })
     // .timeout(timeout)
     .catch((err:Response) => {
