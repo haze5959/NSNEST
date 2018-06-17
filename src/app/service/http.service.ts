@@ -182,8 +182,11 @@ export class HttpService {
   /**
    * 이모티콘 리스트 가져오기
    */
-  getEmoticon(): Observable<Array<any>> {
-    const requestUrl = `${environment.apiUrl}posts/emoticon`;
+  getEmoticon(type:string, emoKey?:string): Observable<Array<any>> {
+    var requestUrl = `${environment.apiUrl}posts/emoticon?type=${type}`;
+    if(emoKey){
+      requestUrl = requestUrl + `&emoKey=${emoKey}`;
+    }
 
     return this.http.get<Array<any>>(requestUrl).timeout(timeout)
     .catch((err:Response) => {
@@ -328,10 +331,12 @@ export class HttpService {
       });
     }
 
-    const requestUrl = `${environment.apiUrl}emoticon`;
+    const requestUrl = `${environment.apiUrl}admin/emoticon`;
 
     const formData = new FormData();
     formData.append('file', image);
+    var Buffer = require("buffer").Buffer;
+    emoticonName = Buffer.from(emoticonName).toString('base64');
 
     return this.http.post(requestUrl, formData, {
       headers: {

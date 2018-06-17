@@ -25,22 +25,24 @@ export class AppAdmin implements OnInit {
   emoFormControl = new FormControl('', [Validators.required]);
 
   ngOnInit(): void {
-    if(!this.appService.isAppLogin && this.appService.myInfo.userId == 1111){
-      alert('관리자가 아니잖어~');
+    if(this.appService.myInfo && this.appService.myInfo.userId == 1060){
+      //관리자 체크
+    } else {
+      alert('관리자 아님');
       this.router.navigate(['/']);
-    } 
+    }
   }
 
-  uploadEmoticon(emoticonName:string, imageArr:File[]){
+  uploadEmoticon($event){
     if(this.emoFormControl.valid){
       this.appService.isAppLoading = true;
 
-      this.httpService.postEmoticon(emoticonName, imageArr[0])
+      this.httpService.postEmoticon(this.emoFormControl.value, $event.target.files[0])
       .subscribe(
         data => {
-          // console.log(JSON.stringify(data));
+          console.log(JSON.stringify(data));
           if(data.result){  //성공
-            this.snackBar.open(`이미지 업로드 완료[${imageArr.length}]`, "확인");
+            this.snackBar.open(`이미지 업로드 완료`, "확인");
             this.appService.isAppLoading = false;
       
           } else {  //실패

@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CognitoUtil } from './awsService/cognito.service';
 import { LoggedInCallback } from "../service/awsService/cognito.service";
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/shareReplay';
+import {Observable} from 'rxjs/Observable';
 
 import { user } from '../model/user';
 // import { token } from '../model/token';
@@ -17,6 +18,7 @@ import { posts } from '../model/posts';
 import { comment } from '../model/comment';
 import { schedule } from '../model/schedule';
 import { marker } from '../model/marker';
+import { Subscriber } from 'rxjs';
 
 @Injectable()
 export class AppService implements LoggedInCallback {
@@ -30,7 +32,10 @@ export class AppService implements LoggedInCallback {
   isAppLogin = false;  //로그인이 됐는지 안됐는지 관장
   isPhone = false;
 
-  @Output() refreshEventEmitter = new EventEmitter();
+  refreshObserber = new Observable(observer => {
+    this.refreshSubscriber = observer;
+  });
+  refreshSubscriber:Subscriber<{}>;
 
   constructor(private router: Router, private cognitoUtil: CognitoUtil, private deviceService: Ng2DeviceService, private userService: UserLoginService, private httpService: HttpService) {
     this.userService.isAuthenticated(this); //로그인 중인지 검사
@@ -111,40 +116,39 @@ export class AppService implements LoggedInCallback {
     var result:posts[] = [];
 
     postArr.forEach(element => {
+      // console.log(JSON.stringify(element));
       let imageArr:string[] = [];
-      if(element[7]){
-        let imageStr:string = element[7];
+      if(element[5]){
+        let imageStr:string = element[5];
         imageArr = imageStr.split(',');
       }
 
       let marker:marker = null;
-      if(element[13]){
-        marker = JSON.parse(element[13]);
+      if(element[11]){
+        marker = JSON.parse(element[11]);
       }
 
       let tagArr:string[] = [];
-      if(element[14]){
-        let tagStr:string = element[14];
+      if(element[12]){
+        let tagStr:string = element[12];
         tagArr = tagStr.split(',');
       }
 
         let posts:posts = {
           postsID: element[0],
           postClassify: element[1],
-          studentNum: element[2],
-          publisherId: element[3],
-          publisher: element[4],
-          publisherIntro: element[5],
-          publisherImg: element[6]?element[6]:this.emptyUserImage,
+          publisherId: element[2],
+          publisher: element[3],
+          publisherIntro: element[4],
           images: imageArr,
-          title: element[8],
-          body: element[9],
-          good: element[10],
-          bad: element[11],
-          postDate: element[12],
+          title: element[6],
+          body: element[7],
+          good: element[8],
+          bad: element[9],
+          postDate: element[10],
           marker: marker,
           tag: tagArr,
-          commentCount: element[15]
+          commentCount: element[13]
         };
         result.push(posts);
     });
@@ -256,8 +260,7 @@ export class AppService implements LoggedInCallback {
           if(data.length > 0){
             this.myInfo = this.userFactory(data)[0]; //로그인 유저 매핑
             this.isAppLogin = true;
-
-            this.refreshEventEmitter.emit();
+            this.refreshSubscriber.next(true);
           } else {
             console.error("[error] - error: 데이터 없음");
             alert("유저 정보를 가져오지 못하였습니다. ");

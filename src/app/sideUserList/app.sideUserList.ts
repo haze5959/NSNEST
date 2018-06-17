@@ -20,10 +20,6 @@ export class AppSideUserList implements OnInit {
   
   constructor(public dialog: MatDialog, private appService: AppService, private httpService: HttpService, private router: Router) {}
   
-  refreshEmitter(){
-    console.log('refresh');
-  }
-
   ngOnInit() {
     //해당 게시글 DB에서 빼온다
     this.httpService.getUsers('update', 10)

@@ -3,16 +3,9 @@ import { PageEvent } from '@angular/material';
 import { HttpService } from '../service/http.service';
 import { Router } from '@angular/router';
 
-import {zip} from 'rxjs/observable/zip';
-import {of as observableOf} from 'rxjs/observable/of';
-import {catchError} from 'rxjs/operators/catchError';
-import {map} from 'rxjs/operators/map';
-import {startWith} from 'rxjs/operators/startWith';
-import {switchMap} from 'rxjs/operators/switchMap';
 import { AppService } from '../service/appService';
 
 import { posts } from '../model/posts';
-import { marker } from "../model/marker";
 
 @Component({
   selector: 'app-tasty-load',
@@ -25,7 +18,7 @@ export class AppTastyLoad {
   lng: number = 127.000000; //용산구 좌표
 
   clickedMarker(label: string, index: number) {
-    console.log(`clicked the marker: ${label || index}`)
+    // console.log(`clicked the marker: ${label || index}`)
   }
 
   showDetailView(postID:number){
@@ -40,10 +33,6 @@ export class AppTastyLoad {
   orderBy = "id";
   orderBySeq = "desc";
   filterValue = "";
-
-  refreshEmitter(){
-    console.log('refresh');
-  }
   
   ngOnInit() {
     this.httpService.getPostAll(30, this.orderBy, this.orderBySeq)

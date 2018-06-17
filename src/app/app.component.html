@@ -45,7 +45,7 @@
     <button mat-menu-item routerLink="/board">게시판</button>
     <button mat-menu-item routerLink="/elbum">사진첩</button>
     <button mat-menu-item routerLink="/tastyLoad">맛집지도</button>
-    <button mat-menu-item routerLink="/admin">admin</button>
+    <button mat-menu-item routerLink="/admin" *ngIf="appService && appService.myInfo && appService.myInfo.userId == 1060">admin</button>
     <button mat-menu-item>알CALL!!(공사 중...)</button>
     <button mat-menu-item>실시간 그림판(공사 중...)</button>
     <button mat-menu-item>낙둥뮤직(공사 중...)</button>
@@ -78,7 +78,7 @@
   <div class="app-sidenav-content color-50"  *ngIf="appService && appService.isPhone">
     <div class="app-div-newspeed">
 
-      <router-outlet (appService.refreshEventEmitter)="refreshEmitter()"></router-outlet>
+      <router-outlet></router-outlet>
 
     </div>
   </div>

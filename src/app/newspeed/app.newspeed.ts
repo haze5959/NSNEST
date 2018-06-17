@@ -17,21 +17,21 @@ export class AppNewspeed implements OnInit {
 
   constructor(private router: Router, private httpService: HttpService, public appService: AppService, private cognitoUtil: CognitoUtil) {}
 
-  refreshEmitter(){
-    console.log('refresh');
-    this.initPosts();
-  }
-
   ngOnInit(){
     if(this.appService.isAppLogin){
       this.initPosts();
+    } else {
+      this.appService.refreshObserber.subscribe(
+        value => {
+          this.initPosts();
+        }
+      );
     }
   }
 
   public initPosts(){
     if(this.cognitoUtil.getCurrentUser()){
-      this.appService.isAppLoading = true;
-      this.httpService.getPosts(0, "id", "desc", this.pageIndex) //해당 게시글 DB에서 빼온다
+      this.httpService.getPosts(0, "date", "desc", this.pageIndex) //해당 게시글 DB에서 빼온다
       .subscribe(
         data => {
           this.recentPosts = this.appService.postFactory(data);
@@ -61,7 +61,7 @@ export class AppNewspeed implements OnInit {
    */
   onScroll () {
     this.appService.isAppLoading = true;
-    this.httpService.getPosts(0, "id", "desc", this.pageIndex + 1) //해당 게시글 DB에서 빼온다
+    this.httpService.getPosts(0, "date", "desc", this.pageIndex + 1) //해당 게시글 DB에서 빼온다
     .subscribe(
       data => {
         // console.log(JSON.stringify(data));

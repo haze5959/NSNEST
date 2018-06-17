@@ -34,10 +34,6 @@ export class AppDetail implements OnInit {
   comments:comment[] = [];
   commentInput:string;
   constructor(private router: Router, public appService: AppService, private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar, private cookieService:CookieService) { }
-
-  refreshEmitter(){
-    console.log('refresh');
-  }
   
   ngOnInit() {
     if(!this.appService.isAppLogin){
@@ -153,7 +149,6 @@ export class AppDetail implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        console.log("Dialog result: ${result}");
         let comment = `<img class="comment-img" src="${result}">`
         let paramJson = {
           postId: this.postId,
@@ -168,7 +163,6 @@ export class AppDetail implements OnInit {
 
         this.httpService.postComment(paramJson).subscribe(
           data => {
-            console.log(JSON.stringify(data));
             if(data.result){
               this.post.commentCount = this.post.commentCount + 1;
               this.commentInput = "";
@@ -250,7 +244,7 @@ export class AppDetail implements OnInit {
 
       this.httpService.postComment(paramJson).subscribe(
         data => {
-          console.log(JSON.stringify(data));
+          // console.log(JSON.stringify(data));
           if(data.result){
             this.post.commentCount = this.post.commentCount + 1;
             this.commentInput = "";

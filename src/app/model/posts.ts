@@ -5,11 +5,11 @@ export class posts {
     postsID?: number;
     postDate?: string;
     postClassify: number;   //10:게시글, 20:앨범, 30:지도, 40:일정
-    studentNum: number;
+    studentNum?: number;
     publisherId?: number;   //옵셔널 아님
     publisher: string;
     publisherIntro?: string;
-    publisherImg: SafeStyle;
+    publisherImg?: SafeStyle;
     images?: string[];
     title: string;
     body: string;

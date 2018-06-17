@@ -1,8 +1,8 @@
-<input hidden #fileInput type='file' accept="image/*" (change)="addImageAndUploadServer($event)" multiple>
+<input hidden #fileInput type='file' accept="image/*" (change)="uploadEmoticon($event)" multiple>
 <div class="app-admin">
 
     <!--=================== 앨범 올리기 =====================-->
-    <form *ngIf="classify == 'elbum'" class="write-elbum">
+    <form class="write-elbum">
         <mat-form-field>
             <input matInput placeholder="이모티콘 명" [formControl]="emoFormControl">
         </mat-form-field>
