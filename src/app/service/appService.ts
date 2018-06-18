@@ -32,6 +32,10 @@ export class AppService implements LoggedInCallback {
   isAppLogin = false;  //로그인이 됐는지 안됐는지 관장
   isPhone = false;
 
+  // 상태저장
+  newspeedPosts: posts[] = [];
+  newspeedScrollY:number = 10;
+
   refreshObserber = new Observable(observer => {
     this.refreshSubscriber = observer;
   });

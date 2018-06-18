@@ -2,9 +2,9 @@
     로그인 필요
 </div>
 <div *ngIf="appService.isAppLogin" class="app-newspeed">
-    <div class="newspeed-backgound" infinite-scroll [infiniteScrollDistance]="1.3" [infiniteScrollThrottle]="1000" (scrolled)="onScroll()" [scrollWindow]="false" [immediateCheck]="true">
+    <ptr-container #newspeedScroll (onPull)="onPull()" [refresh]="isInProgress" class="newspeed-backgound" infinite-scroll [infiniteScrollDistance]="1.4" [infiniteScrollThrottle]="500" [scrollTop]="100" (scrolled)="onScroll()" [scrollWindow]="false" [immediateCheck]="true">
         <mat-list>
-            <mat-nav-list *ngFor="let posts of recentPosts" class="posts-list">
+            <mat-nav-list *ngFor="let posts of appService.newspeedPosts" class="posts-list">
                 <!--========================================에러 발생========================================-->
                 <mat-card *ngIf="posts.postClassify == 99" class="posts-card" (click)="pressPosts(posts.postsID)">
                     <mat-card-header class="posts-card-header">
@@ -143,5 +143,5 @@
                 </mat-card>
             </mat-nav-list>
         </mat-list>
-    </div>
+    </ptr-container>
 </div>

@@ -23,7 +23,7 @@ import {
   MatDialogModule,
   MatFormFieldModule,
   MatListModule,
-  MatProgressSpinnerModule,
+  // MatProgressSpinnerModule,
   MatTableModule,
   MatPaginatorModule,
   MatSortModule,
@@ -33,8 +33,11 @@ import {
   MatChipsModule
 } from '@angular/material';
 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 import { AppComponent } from './app.component';
 import { AppNewspeed } from './newspeed/app.newspeed';
+import { PullToRefreshComponent } from './newspeed/pullToRefresh';
 import { AppBoard } from './board/app.board';
 import { AppElbum } from './elbum/app.elbum';
 import { AppTastyLoad } from './tastyLoad/app.tastyLoad';
@@ -58,6 +61,7 @@ import { TAB_COMPONENTS  } from './emoticonViewer/Tabset';
   declarations: [
     AppComponent,
     AppNewspeed,
+    PullToRefreshComponent,
     AppBoard,
     AppElbum,
     AppTastyLoad,
