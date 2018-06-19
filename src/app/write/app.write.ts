@@ -95,6 +95,7 @@ export class AppWrite implements OnInit {
                 this.appService.isAppLoading = false;
                 console.log(JSON.stringify(data));
                 if(data.result){  //성공
+                  this.appService.newspeedPosts = []; //초기화
                   this.snackBar.open("게시글 업로드 완료", "확인", {
                     duration: 2000,
                   });
@@ -131,6 +132,7 @@ export class AppWrite implements OnInit {
                 this.appService.isAppLoading = false;
                 console.log(JSON.stringify(data));
                 if(data.result){  //성공
+                  this.appService.newspeedPosts = []; //초기화
                   this.snackBar.open("게시글 업로드 완료", "확인", {
                     duration: 2000,
                   });
@@ -171,6 +173,7 @@ export class AppWrite implements OnInit {
                 this.appService.isAppLoading = false;
                 console.log(JSON.stringify(data));
                 if(data.result){  //성공
+                  this.appService.newspeedPosts = []; //초기화
                   this.snackBar.open("맛집 업로드 완료", "확인", {
                     duration: 2000,
                   });
