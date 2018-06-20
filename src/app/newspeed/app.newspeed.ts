@@ -19,7 +19,6 @@ export class AppNewspeed implements OnInit, OnDestroy {
 
   onPull() {
     if(!this.isInProgress){
-      console.log('OQOQOQOQOQ!!!!');
       this.isInProgress = true;
       this.initPosts(); 
     }

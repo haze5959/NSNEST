@@ -4,11 +4,6 @@ import { HttpService } from '../service/http.service';
 import { Router } from '@angular/router';
 
 import {zip} from 'rxjs/observable/zip';
-import {of as observableOf} from 'rxjs/observable/of';
-import {catchError} from 'rxjs/operators/catchError';
-import {map} from 'rxjs/operators/map';
-import {startWith} from 'rxjs/operators/startWith';
-import {switchMap} from 'rxjs/operators/switchMap';
 import { AppService } from '../service/appService';
 
 @Component({
@@ -79,7 +74,7 @@ export class AppBoard implements OnInit{
     this.httpService.getPosts(10, this.orderBy, this.orderBySeq, pageEvent.pageIndex + 1)
     .subscribe(
       data => {
-        console.log(JSON.stringify(data));
+        // console.log(JSON.stringify(data));
         this.boardPosts = this.appService.postFactory(data);
         this.appService.isAppLoading = false;
       },
