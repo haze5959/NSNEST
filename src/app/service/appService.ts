@@ -108,7 +108,8 @@ export class AppService implements LoggedInCallback {
           postDate: element[12],
           marker: marker,
           tag: tagArr,
-          commentCount: element[15]
+          commentCount: element[15],
+          regitDate: element[16]
         };
         result.push(posts);
     });
@@ -152,7 +153,8 @@ export class AppService implements LoggedInCallback {
           postDate: element[10],
           marker: marker,
           tag: tagArr,
-          commentCount: element[13]
+          commentCount: element[13],
+          regitDate: element[14]
         };
         result.push(posts);
     });
