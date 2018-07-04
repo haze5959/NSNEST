@@ -161,7 +161,7 @@ export class AppDetail implements OnInit {
           // good: 0
         }
 
-        this.httpService.postComment(paramJson).subscribe(
+        this.httpService.postComment(paramJson, this.post.publisher).subscribe(
           data => {
             if(data.result){
               this.post.commentCount = this.post.commentCount + 1;
@@ -242,7 +242,7 @@ export class AppDetail implements OnInit {
         // good: 0
       }
 
-      this.httpService.postComment(paramJson).subscribe(
+      this.httpService.postComment(paramJson, this.post.publisher).subscribe(
         data => {
           // console.log(JSON.stringify(data));
           if(data.result){
