@@ -243,7 +243,7 @@ export class AppWrite implements OnInit {
     var emoBtn = document.createElement('button');
     emoBtn.type = "button";
     emoBtn.className = "ql-emoticon";
-    emoBtn.style.backgroundColor = "black";
+    // emoBtn.style.backgroundColor = "black";
     emoBtn.addEventListener
     span.appendChild(emoBtn);
     elements[0].appendChild(span);

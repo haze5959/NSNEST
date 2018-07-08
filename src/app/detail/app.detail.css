@@ -101,13 +101,17 @@
 }
 
 .detail-regist-comment {
-    text-align:center;
+    text-align: center;
     margin-top: 50px;
     margin-bottom: 100px;
 }
 
 .agm-map {
     height: 600px;
+}
+
+.emoticon-btn {
+    height: 36px;
 }
 
 @media screen and (max-width: 1000px) {

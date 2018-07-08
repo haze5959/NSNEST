@@ -47,10 +47,9 @@ export class AppUserInfo implements CognitoCallback, OnInit {
     }
   }
 
-  pressRegistration(){
-    alert("회원가입 페이지로 이동합니다.");
-    document.location.href = environment.registPage;
-  }
+  // pressRegistration(){
+  //   document.location.href = environment.registPage;
+  // }
 
   openSetUserInfoDialog(){
     const dialogRef = this.dialog.open(SetUserInfoDialog, {
