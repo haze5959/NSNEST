@@ -259,6 +259,7 @@ export class AppWrite implements OnInit {
     switch(this.classify){
       case 'post':{ //게시글
         //서버에 이미지 저장 후, url 리턴해서 이미지 뿌려주기=============================
+        this.appService.isAppLoading = true;
         this.httpService.uploadImage('board', $event.target.files[0])
           .subscribe(
             data => {
@@ -278,18 +279,18 @@ export class AppWrite implements OnInit {
                 } else {
                   throw new Error('이미지 형식이 이상합니다.');
                 }
-            } else {  //실패
-              this.snackBar.open("게시글 업로드 실패 - " + data.message, "확인", {
-                duration: 5000,
-              });
+              } else {  //실패
+                this.snackBar.open("게시글 업로드 실패 - " + data.message, "확인", {
+                  duration: 5000,
+                });
+              }
+              this.appService.isAppLoading = false;
+            },
+            error => {
+              this.appService.isAppLoading = false;
+              console.error("[error] - " + error.error.text);
+              alert("[error] - " + error.error.text);
             }
-            this.appService.isAppLoading = false;
-          },
-          error => {
-            this.appService.isAppLoading = false;
-            console.error("[error] - " + error.error.text);
-            alert("[error] - " + error.error.text);
-          }
         );
         //======================================================================
         break;
