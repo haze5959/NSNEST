@@ -358,7 +358,10 @@ export class AppService implements LoggedInCallback {
           if(data.length > 0){
             this.myInfo = this.userFactory(data)[0]; //로그인 유저 매핑
             this.isAppLogin = true;
-            this.refreshSubscriber.next(true);
+
+            if(this.refreshSubscriber){
+              this.refreshSubscriber.next(true);
+            }
           } else {
             console.error("[error] - error: 데이터 없음");
             alert("유저 정보를 가져오지 못하였습니다. ");
