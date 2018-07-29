@@ -109,16 +109,19 @@ export class CognitoUtil {
             this.getCurrentUser().getSession(function (err, session) {
                 if (err) {
                     console.log("CognitoUtil: Can't set the credentials:" + err);
+                    console.log("OQ222");
                     callback.callbackWithParam(null);
                 }
                 else {
                     if (session.isValid()) {
+                        console.log("OQ333");
                         callback.callbackWithParam(session.getAccessToken().getJwtToken());
                     }
                 }
             });
         }
         else {
+            console.log("OQ111");
             callback.callbackWithParam(null);
         }
     }

@@ -12,6 +12,7 @@ import { HttpService } from '../service/http.service';
 import { AppService } from '../service/appService';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../environments/environment';
+import { CognitoUtil } from '../service/awsService/cognito.service';
 
 import * as JSZip from '../../../node_modules/jszip/dist/jszip';
 import * as JSZipUtils from '../../../node_modules/jszip-utils/dist/jszip-utils';
@@ -33,7 +34,7 @@ export class AppDetail implements OnInit {
   marker:marker;
   comments:comment[] = [];
   commentInput:string;
-  constructor(private router: Router, public appService: AppService, private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar, private cookieService:CookieService) { }
+  constructor(private router: Router, public appService: AppService, private httpService: HttpService, private route: ActivatedRoute, public dialog: MatDialog, private sanitizer: DomSanitizer, public snackBar: MatSnackBar, private cookieService:CookieService, private cognitoUtil: CognitoUtil) { }
   
   ngOnInit() {
     if(!this.appService.isAppLogin){
@@ -45,26 +46,34 @@ export class AppDetail implements OnInit {
     });
 
       //해당 게시글 DB에서 빼온다
-      this.httpService.getPost(this.postId)
-      .subscribe(
-        data => {
-          // console.log(JSON.stringify(data));
-          if (data.length == 0) { //게시글을 못찾음
-            alert("해당 게시글을 찾지 못하였습니다.");
-            this.router.navigate(['/']);
-          } else {
-            this.post = this.appService.postFactory(data)[0];
-            this.appService.isAppLoading = false;
-            this.initDetail();  //뷰 초기화
-          }
-        },
-        error => {
-          console.error("[error] - getPost:" + this.postId);
-          // this.post = this.httpService.errorPost;
-          this.appService.isAppLoading = false;
-          this.router.navigate(['/']);
+      let parentClass = this;
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(token: any): void {
+          parentClass.httpService.checkAccessToken(token).then((accessToken) => {
+            parentClass.httpService.getPost(accessToken, parentClass.postId)
+            .subscribe(
+              data => {
+                // console.log(JSON.stringify(data));
+                if (data.length == 0) { //게시글을 못찾음
+                  alert("해당 게시글을 찾지 못하였습니다.");
+                  parentClass.router.navigate(['/']);
+                } else {
+                  parentClass.post = parentClass.appService.postFactory(data)[0];
+                  parentClass.appService.isAppLoading = false;
+                  parentClass.initDetail();  //뷰 초기화
+                }
+              },
+              error => {
+                console.error("[error] - getPost:" + parentClass.postId);
+                // this.post = this.httpService.errorPost;
+                parentClass.appService.isAppLoading = false;
+                parentClass.router.navigate(['/']);
+              }
+            );
+          });
         }
-      );
+      });
     }
   }
 
@@ -286,32 +295,41 @@ export class AppDetail implements OnInit {
     if(isAlreayVote){ //이미 사용하셨습니다.
       this.openSnackBar("이미 투표하셨습니다.");
     } else {
-      this.httpService.putPostGoodBad(postId, this.appService.myInfo.userId, true).subscribe(
-        data => {
-          // console.log(JSON.stringify(data));
-          if(data.result){
-            this.openSnackBar("좋아요 성공");
-
-            //쿠키 적용하기==================================================
-            if(!userGoodBadInfo){
-              userGoodBadInfo = postId.toString();
-            } else {
-              userGoodBadInfo = userGoodBadInfo.concat(',' + postId.toString())
-            }
-            
-            this.cookieService.set('nsnest_good_bad_info', userGoodBadInfo);
-            //=========================================================
-
-            this.post.good = this.post.good + 1;
-          } else {
-            this.openSnackBar("좋아요 실패");
-          }
-        },
-        error => {
-          console.log(error);
-          this.openSnackBar("좋아요 실패 - " + error);
+      let parentClass = this;
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(token: any): void {
+          parentClass.httpService.checkAccessToken(token).then((accessToken) => {
+            parentClass.httpService.putPostGoodBad(accessToken, postId, parentClass.appService.myInfo.userId, true).subscribe(
+              data => {
+                // console.log(JSON.stringify(data));
+                if(data.result){
+                  parentClass.openSnackBar("좋아요 성공");
+      
+                  //쿠키 적용하기==================================================
+                  if(!userGoodBadInfo){
+                    userGoodBadInfo = postId.toString();
+                  } else {
+                    userGoodBadInfo = userGoodBadInfo.concat(',' + postId.toString())
+                  }
+                  
+                  parentClass.cookieService.set('nsnest_good_bad_info', userGoodBadInfo);
+                  //=========================================================
+      
+                  parentClass.post.good = parentClass.post.good + 1;
+                } else {
+                  parentClass.openSnackBar("좋아요 실패");
+                }
+              },
+              error => {
+                console.log(error);
+                parentClass.openSnackBar("좋아요 실패 - " + error);
+              }
+            ); 
+          });
         }
-      ); 
+      });
+  
     }
   }
 
@@ -339,50 +357,67 @@ export class AppDetail implements OnInit {
     if(isAlreayVote){ //이미 사용하셨습니다.
       this.openSnackBar("이미 투표하셨습니다.");
     } else {
-      this.httpService.putPostGoodBad(postId, this.appService.myInfo.userId, false).subscribe(
-        data => {
-          console.log(JSON.stringify(data));
-          if(data.result){
-            this.openSnackBar("싫어요 성공");
-
-            //쿠키 적용하기==================================================
-            if(!userGoodBadInfo){
-              userGoodBadInfo = postId.toString();
-            } else {
-              userGoodBadInfo = userGoodBadInfo.concat(',' + postId.toString())
-            }
-            this.cookieService.set('nsnest_good_bad_info', userGoodBadInfo);
-            //=========================================================
-
-            this.post.bad = this.post.bad + 1;
-          } else {
-            this.openSnackBar("싫어요 실패");
-          }
-        },
-        error => {
-          console.log(error);
-          this.openSnackBar("싫어요 실패 - " + error);
+      let parentClass = this;
+      this.cognitoUtil.getAccessToken({
+        callback(): void{},
+        callbackWithParam(token: any): void {
+          parentClass.httpService.checkAccessToken(token).then((accessToken) => {
+            parentClass.httpService.putPostGoodBad(accessToken, postId, parentClass.appService.myInfo.userId, false).subscribe(
+              data => {
+                console.log(JSON.stringify(data));
+                if(data.result){
+                  parentClass.openSnackBar("싫어요 성공");
+      
+                  //쿠키 적용하기==================================================
+                  if(!userGoodBadInfo){
+                    userGoodBadInfo = postId.toString();
+                  } else {
+                    userGoodBadInfo = userGoodBadInfo.concat(',' + postId.toString())
+                  }
+                  parentClass.cookieService.set('nsnest_good_bad_info', userGoodBadInfo);
+                  //=========================================================
+      
+                  parentClass.post.bad = parentClass.post.bad + 1;
+                } else {
+                  parentClass.openSnackBar("싫어요 실패");
+                }
+              },
+              error => {
+                console.log(error);
+                parentClass.openSnackBar("싫어요 실패 - " + error);
+              }
+            );
+          });
         }
-      );
+      });
+  
     }
   }
 
   pressDeletePost(postId:number){ //게시글 삭제
-    this.httpService.deletePost(postId).subscribe(
-      data => {
-        console.log(JSON.stringify(data));
-        if(data.result){
-          this.openSnackBar("게시글 삭제 성공");
-          this.router.navigate(['/']);
-        } else {
-          this.openSnackBar("게시글 삭제 실패");
-        }
-      },
-      error => {
-        console.log(error);
-        this.openSnackBar("게시글 삭제 실패 - " + error);
+    let parentClass = this;
+    this.cognitoUtil.getAccessToken({
+      callback(): void{},
+      callbackWithParam(token: any): void {
+        parentClass.httpService.checkAccessToken(token).then((accessToken) => {
+          parentClass.httpService.deletePost(accessToken, postId).subscribe(
+            data => {
+              console.log(JSON.stringify(data));
+              if(data.result){
+                parentClass.openSnackBar("게시글 삭제 성공");
+                parentClass.router.navigate(['/']);
+              } else {
+                parentClass.openSnackBar("게시글 삭제 실패");
+              }
+            },
+            error => {
+              console.log(error);
+              parentClass.openSnackBar("게시글 삭제 실패 - " + error);
+            }
+          );
+        });
       }
-    );
+    });
   }
 
   pressDeleteComment(commentId:number){
@@ -415,37 +450,44 @@ export class AppDetail implements OnInit {
 
   uploadImages($event){
     this.appService.isAppLoading = true;
-
-    this.httpService.uploadImage('board', $event.target.files[0])
-    .subscribe(
-      data => {
-        // console.log(JSON.stringify(data));
-        if(data.result){  //성공
-          const fileInfo = data.message.files.file;
-          if(fileInfo && fileInfo.path){
-            let filePath:string = fileInfo.path;
-            filePath = filePath.replace('/1TB_Drive/NSNEST_PUBLIC/', '');
-            const fileUrl = environment.fileUrl + filePath;
-            console.log('이미지 업로드 완료 - ' + fileUrl);
-            this.pressCommentRegist(`<img class="comment-img" src="${fileUrl}">`);
-          } else {
-            throw new Error('이미지 형식이 이상합니다.');
-          }
+    let parentClass = this;
+    this.cognitoUtil.getAccessToken({
+      callback(): void{},
+      callbackWithParam(token: any): void {
+        parentClass.httpService.checkAccessToken(token).then((accessToken) => {
+          parentClass.httpService.uploadImage(accessToken, 'board', $event.target.files[0])
+          .subscribe(
+            data => {
+              // console.log(JSON.stringify(data));
+              if(data.result){  //성공
+                const fileInfo = data.message.files.file;
+                if(fileInfo && fileInfo.path){
+                  let filePath:string = fileInfo.path;
+                  filePath = filePath.replace('/1TB_Drive/NSNEST_PUBLIC/', '');
+                  const fileUrl = environment.fileUrl + filePath;
+                  console.log('이미지 업로드 완료 - ' + fileUrl);
+                  parentClass.pressCommentRegist(`<img class="comment-img" src="${fileUrl}">`);
+                } else {
+                  throw new Error('이미지 형식이 이상합니다.');
+                }
+                
+                parentClass.snackBar.open(`이미지 업로드 완료`, "확인");
+                parentClass.appService.isAppLoading = false;
           
-          this.snackBar.open(`이미지 업로드 완료`, "확인");
-          this.appService.isAppLoading = false;
-    
-        } else {  //실패
-          console.error("이미지 업로드 실패 - " + data.message);
-          alert("이미지 업로드 실패 - " + data.message);
-          this.appService.isAppLoading = false;
-        }
-      },
-      error => {
-        console.error("이미지 업로드 실패 - " + error.message);
-        alert(`이미지 업로드 실패 - ` + error.message);
-        this.appService.isAppLoading = false;
+              } else {  //실패
+                console.error("이미지 업로드 실패 - " + data.message);
+                alert("이미지 업로드 실패 - " + data.message);
+                parentClass.appService.isAppLoading = false;
+              }
+            },
+            error => {
+              console.error("이미지 업로드 실패 - " + error.message);
+              alert(`이미지 업로드 실패 - ` + error.message);
+              parentClass.appService.isAppLoading = false;
+            }
+          );
+        });
       }
-    );
+    });
   }
 }
